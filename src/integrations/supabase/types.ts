@@ -101,6 +101,48 @@ export type Database = {
         }
         Relationships: []
       }
+      feature_flags: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          enabled: boolean
+          end_at: string | null
+          id: number
+          key: string
+          payload: Json
+          rollout: number
+          start_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          enabled?: boolean
+          end_at?: string | null
+          id?: number
+          key: string
+          payload?: Json
+          rollout?: number
+          start_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          enabled?: boolean
+          end_at?: string | null
+          id?: number
+          key?: string
+          payload?: Json
+          rollout?: number
+          start_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       inventory: {
         Row: {
           created_at: string
