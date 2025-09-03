@@ -8,6 +8,7 @@ import NewArrivals from "@/components/home/NewArrivals";
 import Trust from "@/components/home/Trust";
 import About from "@/components/home/About";
 import Testimonials from "@/components/home/Testimonials";
+import FlashBanner from "@/components/home/FlashBanner";
 
 import pSerum from "@/assets/product-serum.jpg";
 import pShampoo from "@/assets/product-shampoo.jpg";
@@ -29,6 +30,9 @@ const arrivals = [
 ];
 
 const Index = () => {
+  // Flash sale ends in 2 hours (example)
+  const flashSaleEnd = new Date(Date.now() + 2 * 60 * 60 * 1000);
+
   const businessJsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -74,6 +78,7 @@ const Index = () => {
         <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>
       </Helmet>
 
+      <FlashBanner endTime={flashSaleEnd} message="Flash Sale ends in" />
       <Header />
       <main>
         <Hero />
