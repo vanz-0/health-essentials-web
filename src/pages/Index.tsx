@@ -103,6 +103,7 @@ const Index = () => {
                 timeLeft={180} // 3 hours in minutes
                 claimed={47}
                 total={100}
+                image={productSerum}
               />
               <UrgentDeal
                 title="Shea Body Butter Special"
@@ -111,6 +112,7 @@ const Index = () => {
                 timeLeft={420} // 7 hours in minutes
                 claimed={23}
                 total={50}
+                image={productBodyButter}
               />
             </div>
           </section>

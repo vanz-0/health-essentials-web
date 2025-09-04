@@ -11,6 +11,7 @@ interface UrgentDealProps {
   timeLeft: number; // in minutes
   claimed: number;
   total: number;
+  image: string;
 }
 
 export default function UrgentDeal({ 
@@ -19,7 +20,8 @@ export default function UrgentDeal({
   originalPrice, 
   timeLeft: initialTimeLeft, 
   claimed, 
-  total 
+  total,
+  image
 }: UrgentDealProps) {
   const { isEnabled } = useFeatureFlag('bit_2_fomo');
   const [timeLeft, setTimeLeft] = useState(initialTimeLeft);
@@ -46,7 +48,28 @@ export default function UrgentDeal({
   const minutes = timeLeft % 60;
 
   return (
-    <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white p-4 rounded-lg animate-pulse-glow">
+    <div 
+      className="bg-gradient-to-r from-red-500 to-orange-500 text-white p-4 rounded-lg animate-pulse-glow relative overflow-hidden"
+      style={{
+        backgroundImage: `linear-gradient(to right, rgba(239, 68, 68, 0.9), rgba(249, 115, 22, 0.9)), url(${image})`,
+        backgroundSize: 'cover, 120px auto',
+        backgroundPosition: 'center, right center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
+      {/* Blurred background image overlay */}
+      <div 
+        className="absolute inset-0 bg-right bg-no-repeat opacity-30"
+        style={{
+          backgroundImage: `url(${image})`,
+          backgroundSize: '120px auto',
+          backgroundPosition: 'right center',
+          filter: 'blur(1px)'
+        }}
+      />
+      
+      {/* Content with relative positioning to stay above background */}
+      <div className="relative z-10">
       <div className="flex items-center gap-2 mb-2">
         <Flame className="h-5 w-5 animate-urgent-bounce" />
         <Badge variant="secondary" className="bg-white/20 text-white">
@@ -92,6 +115,7 @@ export default function UrgentDeal({
         <ShoppingCart className="h-4 w-4 mr-2" />
         Claim Deal Now
       </Button>
+      </div>
     </div>
   );
 }
