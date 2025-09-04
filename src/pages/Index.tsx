@@ -9,6 +9,13 @@ import Trust from "@/components/home/Trust";
 import About from "@/components/home/About";
 import Testimonials from "@/components/home/Testimonials";
 import FlashBanner from "@/components/home/FlashBanner";
+import UrgentDeal from "@/components/home/UrgentDeal";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+
+import productSerum from "@/assets/product-serum.jpg";
+import productBodyButter from "@/assets/product-bodybutter.jpg";
+import productShampoo from "@/assets/product-shampoo.jpg";
+import productSunscreen from "@/assets/product-sunscreen.jpg";
 
 import pSerum from "@/assets/product-serum.jpg";
 import pShampoo from "@/assets/product-shampoo.jpg";
@@ -30,6 +37,8 @@ const arrivals = [
 ];
 
 const Index = () => {
+  const { isEnabled: fomoEnabled } = useFeatureFlag('bit_2_fomo');
+  
   // Flash sale ends in 2 hours (example)
   const flashSaleEnd = new Date(Date.now() + 2 * 60 * 60 * 1000);
 
@@ -82,6 +91,31 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
+        
+        {/* FOMO Urgent Deals Section - Only shown when Bit 2 is enabled */}
+        {fomoEnabled && (
+          <section className="container py-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <UrgentDeal
+                title="Vitamin C Brightening Serum"
+                discount={30}
+                originalPrice={2499}
+                timeLeft={180} // 3 hours in minutes
+                claimed={47}
+                total={100}
+              />
+              <UrgentDeal
+                title="Shea Body Butter Special"
+                discount={25}
+                originalPrice={1899}
+                timeLeft={420} // 7 hours in minutes
+                claimed={23}
+                total={50}
+              />
+            </div>
+          </section>
+        )}
+        
         <Categories />
         <BestSellers products={bestSellers} />
         <NewArrivals items={arrivals} />
