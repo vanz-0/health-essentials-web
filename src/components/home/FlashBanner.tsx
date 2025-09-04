@@ -8,7 +8,7 @@ interface FlashBannerProps {
 }
 
 export default function FlashBanner({ endTime, message }: FlashBannerProps) {
-  const { isEnabled } = useFeatureFlag('bit_4_fomo');
+  const { isEnabled } = useFeatureFlag('bit_2_fomo');
   const [timeLeft, setTimeLeft] = useState(endTime.getTime() - Date.now());
   const [isVisible, setIsVisible] = useState(true);
 
