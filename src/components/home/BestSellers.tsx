@@ -1,6 +1,8 @@
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import InventoryAlert from "./InventoryAlert";
 
 export type Product = {
   id: string;
@@ -13,6 +15,11 @@ export type Product = {
 
 function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
+  const { isEnabled: cartEnabled } = useFeatureFlag('bit_3_cart');
+  
+  // Mock inventory for demonstration
+  const mockInventory = { serum: 3, shampoo: 8, butter: 2, sunscreen: 6 };
+  const remaining = mockInventory[product.id as keyof typeof mockInventory] || 5;
   return (
     <div className="rounded-lg border p-3 hover:shadow-sm transition-shadow">
       <div className="relative overflow-hidden rounded-md">
@@ -32,9 +39,23 @@ function ProductCard({ product }: { product: Product }) {
           )}
         </div>
         <div className="mt-1 font-semibold">KES {product.price.toLocaleString()}</div>
+        
+        {/* Inventory Alert */}
+        <div className="mt-2">
+          <InventoryAlert productName={product.name} remaining={remaining} />
+        </div>
+        
         <div className="mt-3 flex gap-2">
-          <Button onClick={() => addItem({ id: product.id, name: product.name, price: product.price, image: product.image })} className="flex-1">Add to Cart</Button>
-          <Button variant="outline" className="flex-1">Quick View</Button>
+          {cartEnabled && (
+            <Button 
+              onClick={() => addItem({ id: product.id, name: product.name, price: product.price, image: product.image })} 
+              className="flex-1"
+              disabled={remaining === 0}
+            >
+              {remaining === 0 ? 'Out of Stock' : 'Add to Cart'}
+            </Button>
+          )}
+          <Button variant="outline" className={cartEnabled ? "flex-1" : "w-full"}>Quick View</Button>
         </div>
       </div>
     </div>

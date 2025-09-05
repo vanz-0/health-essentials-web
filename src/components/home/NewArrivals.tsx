@@ -1,6 +1,7 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 export type NewArrival = {
   id: string;
@@ -11,6 +12,7 @@ export type NewArrival = {
 
 export default function NewArrivals({ items }: { items: NewArrival[] }) {
   const { addItem } = useCart();
+  const { isEnabled: cartEnabled } = useFeatureFlag('bit_3_cart');
   return (
     <section className="container mt-16" aria-labelledby="arrivals-heading">
       <div className="flex items-center justify-between">
@@ -28,7 +30,9 @@ export default function NewArrivals({ items }: { items: NewArrival[] }) {
                       <h3 className="font-medium leading-tight">{item.name}</h3>
                       <div className="font-semibold">KES {item.price.toLocaleString()}</div>
                     </div>
-                    <Button onClick={() => addItem({ id: item.id, name: item.name, price: item.price, image: item.image })}>Add</Button>
+                    {cartEnabled && (
+                      <Button onClick={() => addItem({ id: item.id, name: item.name, price: item.price, image: item.image })}>Add</Button>
+                    )}
                   </div>
                 </div>
               </CarouselItem>

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { ShoppingCart, User, Search, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-//
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import CartDrawer from "@/components/cart/CartDrawer";
+import { useCart } from "@/contexts/CartContext";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -16,8 +16,9 @@ const navItems = [
 ];
 
 export default function Header() {
-  const { totalQty, items, totalPrice, removeItem } = useCart();
+  const { totalQty } = useCart();
   const { toast } = useToast();
+  const { isEnabled: cartEnabled } = useFeatureFlag('bit_3_cart');
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -65,8 +66,8 @@ export default function Header() {
               <User />
             </Button>
 
-            <Popover>
-              <PopoverTrigger asChild>
+{cartEnabled && (
+              <CartDrawer>
                 <Button variant="accent" size="icon" aria-label="Cart" className="relative">
                   <ShoppingCart />
                   {totalQty > 0 && (
@@ -75,37 +76,8 @@ export default function Header() {
                     </span>
                   )}
                 </Button>
-              </PopoverTrigger>
-              <PopoverContent align="end" className="w-80">
-                <div className="space-y-3">
-                  <h4 className="font-medium">Cart Summary</h4>
-                  {items.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">Your cart is empty.</p>
-                  ) : (
-                    <ul className="divide-y divide-border">
-                      {items.map((item) => (
-                        <li key={item.id} className="flex items-center gap-3 py-2">
-                          <img src={item.image} alt={`${item.name} image`} className="h-12 w-12 rounded object-cover" loading="lazy" />
-                          <div className="flex-1">
-                            <p className="text-sm font-medium">{item.name}</p>
-                            <p className="text-xs text-muted-foreground">{item.qty} × KES {item.price.toLocaleString()}</p>
-                          </div>
-                          <Button variant="ghost" size="sm" onClick={() => removeItem(item.id)}>Remove</Button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Subtotal</span>
-                    <span className="font-semibold">KES {totalPrice.toLocaleString()}</span>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button className="flex-1">Checkout</Button>
-                    <Button variant="outline" className="flex-1" onClick={() => toast({ title: "Cart", description: "Full cart & checkout coming soon." })}>View Cart</Button>
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
+              </CartDrawer>
+            )}
           </div>
         </nav>
       </div>
