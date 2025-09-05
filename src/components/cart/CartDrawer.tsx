@@ -42,7 +42,7 @@ export default function CartDrawer({ children }: CartDrawerProps) {
       <SheetTrigger asChild>
         {children}
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-lg">
+      <SheetContent className="w-full sm:max-w-lg animate-cart-slide-up">
         <SheetHeader>
           <SheetTitle className="flex items-center justify-between">
             Shopping Cart
@@ -66,8 +66,12 @@ export default function CartDrawer({ children }: CartDrawerProps) {
               </div>
             ) : (
               <div className="space-y-4">
-                {items.map((item) => (
-                  <div key={item.id} className="flex items-center gap-4 p-4 bg-muted/30 rounded-lg">
+                {items.map((item, index) => (
+                  <div 
+                    key={item.id} 
+                    className="flex items-center gap-4 p-4 bg-muted/30 rounded-lg animate-cart-bounce-in hover:bg-muted/50 transition-colors"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
                     <img 
                       src={item.image} 
                       alt={item.name} 
@@ -83,7 +87,7 @@ export default function CartDrawer({ children }: CartDrawerProps) {
                         <Button
                           variant="outline"
                           size="icon"
-                          className="w-8 h-8"
+                          className="w-8 h-8 hover:bg-destructive hover:text-destructive-foreground transition-colors"
                           onClick={() => updateQuantity(item.id, item.name, item.price, item.image, item.qty - 1)}
                         >
                           <Minus className="w-3 h-3" />
@@ -92,7 +96,7 @@ export default function CartDrawer({ children }: CartDrawerProps) {
                         <Button
                           variant="outline"
                           size="icon"
-                          className="w-8 h-8"
+                          className="w-8 h-8 hover:bg-primary hover:text-primary-foreground transition-colors"
                           onClick={() => updateQuantity(item.id, item.name, item.price, item.image, item.qty + 1)}
                         >
                           <Plus className="w-3 h-3" />
@@ -107,7 +111,7 @@ export default function CartDrawer({ children }: CartDrawerProps) {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-destructive hover:text-destructive mt-1"
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10 mt-1"
                         onClick={() => removeItem(item.id)}
                       >
                         <Trash2 className="w-4 h-4" />
@@ -120,18 +124,24 @@ export default function CartDrawer({ children }: CartDrawerProps) {
           </div>
           
           {items.length > 0 && (
-            <div className="border-t pt-4 space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-lg font-semibold">Total</span>
-                <span className="text-lg font-bold">KES {totalPrice.toLocaleString()}</span>
+            <div className="border-t pt-4 space-y-4 animate-fade-in">
+              <div className="flex items-center justify-between text-lg">
+                <span className="font-semibold">Total</span>
+                <span className="font-bold text-primary">KES {totalPrice.toLocaleString()}</span>
               </div>
               
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="outline" onClick={() => setIsOpen(false)}>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setIsOpen(false)}
+                  className="hover:bg-muted"
+                >
                   Continue Shopping
                 </Button>
-                <Button className="bg-primary">
-                  Checkout
+                <Button 
+                  className="bg-primary hover:bg-primary/90 animate-pulse"
+                >
+                  Checkout ({totalQty})
                 </Button>
               </div>
             </div>

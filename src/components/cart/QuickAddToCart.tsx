@@ -52,8 +52,8 @@ export default function QuickAddToCart({
     >
       {isAdding ? (
         <>
-          <Check className="w-4 h-4 mr-2 animate-in zoom-in-50" />
-          Added!
+          <Check className="w-4 h-4 mr-2 animate-cart-success" />
+          <span className="animate-wiggle">Added!</span>
         </>
       ) : (
         <>

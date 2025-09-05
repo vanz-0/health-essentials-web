@@ -115,6 +115,25 @@ export default {
 					'0%, 20%, 50%, 80%, 100%': { transform: 'translateY(0)' },
 					'40%': { transform: 'translateY(-4px)' },
 					'60%': { transform: 'translateY(-2px)' }
+				},
+				'cart-bounce-in': {
+					'0%': { transform: 'scale(0.3) translateY(20px)', opacity: '0' },
+					'50%': { transform: 'scale(1.05) translateY(-5px)', opacity: '1' },
+					'70%': { transform: 'scale(0.95) translateY(0)', opacity: '1' },
+					'100%': { transform: 'scale(1) translateY(0)', opacity: '1' }
+				},
+				'cart-success': {
+					'0%': { transform: 'scale(0.8)', opacity: '0' },
+					'50%': { transform: 'scale(1.1)', opacity: '1' },
+					'100%': { transform: 'scale(1)', opacity: '1' }
+				},
+				'cart-slide-up': {
+					'0%': { transform: 'translateY(100%)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' }
+				},
+				'wiggle': {
+					'0%, 100%': { transform: 'rotate(-3deg)' },
+					'50%': { transform: 'rotate(3deg)' }
 				}
 			},
 			animation: {
@@ -124,7 +143,11 @@ export default {
 				'scale-in': 'scale-in 0.2s ease-out',
 				'slide-in-right': 'slide-in-right 0.3s ease-out',
 				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
-				'urgent-bounce': 'urgent-bounce 2s infinite'
+				'urgent-bounce': 'urgent-bounce 2s infinite',
+				'cart-bounce-in': 'cart-bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+				'cart-success': 'cart-success 0.4s ease-out',
+				'cart-slide-up': 'cart-slide-up 0.3s ease-out',
+				'wiggle': 'wiggle 0.5s ease-in-out infinite'
 			}
 		}
 	},
