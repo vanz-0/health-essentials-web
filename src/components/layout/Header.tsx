@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import { ShoppingCart, User, Search, MapPin, Phone } from "lucide-react";
+import { ShoppingCart, User, Search, MapPin, Phone, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import CartDrawer from "@/components/cart/CartDrawer";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -17,8 +21,10 @@ const navItems = [
 
 export default function Header() {
   const { totalQty } = useCart();
+  const { user, signOut } = useAuth();
   const { toast } = useToast();
   const { isEnabled: cartEnabled } = useFeatureFlag('bit_3_cart');
+  const { isEnabled: authEnabled } = useFeatureFlag('bit_5_auth');
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -62,11 +68,47 @@ export default function Header() {
             <Button variant="ghost" size="icon" aria-label="Search" onClick={() => toast({ title: "Search", description: "Search with filters coming soon." })}>
               <Search />
             </Button>
-            <Button variant="ghost" size="icon" aria-label="Account">
-              <User />
-            </Button>
+            
+            {/* Auth Section (if auth is enabled) */}
+            {authEnabled ? (
+              user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="relative rounded-full">
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback className="bg-primary text-primary-foreground text-sm">
+                          {user.email?.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <div className="flex items-center justify-start gap-2 p-2">
+                      <div className="flex flex-col space-y-1 leading-none">
+                        <p className="font-medium text-sm truncate">{user.email}</p>
+                      </div>
+                    </div>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => signOut()}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Link to="/auth">
+                  <Button variant="ghost" size="icon" aria-label="Account">
+                    <User />
+                  </Button>
+                </Link>
+              )
+            ) : (
+              <Button variant="ghost" size="icon" aria-label="Account">
+                <User />
+              </Button>
+            )}
 
-{cartEnabled && (
+            {cartEnabled && (
               <CartDrawer>
                 <Button variant="accent" size="icon" aria-label="Cart" className="relative">
                   <ShoppingCart />
