@@ -11,6 +11,7 @@ export type Product = {
   image: string;
   rating?: number;
   sale?: boolean;
+  category?: string;
 };
 
 function ProductCard({ product }: { product: Product }) {
@@ -62,15 +63,22 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
-export default function BestSellers({ products }: { products: Product[] }) {
+export default function BestSellers({ products, title = "Best Sellers" }: { products: Product[]; title?: string }) {
   return (
-    <section id="shop" className="container mt-16" aria-labelledby="bestsellers-heading">
-      <h2 id="bestsellers-heading" className="font-serifDisplay text-2xl md:text-3xl font-semibold">Best Sellers</h2>
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {products.map((p) => (
-          <ProductCard key={p.id} product={p} />
-        ))}
-      </div>
+    <section id="shop" className="container mt-8" aria-labelledby="bestsellers-heading">
+      <h2 id="bestsellers-heading" className="font-serifDisplay text-2xl md:text-3xl font-semibold">{title}</h2>
+      {products.length === 0 ? (
+        <div className="mt-8 text-center py-12">
+          <p className="text-muted-foreground text-lg">No products found matching your criteria.</p>
+          <p className="text-muted-foreground text-sm mt-2">Try adjusting your search or filters.</p>
+        </div>
+      ) : (
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in">
+          {products.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

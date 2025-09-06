@@ -11,6 +11,8 @@ import Testimonials from "@/components/home/Testimonials";
 import FlashBanner from "@/components/home/FlashBanner";
 import UrgentDeal from "@/components/home/UrgentDeal";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import { useState, useMemo } from "react";
+import SearchAndFilter, { FilterOptions } from "@/components/shop/SearchAndFilter";
 
 import productSerum from "@/assets/product-serum.jpg";
 import productBodyButter from "@/assets/product-bodybutter.jpg";
@@ -23,10 +25,10 @@ import pButter from "@/assets/product-bodybutter.jpg";
 import pSunscreen from "@/assets/product-sunscreen.jpg";
 
 const bestSellers = [
-  { id: "serum", name: "Vitamin C Brightening Serum", price: 1950, image: pSerum, rating: 4.8, sale: true },
-  { id: "shampoo", name: "Nourishing Shampoo", price: 1250, image: pShampoo, rating: 4.6 },
-  { id: "butter", name: "Shea Body Butter", price: 1450, image: pButter, rating: 4.9 },
-  { id: "sunscreen", name: "Daily Mineral Sunscreen SPF 50", price: 2150, image: pSunscreen, rating: 4.7 },
+  { id: "serum", name: "Vitamin C Brightening Serum", price: 1950, image: pSerum, rating: 4.8, sale: true, category: "skincare" },
+  { id: "shampoo", name: "Nourishing Shampoo", price: 1250, image: pShampoo, rating: 4.6, category: "haircare" },
+  { id: "butter", name: "Shea Body Butter", price: 1450, image: pButter, rating: 4.9, category: "bodycare" },
+  { id: "sunscreen", name: "Daily Mineral Sunscreen SPF 50", price: 2150, image: pSunscreen, rating: 4.7, category: "suncare" },
 ];
 
 const arrivals = [
@@ -38,6 +40,51 @@ const arrivals = [
 
 const Index = () => {
   const { isEnabled: fomoEnabled } = useFeatureFlag('bit_2_fomo');
+  const { isEnabled: filteringEnabled } = useFeatureFlag('bit_4_filtering');
+  
+  // Search and Filter State
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilters, setActiveFilters] = useState<Partial<FilterOptions>>({ sortBy: 'name' });
+  
+  // Filter and sort products
+  const filteredProducts = useMemo(() => {
+    let filtered = [...bestSellers];
+    
+    // Search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(product => 
+        product.name.toLowerCase().includes(query) ||
+        product.category?.toLowerCase().includes(query)
+      );
+    }
+    
+    // Category filter
+    if (activeFilters.categories && activeFilters.categories.length > 0) {
+      filtered = filtered.filter(product => 
+        activeFilters.categories!.includes(product.category || '')
+      );
+    }
+    
+    // Sort products
+    switch (activeFilters.sortBy) {
+      case 'price-low':
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        filtered.sort((a, b) => b.price - a.price);
+        break;
+      case 'rating':
+        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        break;
+      case 'name':
+      default:
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+    }
+    
+    return filtered;
+  }, [searchQuery, activeFilters]);
   
   // Flash sale ends in 2 hours (example)
   const flashSaleEnd = new Date(Date.now() + 2 * 60 * 60 * 1000);
@@ -119,7 +166,22 @@ const Index = () => {
         )}
         
         <Categories />
-        <BestSellers products={bestSellers} />
+        
+        {/* Search and Filter - Only shown when Bit 4 is enabled */}
+        {filteringEnabled && (
+          <SearchAndFilter
+            onSearch={setSearchQuery}
+            onFilter={setActiveFilters}
+            searchQuery={searchQuery}
+            activeFilters={activeFilters}
+            productCount={filteredProducts.length}
+          />
+        )}
+        
+        <BestSellers 
+          products={filteringEnabled ? filteredProducts : bestSellers} 
+          title={filteringEnabled && (searchQuery || (activeFilters.categories && activeFilters.categories.length > 0)) ? "Search Results" : "Best Sellers"}
+        />
         <NewArrivals items={arrivals} />
         <Trust />
         <About />
