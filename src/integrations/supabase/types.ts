@@ -184,6 +184,69 @@ export type Database = {
           },
         ]
       }
+      orders: {
+        Row: {
+          created_at: string
+          currency: string
+          customer_email: string
+          customer_name: string | null
+          id: string
+          notes: string | null
+          order_items: Json
+          order_status: string
+          payment_intent_id: string | null
+          payment_status: string
+          phone_number: string | null
+          shipping_address: Json
+          stripe_session_id: string | null
+          subtotal: number
+          tax_amount: number | null
+          total_amount: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          customer_email: string
+          customer_name?: string | null
+          id?: string
+          notes?: string | null
+          order_items: Json
+          order_status?: string
+          payment_intent_id?: string | null
+          payment_status?: string
+          phone_number?: string | null
+          shipping_address: Json
+          stripe_session_id?: string | null
+          subtotal: number
+          tax_amount?: number | null
+          total_amount: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          customer_email?: string
+          customer_name?: string | null
+          id?: string
+          notes?: string | null
+          order_items?: Json
+          order_status?: string
+          payment_intent_id?: string | null
+          payment_status?: string
+          phone_number?: string | null
+          shipping_address?: Json
+          stripe_session_id?: string | null
+          subtotal?: number
+          tax_amount?: number | null
+          total_amount?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       posts: {
         Row: {
           content: string
