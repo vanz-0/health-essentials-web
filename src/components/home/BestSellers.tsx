@@ -16,7 +16,7 @@ export type Product = {
 
 function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
-  const { isEnabled: cartEnabled } = useFeatureFlag('bit_3_cart');
+  const { isEnabled: cartEnabled } = useFeatureFlag('bit_6_shopping_cart');
   
   // Mock inventory for demonstration
   const mockInventory = { serum: 3, shampoo: 8, butter: 2, sunscreen: 6 };

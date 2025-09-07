@@ -21,7 +21,7 @@ export default function QuickAddToCart({
   showIcon = true 
 }: QuickAddToCartProps) {
   const { addItem } = useCart();
-  const { isEnabled: cartEnabled } = useFeatureFlag('bit_3_cart');
+  const { isEnabled: cartEnabled } = useFeatureFlag('bit_6_shopping_cart');
   const { toast } = useToast();
   const [isAdding, setIsAdding] = useState(false);
 

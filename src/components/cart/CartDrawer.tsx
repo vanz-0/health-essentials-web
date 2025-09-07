@@ -11,7 +11,7 @@ interface CartDrawerProps {
 
 export default function CartDrawer({ children }: CartDrawerProps) {
   const { items, addItem, removeItem, totalPrice, totalQty } = useCart();
-  const { isEnabled: cartEnabled } = useFeatureFlag('bit_3_cart');
+  const { isEnabled: cartEnabled } = useFeatureFlag('bit_6_shopping_cart');
   const [isOpen, setIsOpen] = useState(false);
 
   const updateQuantity = (id: string, name: string, price: number, image: string, newQty: number) => {

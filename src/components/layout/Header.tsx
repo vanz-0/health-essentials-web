@@ -23,7 +23,7 @@ export default function Header() {
   const { totalQty } = useCart();
   const { user, signOut } = useAuth();
   const { toast } = useToast();
-  const { isEnabled: cartEnabled } = useFeatureFlag('bit_3_cart');
+  const { isEnabled: cartEnabled } = useFeatureFlag('bit_6_shopping_cart');
   const { isEnabled: authEnabled } = useFeatureFlag('bit_5_auth');
   const [scrolled, setScrolled] = useState(false);
 
