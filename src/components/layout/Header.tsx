@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import CartDrawer from "@/components/cart/CartDrawer";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserRole } from "@/hooks/useUserRole";
 import { Link } from "react-router-dom";
 
 const navItems = [
@@ -22,6 +23,7 @@ const navItems = [
 export default function Header() {
   const { totalQty } = useCart();
   const { user, signOut } = useAuth();
+  const { isAdmin } = useUserRole();
   const { toast } = useToast();
   const { isEnabled: cartEnabled } = useFeatureFlag('bit_6_shopping_cart');
   const { isEnabled: authEnabled } = useFeatureFlag('bit_5_auth');
@@ -88,6 +90,24 @@ export default function Header() {
                         <p className="font-medium text-sm truncate">{user.email}</p>
                       </div>
                     </div>
+                    <DropdownMenuSeparator />
+                    <Link to="/dashboard">
+                      <DropdownMenuItem>
+                        <User className="mr-2 h-4 w-4" />
+                        <span>Dashboard</span>
+                      </DropdownMenuItem>
+                    </Link>
+                    {isAdmin && (
+                      <>
+                        <DropdownMenuSeparator />
+                        <Link to="/admin">
+                          <DropdownMenuItem>
+                            <ShoppingCart className="mr-2 h-4 w-4" />
+                            <span>Admin Panel</span>
+                          </DropdownMenuItem>
+                        </Link>
+                      </>
+                    )}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => signOut()}>
                       <LogOut className="mr-2 h-4 w-4" />
