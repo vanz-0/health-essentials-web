@@ -58,6 +58,7 @@ export type Database = {
       }
       contacts: {
         Row: {
+          consent_given: boolean | null
           created_at: string
           email: string
           full_name: string
@@ -65,6 +66,8 @@ export type Database = {
           last_contacted: string | null
           notes: string | null
           phone_number: string | null
+          preferences: Json | null
+          source: string | null
           subscribed: boolean | null
           subscription_date: string | null
           tags: string[] | null
@@ -72,6 +75,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          consent_given?: boolean | null
           created_at?: string
           email: string
           full_name: string
@@ -79,6 +83,8 @@ export type Database = {
           last_contacted?: string | null
           notes?: string | null
           phone_number?: string | null
+          preferences?: Json | null
+          source?: string | null
           subscribed?: boolean | null
           subscription_date?: string | null
           tags?: string[] | null
@@ -86,6 +92,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          consent_given?: boolean | null
           created_at?: string
           email?: string
           full_name?: string
@@ -93,6 +100,8 @@ export type Database = {
           last_contacted?: string | null
           notes?: string | null
           phone_number?: string | null
+          preferences?: Json | null
+          source?: string | null
           subscribed?: boolean | null
           subscription_date?: string | null
           tags?: string[] | null
