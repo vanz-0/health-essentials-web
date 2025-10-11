@@ -13,6 +13,8 @@ import UrgentDeal from "@/components/home/UrgentDeal";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { useState, useMemo } from "react";
 import SearchAndFilter, { FilterOptions } from "@/components/shop/SearchAndFilter";
+import ExitIntentModal from "@/components/contact/ExitIntentModal";
+import ScrollSlideIn from "@/components/contact/ScrollSlideIn";
 
 import productSerum from "@/assets/product-serum.jpg";
 import productBodyButter from "@/assets/product-bodybutter.jpg";
@@ -204,6 +206,10 @@ const Index = () => {
         </section>
       </main>
       <Footer />
+      
+      {/* Contact Capture Points */}
+      <ExitIntentModal />
+      <ScrollSlideIn />
     </div>
   );
 };

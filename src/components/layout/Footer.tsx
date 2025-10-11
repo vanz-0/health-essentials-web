@@ -1,6 +1,5 @@
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import ContactCaptureForm from "@/components/contact/ContactCaptureForm";
 
 export default function Footer() {
   return (
@@ -41,9 +40,12 @@ export default function Footer() {
         <div>
           <h5 className="font-semibold">Newsletter</h5>
           <p className="mt-3 text-sm text-muted-foreground">Get 10% off your first order.</p>
-          <div className="mt-3 flex gap-2">
-            <Input placeholder="Your email address" aria-label="Email for newsletter" />
-            <Button variant="accent">Subscribe</Button>
+          <div className="mt-3">
+            <ContactCaptureForm 
+              source="footer_newsletter" 
+              variant="footer"
+              incentiveText="Join 5,000+ health-conscious Kenyans"
+            />
           </div>
         </div>
       </div>
