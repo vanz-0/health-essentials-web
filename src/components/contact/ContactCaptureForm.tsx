@@ -92,6 +92,20 @@ export default function ContactCaptureForm({
         throw error;
       }
 
+      // Send confirmation email in the background (don't wait for it)
+      supabase.functions
+        .invoke("send-contact-confirmation", {
+          body: {
+            name: data.full_name,
+            email: data.email,
+            source,
+          },
+        })
+        .catch((emailError) => {
+          console.error("Failed to send confirmation email:", emailError);
+          // Don't show error to user - email is not critical
+        });
+
       toast({
         title: "Success!",
         description: "You've been added to our community. Check your email for a welcome message.",
