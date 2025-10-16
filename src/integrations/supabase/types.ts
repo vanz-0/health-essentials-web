@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_data: Json | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: string | null
+          page_url: string | null
+          referrer: string | null
+          session_id: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_data?: Json | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: string | null
+          page_url?: string | null
+          referrer?: string | null
+          session_id: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_data?: Json | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          page_url?: string | null
+          referrer?: string | null
+          session_id?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       auth_events: {
         Row: {
           browser: string | null
@@ -253,6 +295,36 @@ export type Database = {
           total_amount?: number
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      performance_metrics: {
+        Row: {
+          connection_type: string | null
+          created_at: string
+          id: string
+          metric_name: string
+          metric_value: number
+          page_url: string
+          user_agent: string | null
+        }
+        Insert: {
+          connection_type?: string | null
+          created_at?: string
+          id?: string
+          metric_name: string
+          metric_value: number
+          page_url: string
+          user_agent?: string | null
+        }
+        Update: {
+          connection_type?: string | null
+          created_at?: string
+          id?: string
+          metric_name?: string
+          metric_value?: number
+          page_url?: string
+          user_agent?: string | null
         }
         Relationships: []
       }

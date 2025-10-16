@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Package, ShoppingCart, Users, DollarSign } from "lucide-react";
+import { Package, ShoppingCart, Users, DollarSign, Mail, BarChart3 } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -103,28 +103,70 @@ export default function AdminDashboard() {
           </Card>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Link 
-                to="/admin/products" 
-                className="block p-4 rounded-lg bg-accent hover:bg-accent/80 transition-colors"
-              >
-                <h3 className="font-semibold mb-1">Manage Products</h3>
-                <p className="text-sm text-muted-foreground">Add, edit, or remove products</p>
-              </Link>
-              <Link 
-                to="/admin/orders" 
-                className="block p-4 rounded-lg bg-accent hover:bg-accent/80 transition-colors"
-              >
-                <h3 className="font-semibold mb-1">Manage Orders</h3>
-                <p className="text-sm text-muted-foreground">View and update order statuses</p>
-              </Link>
-            </CardContent>
-          </Card>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Link to="/admin/products">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Product Management
+                </CardTitle>
+                <Package className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-muted-foreground">
+                  Add, edit, and manage your product catalog
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link to="/admin/orders">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Order Management
+                </CardTitle>
+                <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-muted-foreground">
+                  View and update order statuses
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link to="/admin/contacts">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Contact Management
+                </CardTitle>
+                <Mail className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-muted-foreground">
+                  Manage customer contacts and email lists
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link to="/admin/analytics">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Analytics Dashboard
+                </CardTitle>
+                <BarChart3 className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-muted-foreground">
+                  View user behavior and performance metrics
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
 
           <Card>
             <CardHeader>

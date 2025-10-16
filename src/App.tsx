@@ -15,21 +15,31 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProductManagement from "./pages/admin/ProductManagement";
 import OrderManagement from "./pages/admin/OrderManagement";
 import ContactManagement from "./pages/admin/ContactManagement";
+import AnalyticsDashboard from "./pages/admin/AnalyticsDashboard";
+import { usePerformance } from "./hooks/usePerformance";
+import { useAnalytics } from "./hooks/useAnalytics";
 import AdminRoute from "./components/auth/AdminRoute";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <HelmetProvider>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AuthProvider>
-          <CartProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
+const App = () => {
+  // Enable performance monitoring
+  usePerformance();
+  
+  // Initialize analytics
+  useAnalytics();
+
+  return (
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <AuthProvider>
+            <CartProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />
@@ -40,9 +50,10 @@ const App = () => (
                 
                 {/* Admin Routes */}
                 <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-                <Route path="/admin/products" element={<AdminRoute><ProductManagement /></AdminRoute>} />
-                <Route path="/admin/orders" element={<AdminRoute><OrderManagement /></AdminRoute>} />
-                <Route path="/admin/contacts" element={<AdminRoute><ContactManagement /></AdminRoute>} />
+                    <Route path="/admin/products" element={<AdminRoute><ProductManagement /></AdminRoute>} />
+                    <Route path="/admin/orders" element={<AdminRoute><OrderManagement /></AdminRoute>} />
+                    <Route path="/admin/contacts" element={<AdminRoute><ContactManagement /></AdminRoute>} />
+                    <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
@@ -53,6 +64,7 @@ const App = () => (
       </TooltipProvider>
     </QueryClientProvider>
   </HelmetProvider>
-);
+  );
+};
 
 export default App;
