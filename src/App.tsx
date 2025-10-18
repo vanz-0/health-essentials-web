@@ -18,15 +18,18 @@ import ContactManagement from "./pages/admin/ContactManagement";
 import AnalyticsDashboard from "./pages/admin/AnalyticsDashboard";
 import { usePerformance } from "./hooks/usePerformance";
 import { useAnalytics } from "./hooks/useAnalytics";
+import { useErrorLogging } from "./hooks/useErrorLogging";
 import AdminRoute from "./components/auth/AdminRoute";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import ErrorBoundary from "./components/error/ErrorBoundary";
 
 const queryClient = new QueryClient();
 
 const AppContent = () => {
   usePerformance();
   useAnalytics();
+  useErrorLogging();
   
   return (
     <>
@@ -58,17 +61,19 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <AuthProvider>
-            <CartProvider>
-              <AppContent />
-            </CartProvider>
-          </AuthProvider>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </HelmetProvider>
+    <ErrorBoundary>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <AuthProvider>
+              <CartProvider>
+                <AppContent />
+              </CartProvider>
+            </AuthProvider>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </HelmetProvider>
+    </ErrorBoundary>
   );
 };
 
