@@ -9,6 +9,7 @@ import CartDrawer from "@/components/cart/CartDrawer";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { Link } from "react-router-dom";
 
 const navItems = [
@@ -70,6 +71,8 @@ export default function Header() {
             <Button variant="ghost" size="icon" aria-label="Search" onClick={() => toast({ title: "Search", description: "Search with filters coming soon." })}>
               <Search />
             </Button>
+            
+            <ThemeToggle />
             
             {/* Auth Section (if auth is enabled) */}
             {authEnabled ? (

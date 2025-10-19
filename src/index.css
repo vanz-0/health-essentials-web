@@ -195,12 +195,24 @@ All colors MUST be HSL.
     --gradient-orange: linear-gradient(to right, hsl(24 95% 53%), hsl(330 81% 60%));
     --gradient-emerald: linear-gradient(to right, hsl(160 84% 39%), hsl(84 81% 44%));
     --shadow-neon: 0 0 20px hsl(var(--accent) / 0.4);
+
+    --sidebar-background: 222.2 84% 4.9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 210 40% 98%;
+    --sidebar-primary-foreground: 222.2 84% 4.9%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    transition-property: color, background-color, border-color;
+    transition-duration: 0.3s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   body {

@@ -22,6 +22,7 @@ import { useErrorLogging } from "./hooks/useErrorLogging";
 import AdminRoute from "./components/auth/AdminRoute";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ThemeProvider } from "./components/theme/ThemeProvider";
 import ErrorBoundary from "./components/error/ErrorBoundary";
 
 const queryClient = new QueryClient();
@@ -66,9 +67,11 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
             <AuthProvider>
-              <CartProvider>
-                <AppContent />
-              </CartProvider>
+              <ThemeProvider>
+                <CartProvider>
+                  <AppContent />
+                </CartProvider>
+              </ThemeProvider>
             </AuthProvider>
           </TooltipProvider>
         </QueryClientProvider>
