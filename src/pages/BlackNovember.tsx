@@ -1,9 +1,9 @@
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Shield, Lock, Truck, Headset } from 'lucide-react';
+import { ShoppingCart, Shield, Lock, Truck, Headset, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
-import FlashBanner from '@/components/home/FlashBanner';
 import UrgentDeal from '@/components/home/UrgentDeal';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
@@ -17,9 +17,14 @@ import productShampoo from '@/assets/product-shampoo.jpg';
 export default function BlackNovember() {
   const { addItem, totalQty } = useCart();
   const { isEnabled: cartEnabled } = useFeatureFlag('bit_6_shopping_cart');
+  const { isEnabled: fomoEnabled } = useFeatureFlag('bit_2_fomo');
 
   // Countdown end time: November 30, 2025 at 23:59:59
   const saleEndTime = new Date('2025-11-30T23:59:59');
+
+  // Countdown timer state
+  const [timeLeft, setTimeLeft] = useState(saleEndTime.getTime() - Date.now());
+  const [bannerVisible, setBannerVisible] = useState(true);
 
   // Smooth scroll to deals section
   const scrollToDeals = () => {
