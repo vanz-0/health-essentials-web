@@ -167,15 +167,25 @@ export default function BlackNovember() {
         </div>
       </header>
 
-      {/* FlashBanner - Sticky below header */}
-      <div className="fixed top-16 md:top-[70px] left-0 right-0 z-40">
-        <div className="bg-gradient-to-r from-emerald-700 to-purple-700 text-white py-2 px-4 animate-fade-in">
-          <FlashBanner
-            endTime={saleEndTime}
-            message="FLASH SALE ENDS IN"
-          />
+      {/* Custom Flash Banner - Sticky below header */}
+      {fomoEnabled && bannerVisible && timeLeft > 0 && (
+        <div className="fixed top-16 md:top-[70px] left-0 right-0 z-40 bg-gradient-to-r from-emerald-700 to-purple-700 text-white py-2 px-4 animate-fade-in">
+          <div className="container flex items-center justify-center gap-2 text-sm md:text-base font-medium relative">
+            <span className="animate-pulse-glow">⚡</span>
+            <span>FLASH SALE ENDS IN</span>
+            <span className="font-mono font-bold" aria-label={`Time remaining: ${formatTime(timeLeft)}`}>
+              {formatTime(timeLeft)}
+            </span>
+            <button
+              onClick={() => setBannerVisible(false)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 hover:bg-white/20 rounded p-1 transition-colors"
+              aria-label="Dismiss banner"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Content - Add top margin to account for fixed header + banner */}
       <main className="pt-20 md:pt-24">
