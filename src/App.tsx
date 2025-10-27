@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import OrderHistory from "./pages/OrderHistory";
 import Addresses from "./pages/Addresses";
+import BlackNovember from "./pages/BlackNovember";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProductManagement from "./pages/admin/ProductManagement";
 import OrderManagement from "./pages/admin/OrderManagement";
