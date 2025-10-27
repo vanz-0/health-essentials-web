@@ -26,6 +26,34 @@ export default function BlackNovember() {
   const [timeLeft, setTimeLeft] = useState(saleEndTime.getTime() - Date.now());
   const [bannerVisible, setBannerVisible] = useState(true);
 
+  // Update countdown every second
+  useEffect(() => {
+    if (!fomoEnabled) return;
+
+    const interval = setInterval(() => {
+      const remaining = saleEndTime.getTime() - Date.now();
+      if (remaining <= 0) {
+        setTimeLeft(0);
+        clearInterval(interval);
+      } else {
+        setTimeLeft(remaining);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [saleEndTime, fomoEnabled]);
+
+  // Format countdown time
+  const formatTime = (ms: number) => {
+    if (ms <= 0) return '00:00:00';
+
+    const hours = Math.floor(ms / (1000 * 60 * 60));
+    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
   // Smooth scroll to deals section
   const scrollToDeals = () => {
     const dealsSection = document.getElementById('featured-deals');
