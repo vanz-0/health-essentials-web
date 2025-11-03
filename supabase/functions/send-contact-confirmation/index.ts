@@ -1,7 +1,47 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.56.1';
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+
+// Create Supabase admin client
+const supabaseAdmin = createClient(
+  Deno.env.get('SUPABASE_URL') ?? '',
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  }
+);
+
+// Input validation schema
+const contactConfirmationSchema = z.object({
+  name: z.string()
+    .trim()
+    .min(1, "Name is required")
+    .max(100, "Name must be less than 100 characters")
+    .regex(/^[a-zA-Z\s'\-\.]+$/, "Name contains invalid characters"),
+  email: z.string()
+    .trim()
+    .email("Invalid email address")
+    .max(255, "Email must be less than 255 characters"),
+  source: z.string()
+    .trim()
+    .max(50, "Source must be less than 50 characters")
+});
+
+// HTML escape function to prevent XSS
+function escapeHtml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -20,9 +60,66 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { name, email, source }: ContactConfirmationRequest = await req.json();
+    // Parse and validate input
+    const rawData = await req.json();
+    const validationResult = contactConfirmationSchema.safeParse(rawData);
+    
+    if (!validationResult.success) {
+      console.error("Validation error:", validationResult.error.errors);
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Invalid input data",
+          details: validationResult.error.errors 
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    const { name, email, source } = validationResult.data;
+
+    // Verify email exists in contacts table
+    const { data: contactExists, error: contactError } = await supabaseAdmin
+      .from('contacts')
+      .select('email')
+      .eq('email', email)
+      .maybeSingle();
+
+    if (contactError) {
+      console.error("Error verifying contact:", contactError);
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Failed to verify contact" 
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    if (!contactExists) {
+      console.error("Email not found in contacts table:", email);
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Email not registered" 
+        }),
+        {
+          status: 404,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
 
     console.log(`Sending confirmation email to ${email} (source: ${source})`);
+
+    // Escape HTML to prevent XSS
+    const safeName = escapeHtml(name);
 
     const emailResponse = await resend.emails.send({
       from: "1Health <onboarding@resend.dev>",
@@ -57,7 +154,7 @@ const handler = async (req: Request): Promise<Response> => {
                 <h1>Welcome to 1Health! 🌿</h1>
               </div>
               <div class="content">
-                <h2>Hi ${name},</h2>
+                <h2>Hi ${safeName},</h2>
                 <p>Thank you for subscribing to 1Health! We're thrilled to have you join our community of health-conscious individuals.</p>
                 
                 <div class="benefits">
