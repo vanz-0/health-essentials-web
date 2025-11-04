@@ -1,15 +1,27 @@
 import { useState } from "react";
-import { Search, Filter, X } from "lucide-react";
+import { Search, Filter, X, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import { useDebounce } from "@/hooks/useDebounce";
+import { addRecentSearch } from "@/lib/searchUtils";
+import SearchAutocomplete from "./SearchAutocomplete";
+import PriceRangeSlider from "./PriceRangeSlider";
+import FilterPresets from "./FilterPresets";
+import type { Product } from "@/components/home/BestSellers";
 
 export type FilterOptions = {
   categories: string[];
   priceRange: { min: number; max: number };
   sortBy: 'name' | 'price-low' | 'price-high' | 'rating';
+  minRating?: number;
+  inStock?: boolean;
+  onSale?: boolean;
 };
 
 interface SearchAndFilterProps {
@@ -18,6 +30,9 @@ interface SearchAndFilterProps {
   searchQuery: string;
   activeFilters: Partial<FilterOptions>;
   productCount: number;
+  products: Product[];
+  minPrice: number;
+  maxPrice: number;
 }
 
 const categories = [
@@ -39,10 +54,26 @@ export default function SearchAndFilter({
   onFilter, 
   searchQuery, 
   activeFilters, 
-  productCount 
+  productCount,
+  products,
+  minPrice,
+  maxPrice
 }: SearchAndFilterProps) {
   const { isEnabled: filteringEnabled } = useFeatureFlag('bit_4_filtering');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
+  const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
+  const debouncedSearch = useDebounce(localSearchQuery, 300);
+  
+  // Update parent when debounced search changes
+  useState(() => {
+    if (debouncedSearch !== searchQuery) {
+      onSearch(debouncedSearch);
+      if (debouncedSearch.trim()) {
+        addRecentSearch(debouncedSearch);
+      }
+    }
+  });
   
   if (!filteringEnabled) return null;
 
@@ -64,30 +95,63 @@ export default function SearchAndFilter({
     onSearch('');
   };
 
-  const activeFilterCount = (activeFilters.categories?.length || 0) + 
-    (activeFilters.sortBy !== 'name' ? 1 : 0);
+  const handleApplyPreset = (presetFilters: Partial<FilterOptions>) => {
+    onFilter({ ...activeFilters, ...presetFilters });
+    setIsFilterOpen(false);
+  };
+
+  const handlePriceRangeChange = (range: [number, number]) => {
+    onFilter({ ...activeFilters, priceRange: { min: range[0], max: range[1] } });
+  };
+
+  const activeFilterCount = 
+    (activeFilters.categories?.length || 0) + 
+    (activeFilters.sortBy && activeFilters.sortBy !== 'name' ? 1 : 0) +
+    (activeFilters.minRating ? 1 : 0) +
+    (activeFilters.inStock ? 1 : 0) +
+    (activeFilters.onSale ? 1 : 0) +
+    (activeFilters.priceRange && (activeFilters.priceRange.min !== minPrice || activeFilters.priceRange.max !== maxPrice) ? 1 : 0);
 
   return (
     <div className="container mt-8 space-y-4">
-      {/* Search Bar */}
+      {/* Search Bar with Autocomplete */}
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground z-10" />
         <Input
-          placeholder="Search products..."
-          value={searchQuery}
-          onChange={(e) => onSearch(e.target.value)}
+          placeholder="Search products... (try 'under 2000', 'shampoo')"
+          value={localSearchQuery}
+          onChange={(e) => {
+            setLocalSearchQuery(e.target.value);
+            setShowAutocomplete(true);
+          }}
+          onFocus={() => setShowAutocomplete(true)}
+          onBlur={() => setTimeout(() => setShowAutocomplete(false), 200)}
           className="pl-10 animate-fade-in"
         />
-        {searchQuery && (
+        {localSearchQuery && (
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => onSearch('')}
-            className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 rounded-full p-0"
+            onClick={() => {
+              setLocalSearchQuery('');
+              onSearch('');
+            }}
+            className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 rounded-full p-0 z-10"
           >
             <X className="h-3 w-3" />
           </Button>
         )}
+        <SearchAutocomplete
+          products={products}
+          searchQuery={localSearchQuery}
+          onSelect={(query) => {
+            setLocalSearchQuery(query);
+            onSearch(query);
+            setShowAutocomplete(false);
+            addRecentSearch(query);
+          }}
+          show={showAutocomplete}
+        />
       </div>
 
       {/* Filter Controls */}
@@ -110,7 +174,10 @@ export default function SearchAndFilter({
                 <SheetTitle>Filter Products</SheetTitle>
               </SheetHeader>
               
-              <div className="mt-6 space-y-6">
+              <div className="mt-6 space-y-6 overflow-y-auto max-h-[calc(100vh-200px)]">
+                {/* Filter Presets */}
+                <FilterPresets onApplyPreset={handleApplyPreset} />
+
                 {/* Categories */}
                 <div>
                   <h3 className="font-medium mb-3">Categories</h3>
@@ -129,6 +196,89 @@ export default function SearchAndFilter({
                         <span className="text-sm text-muted-foreground">({category.count})</span>
                       </button>
                     ))}
+                  </div>
+                </div>
+
+                {/* Price Range */}
+                <div>
+                  <h3 className="font-medium mb-3">Price Range</h3>
+                  <PriceRangeSlider
+                    min={minPrice}
+                    max={maxPrice}
+                    value={[
+                      activeFilters.priceRange?.min ?? minPrice,
+                      activeFilters.priceRange?.max ?? maxPrice,
+                    ]}
+                    onChange={handlePriceRangeChange}
+                  />
+                </div>
+
+                {/* Rating Filter */}
+                <div>
+                  <h3 className="font-medium mb-3">Minimum Rating</h3>
+                  <RadioGroup
+                    value={activeFilters.minRating?.toString() || 'all'}
+                    onValueChange={(value) => 
+                      onFilter({ 
+                        ...activeFilters, 
+                        minRating: value === 'all' ? undefined : parseFloat(value) 
+                      })
+                    }
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="all" id="rating-all" />
+                        <Label htmlFor="rating-all" className="flex items-center gap-1 cursor-pointer">
+                          All Ratings
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="4.5" id="rating-45" />
+                        <Label htmlFor="rating-45" className="flex items-center gap-1 cursor-pointer">
+                          <Star className="h-4 w-4 fill-primary text-primary" />
+                          4.5 & Up
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="4" id="rating-4" />
+                        <Label htmlFor="rating-4" className="flex items-center gap-1 cursor-pointer">
+                          <Star className="h-4 w-4 fill-primary text-primary" />
+                          4.0 & Up
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="3" id="rating-3" />
+                        <Label htmlFor="rating-3" className="flex items-center gap-1 cursor-pointer">
+                          <Star className="h-4 w-4 fill-primary text-primary" />
+                          3.0 & Up
+                        </Label>
+                      </div>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                {/* Availability & Special Filters */}
+                <div className="space-y-4">
+                  <h3 className="font-medium">Filters</h3>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="in-stock" className="cursor-pointer">In Stock Only</Label>
+                    <Switch
+                      id="in-stock"
+                      checked={activeFilters.inStock || false}
+                      onCheckedChange={(checked) => 
+                        onFilter({ ...activeFilters, inStock: checked || undefined })
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="on-sale" className="cursor-pointer">On Sale</Label>
+                    <Switch
+                      id="on-sale"
+                      checked={activeFilters.onSale || false}
+                      onCheckedChange={(checked) => 
+                        onFilter({ ...activeFilters, onSale: checked || undefined })
+                      }
+                    />
                   </div>
                 </div>
 
@@ -159,7 +309,7 @@ export default function SearchAndFilter({
                     onClick={clearFilters}
                     className="w-full"
                   >
-                    Clear All Filters
+                    Clear All Filters ({activeFilterCount})
                   </Button>
                 )}
               </div>

@@ -13,6 +13,8 @@ import UrgentDeal from "@/components/home/UrgentDeal";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { useState, useMemo } from "react";
 import SearchAndFilter, { FilterOptions } from "@/components/shop/SearchAndFilter";
+import { fuzzyMatch, parsePriceQuery } from "@/lib/searchUtils";
+import { usePersistedFilters } from "@/hooks/usePersistedFilters";
 import ExitIntentModal from "@/components/contact/ExitIntentModal";
 import ScrollSlideIn from "@/components/contact/ScrollSlideIn";
 
@@ -44,21 +46,57 @@ const Index = () => {
   const { isEnabled: fomoEnabled } = useFeatureFlag('bit_2_fomo');
   const { isEnabled: filteringEnabled } = useFeatureFlag('bit_4_filtering');
   
+  // Persisted filters
+  const { filters: persistedFilters, setFilters: setPersistedFilters, isLoaded } = usePersistedFilters();
+  
   // Search and Filter State
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilters, setActiveFilters] = useState<Partial<FilterOptions>>({ sortBy: 'name' });
+  const [activeFilters, setActiveFilters] = useState<Partial<FilterOptions>>(
+    isLoaded ? persistedFilters : { sortBy: 'name' }
+  );
+  
+  // Update persisted filters when active filters change
+  useMemo(() => {
+    if (isLoaded) {
+      setPersistedFilters(activeFilters);
+    }
+  }, [activeFilters, isLoaded, setPersistedFilters]);
+  
+  // Calculate price range from products
+  const priceRange = useMemo(() => {
+    const prices = bestSellers.map(p => p.price);
+    return {
+      min: Math.floor(Math.min(...prices) / 100) * 100,
+      max: Math.ceil(Math.max(...prices) / 100) * 100,
+    };
+  }, []);
   
   // Filter and sort products
   const filteredProducts = useMemo(() => {
     let filtered = [...bestSellers];
     
-    // Search filter
+    // Search filter - enhanced with fuzzy matching and natural language price
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(product => 
-        product.name.toLowerCase().includes(query) ||
-        product.category?.toLowerCase().includes(query)
-      );
+      
+      // Check for natural language price query
+      const priceQuery = parsePriceQuery(query);
+      if (priceQuery) {
+        if (priceQuery.min !== undefined) {
+          filtered = filtered.filter(product => product.price >= priceQuery.min!);
+        }
+        if (priceQuery.max !== undefined) {
+          filtered = filtered.filter(product => product.price <= priceQuery.max!);
+        }
+      } else {
+        // Regular text search with fuzzy matching
+        filtered = filtered.filter(product => 
+          product.name.toLowerCase().includes(query) ||
+          product.category?.toLowerCase().includes(query) ||
+          fuzzyMatch(product.name, query) ||
+          (product.category && fuzzyMatch(product.category, query))
+        );
+      }
     }
     
     // Category filter
@@ -67,6 +105,31 @@ const Index = () => {
         activeFilters.categories!.includes(product.category || '')
       );
     }
+    
+    // Price range filter
+    if (activeFilters.priceRange) {
+      const { min, max } = activeFilters.priceRange;
+      filtered = filtered.filter(product => 
+        product.price >= min && product.price <= max
+      );
+    }
+    
+    // Rating filter
+    if (activeFilters.minRating) {
+      filtered = filtered.filter(product => 
+        (product.rating || 0) >= activeFilters.minRating!
+      );
+    }
+    
+    // On sale filter
+    if (activeFilters.onSale) {
+      filtered = filtered.filter(product => product.sale === true);
+    }
+    
+    // In stock filter (for future use - assuming all products are in stock for now)
+    // if (activeFilters.inStock) {
+    //   filtered = filtered.filter(product => product.inStock !== false);
+    // }
     
     // Sort products
     switch (activeFilters.sortBy) {
@@ -177,6 +240,9 @@ const Index = () => {
             searchQuery={searchQuery}
             activeFilters={activeFilters}
             productCount={filteredProducts.length}
+            products={bestSellers}
+            minPrice={priceRange.min}
+            maxPrice={priceRange.max}
           />
         )}
         
