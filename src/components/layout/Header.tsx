@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ShoppingCart, User, Search, MapPin, Phone, LogOut } from "lucide-react";
+import { ShoppingCart, User, Search, MapPin, Phone, LogOut, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import CartDrawer from "@/components/cart/CartDrawer";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
@@ -23,6 +24,7 @@ const navItems = [
 
 export default function Header() {
   const { totalQty } = useCart();
+  const { wishlistCount } = useWishlist();
   const { user, signOut } = useAuth();
   const { isAdmin } = useUserRole();
   const { toast } = useToast();
@@ -73,6 +75,18 @@ export default function Header() {
             </Button>
             
             <ThemeToggle />
+            
+            {/* Wishlist Button */}
+            <Link to="/wishlist">
+              <Button variant="ghost" size="icon" aria-label="Wishlist" className="relative">
+                <Heart />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1 -right-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] px-1">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
             
             {/* Auth Section (if auth is enabled) */}
             {authEnabled ? (

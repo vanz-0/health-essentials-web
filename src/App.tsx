@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import OrderHistory from "./pages/OrderHistory";
 import Addresses from "./pages/Addresses";
+import Wishlist from "./pages/Wishlist";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProductManagement from "./pages/admin/ProductManagement";
 import OrderManagement from "./pages/admin/OrderManagement";
@@ -21,6 +22,7 @@ import { useAnalytics } from "./hooks/useAnalytics";
 import { useErrorLogging } from "./hooks/useErrorLogging";
 import AdminRoute from "./components/auth/AdminRoute";
 import { CartProvider } from "./contexts/CartContext";
+import { WishlistProvider } from "./contexts/WishlistContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 import ErrorBoundary from "./components/error/ErrorBoundary";
@@ -40,6 +42,7 @@ const AppContent = () => {
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/orders" element={<OrderHistory />} />
@@ -69,7 +72,9 @@ const App = () => {
             <AuthProvider>
               <ThemeProvider>
                 <CartProvider>
-                  <AppContent />
+                  <WishlistProvider>
+                    <AppContent />
+                  </WishlistProvider>
                 </CartProvider>
               </ThemeProvider>
             </AuthProvider>

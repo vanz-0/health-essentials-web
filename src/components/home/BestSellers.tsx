@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import InventoryAlert from "./InventoryAlert";
+import WishlistButton from "@/components/wishlist/WishlistButton";
 
 export type Product = {
   id: string;
@@ -27,6 +28,12 @@ function ProductCard({ product }: { product: Product }) {
         {product.sale && (
           <span className="absolute left-2 top-2 rounded bg-accent px-2 py-1 text-xs font-medium text-accent-foreground">Sale</span>
         )}
+        <WishlistButton 
+          product={product} 
+          size="sm" 
+          variant="ghost"
+          className="absolute right-2 top-2 bg-background/80 hover:bg-background"
+        />
         <img src={product.image} alt={`${product.name} - 1Health Essentials product`} className="h-56 w-full object-cover" loading="lazy" />
       </div>
       <div className="mt-3">

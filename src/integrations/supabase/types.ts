@@ -478,6 +478,36 @@ export type Database = {
         }
         Relationships: []
       }
+      shared_wishlists: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          share_token: string
+          title: string | null
+          user_id: string
+          view_count: number | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          share_token: string
+          title?: string | null
+          user_id: string
+          view_count?: number | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          share_token?: string
+          title?: string | null
+          user_id?: string
+          view_count?: number | null
+        }
+        Relationships: []
+      }
       user_addresses: {
         Row: {
           address_line1: string
@@ -606,6 +636,30 @@ export type Database = {
           two_factor_enabled?: boolean | null
           two_factor_method?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wishlist_items: {
+        Row: {
+          created_at: string
+          id: string
+          product_data: Json
+          product_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_data: Json
+          product_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_data?: Json
+          product_id?: string
           user_id?: string
         }
         Relationships: []
