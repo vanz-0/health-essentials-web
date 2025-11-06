@@ -14,12 +14,12 @@ import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { Link } from "react-router-dom";
 
 const navItems = [
-  { label: "Home", href: "#home" },
-  { label: "Shop", href: "#shop" },
-  { label: "About Us", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Contact", href: "#contact" },
-  { label: "Blog", href: "#blog" },
+  { label: "Home", to: "/" },
+  { label: "Shop", to: "/shop" },
+  { label: "About", to: "/about" },
+  { label: "Services", to: "/services" },
+  { label: "Contact", to: "/contact" },
+  { label: "Blog", to: "/blog" },
 ];
 
 export default function Header() {
@@ -57,14 +57,14 @@ export default function Header() {
         `transition-colors duration-300 ${scrolled ? "bg-background/95 shadow-sm" : "bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/40"}`
       }>
         <nav className="container flex items-center justify-between py-3">
-          <a href="#home" className="font-serifDisplay text-xl md:text-2xl font-bold tracking-tight">
+          <Link to="/" className="font-serifDisplay text-xl md:text-2xl font-bold tracking-tight">
             1Health Essentials
-          </a>
+          </Link>
 
           <ul className="hidden lg:flex items-center gap-6 text-sm">
             {navItems.map((item) => (
               <li key={item.label}>
-                <a href={item.href} className="story-link text-foreground/80 hover:text-foreground transition-colors">{item.label}</a>
+                <Link to={item.to} className="story-link text-foreground/80 hover:text-foreground transition-colors">{item.label}</Link>
               </li>
             ))}
           </ul>

@@ -254,22 +254,6 @@ const Index = () => {
         <Trust />
         <About />
         <Testimonials />
-
-        {/* Placeholder sections for navigation targets */}
-        <section id="services" className="container mt-24">
-          <h2 className="font-serifDisplay text-2xl font-semibold">Our Services</h2>
-          <p className="mt-2 text-muted-foreground">Skin consultations, routine building, and personalized recommendations. (Details coming soon)</p>
-        </section>
-
-        <section id="contact" className="container mt-24">
-          <h2 className="font-serifDisplay text-2xl font-semibold">Contact Us</h2>
-          <p className="mt-2 text-muted-foreground">Call 0735558830 or visit us at Brentwood Arcade, Thindiqua, Kiambu.</p>
-        </section>
-
-        <section id="blog" className="container mt-24">
-          <h2 className="font-serifDisplay text-2xl font-semibold">From Our Blog</h2>
-          <p className="mt-2 text-muted-foreground">Beauty tips, ingredient spotlights, and wellness insights. (Coming soon)</p>
-        </section>
       </main>
       <Footer />
       

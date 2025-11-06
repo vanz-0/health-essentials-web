@@ -1,4 +1,5 @@
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 import ContactCaptureForm from "@/components/contact/ContactCaptureForm";
 
 export default function Footer() {
@@ -20,10 +21,10 @@ export default function Footer() {
         <div>
           <h5 className="font-semibold">Quick Links</h5>
           <ul className="mt-3 space-y-2 text-sm">
-            <li><a href="#" className="hover:underline">Privacy Policy</a></li>
-            <li><a href="#" className="hover:underline">Terms & Conditions</a></li>
-            <li><a href="#" className="hover:underline">Returns</a></li>
-            <li><a href="#" className="hover:underline">FAQ</a></li>
+            <li><Link to="/shop" className="hover:underline">Shop</Link></li>
+            <li><Link to="/about" className="hover:underline">About Us</Link></li>
+            <li><Link to="/services" className="hover:underline">Services</Link></li>
+            <li><Link to="/contact" className="hover:underline">Contact</Link></li>
           </ul>
         </div>
 
