@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { ShoppingCart, User, Search, MapPin, Phone, LogOut, Heart } from "lucide-react";
+import { ShoppingCart, User, Search, MapPin, Phone, LogOut, Heart, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import CartDrawer from "@/components/cart/CartDrawer";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
@@ -31,6 +32,7 @@ export default function Header() {
   const { isEnabled: cartEnabled } = useFeatureFlag('bit_6_shopping_cart');
   const { isEnabled: authEnabled } = useFeatureFlag('bit_5_auth');
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -57,9 +59,37 @@ export default function Header() {
         `transition-colors duration-300 ${scrolled ? "bg-background/95 shadow-sm" : "bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/40"}`
       }>
         <nav className="container flex items-center justify-between py-3">
-          <Link to="/" className="font-serifDisplay text-xl md:text-2xl font-bold tracking-tight">
-            1Health Essentials
-          </Link>
+          <div className="flex items-center gap-2">
+            {/* Mobile Menu */}
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Menu">
+                  <Menu />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[280px]">
+                <SheetHeader>
+                  <SheetTitle className="font-serifDisplay text-xl">Menu</SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-4 mt-6">
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.label}
+                      to={item.to}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="text-lg py-2 px-3 rounded-md hover:bg-accent transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </nav>
+              </SheetContent>
+            </Sheet>
+
+            <Link to="/" className="font-serifDisplay text-xl md:text-2xl font-bold tracking-tight">
+              1Health Essentials
+            </Link>
+          </div>
 
           <ul className="hidden lg:flex items-center gap-6 text-sm">
             {navItems.map((item) => (
