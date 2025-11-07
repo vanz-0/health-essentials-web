@@ -98,6 +98,42 @@ export type Database = {
         }
         Relationships: []
       }
+      catalogue: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string
+          "Estimated Price (KES)": string
+          fun_fact: string
+          id: number
+          image_number: string | null
+          Name: string
+          Product_poto_link: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description: string
+          "Estimated Price (KES)"?: string
+          fun_fact: string
+          id?: number
+          image_number?: string | null
+          Name?: string
+          Product_poto_link?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string
+          "Estimated Price (KES)"?: string
+          fun_fact?: string
+          id?: number
+          image_number?: string | null
+          Name?: string
+          Product_poto_link?: string
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           consent_given: boolean | null
@@ -669,6 +705,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      extract_image_number: { Args: { url: string }; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
