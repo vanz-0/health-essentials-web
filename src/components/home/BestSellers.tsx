@@ -8,7 +8,8 @@ import WishlistButton from "@/components/wishlist/WishlistButton";
 export type Product = {
   id: string;
   name: string;
-  price: number;
+  price: number | string;
+  priceDisplay?: string;
   image: string;
   rating?: number;
   sale?: boolean;
@@ -34,7 +35,15 @@ function ProductCard({ product }: { product: Product }) {
           variant="ghost"
           className="absolute right-2 top-2 bg-background/80 hover:bg-background"
         />
-        <img src={product.image} alt={`${product.name} - 1Health Essentials product`} className="h-56 w-full object-cover" loading="lazy" />
+        <img 
+          src={product.image} 
+          alt={`${product.name} - 1Health Essentials product`} 
+          className="h-56 w-full object-cover" 
+          loading="lazy"
+          onError={(e) => {
+            e.currentTarget.src = '/placeholder.svg';
+          }}
+        />
       </div>
       <div className="mt-3">
         <div className="flex items-start justify-between gap-3">
@@ -46,7 +55,11 @@ function ProductCard({ product }: { product: Product }) {
             </div>
           )}
         </div>
-        <div className="mt-1 font-semibold">KES {product.price.toLocaleString()}</div>
+        <div className="mt-1 font-semibold">
+          {product.priceDisplay || (typeof product.price === 'number' 
+            ? `KES ${product.price.toLocaleString()}` 
+            : product.price)}
+        </div>
         
         {/* Inventory Alert */}
         <div className="mt-2">
@@ -56,7 +69,12 @@ function ProductCard({ product }: { product: Product }) {
         <div className="mt-3 flex gap-2">
           {cartEnabled && (
             <Button 
-              onClick={() => addItem({ id: product.id, name: product.name, price: product.price, image: product.image })} 
+              onClick={() => addItem({ 
+                id: product.id, 
+                name: product.name, 
+                price: typeof product.price === 'number' ? product.price : 0, 
+                image: product.image 
+              })} 
               className="flex-1"
               disabled={remaining === 0}
             >

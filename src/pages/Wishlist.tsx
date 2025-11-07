@@ -45,7 +45,7 @@ export default function Wishlist() {
     addItem({
       id: item.id,
       name: item.name,
-      price: item.price,
+      price: typeof item.price === 'number' ? item.price : 0,
       image: item.image,
     }, 1);
     toast.success('Added to cart');
@@ -56,7 +56,7 @@ export default function Wishlist() {
       addItem({
         id: item.id,
         name: item.name,
-        price: item.price,
+        price: typeof item.price === 'number' ? item.price : 0,
         image: item.image,
       }, 1);
     });
@@ -249,7 +249,9 @@ export default function Wishlist() {
                     
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-lg font-semibold">
-                        KES {item.price.toLocaleString()}
+                        {item.priceDisplay || (typeof item.price === 'number' 
+                          ? `KES ${item.price.toLocaleString()}` 
+                          : item.price)}
                       </span>
                       {item.rating && (
                         <div className="flex items-center gap-1">

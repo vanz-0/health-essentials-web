@@ -9,20 +9,10 @@ import { usePersistedFilters } from "@/hooks/usePersistedFilters";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-
-import pSerum from "@/assets/product-serum.jpg";
-import pShampoo from "@/assets/product-shampoo.jpg";
-import pButter from "@/assets/product-bodybutter.jpg";
-import pSunscreen from "@/assets/product-sunscreen.jpg";
-
-const allProducts = [
-  { id: "serum", name: "Vitamin C Brightening Serum", price: 1950, image: pSerum, rating: 4.8, sale: true, category: "skincare" },
-  { id: "shampoo", name: "Nourishing Shampoo", price: 1250, image: pShampoo, rating: 4.6, category: "haircare" },
-  { id: "butter", name: "Shea Body Butter", price: 1450, image: pButter, rating: 4.9, category: "bodycare" },
-  { id: "sunscreen", name: "Daily Mineral Sunscreen SPF 50", price: 2150, image: pSunscreen, rating: 4.7, category: "suncare" },
-];
+import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
 
 export default function Shop() {
+  const { data: allProducts, isLoading, error } = useCatalogueProducts();
   const { filters: persistedFilters, setFilters: setPersistedFilters, isLoaded } = usePersistedFilters();
   
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,14 +27,18 @@ export default function Shop() {
   }, [activeFilters, isLoaded, setPersistedFilters]);
   
   const priceRange = useMemo(() => {
-    const prices = allProducts.map(p => p.price);
+    if (!allProducts || allProducts.length === 0) {
+      return { min: 0, max: 5000 };
+    }
+    const prices = allProducts.map(p => typeof p.price === 'number' ? p.price : 0);
     return {
       min: Math.floor(Math.min(...prices) / 100) * 100,
       max: Math.ceil(Math.max(...prices) / 100) * 100,
     };
-  }, []);
+  }, [allProducts]);
   
   const filteredProducts = useMemo(() => {
+    if (!allProducts) return [];
     let filtered = [...allProducts];
     
     if (searchQuery.trim()) {
@@ -53,10 +47,16 @@ export default function Shop() {
       
       if (priceQuery) {
         if (priceQuery.min !== undefined) {
-          filtered = filtered.filter(product => product.price >= priceQuery.min!);
+          filtered = filtered.filter(product => {
+            const price = typeof product.price === 'number' ? product.price : 0;
+            return price >= priceQuery.min!;
+          });
         }
         if (priceQuery.max !== undefined) {
-          filtered = filtered.filter(product => product.price <= priceQuery.max!);
+          filtered = filtered.filter(product => {
+            const price = typeof product.price === 'number' ? product.price : 0;
+            return price <= priceQuery.max!;
+          });
         }
       } else {
         filtered = filtered.filter(product => 
@@ -76,9 +76,10 @@ export default function Shop() {
     
     if (activeFilters.priceRange) {
       const { min, max } = activeFilters.priceRange;
-      filtered = filtered.filter(product => 
-        product.price >= min && product.price <= max
-      );
+      filtered = filtered.filter(product => {
+        const price = typeof product.price === 'number' ? product.price : 0;
+        return price >= min && price <= max;
+      });
     }
     
     if (activeFilters.minRating) {
@@ -93,10 +94,18 @@ export default function Shop() {
     
     switch (activeFilters.sortBy) {
       case 'price-low':
-        filtered.sort((a, b) => a.price - b.price);
+        filtered.sort((a, b) => {
+          const priceA = typeof a.price === 'number' ? a.price : 0;
+          const priceB = typeof b.price === 'number' ? b.price : 0;
+          return priceA - priceB;
+        });
         break;
       case 'price-high':
-        filtered.sort((a, b) => b.price - a.price);
+        filtered.sort((a, b) => {
+          const priceA = typeof a.price === 'number' ? a.price : 0;
+          const priceB = typeof b.price === 'number' ? b.price : 0;
+          return priceB - priceA;
+        });
         break;
       case 'rating':
         filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
@@ -109,6 +118,36 @@ export default function Shop() {
     
     return filtered;
   }, [searchQuery, activeFilters]);
+
+  if (isLoading) {
+    return (
+      <div className="font-sansBody min-h-screen">
+        <Header />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading products...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="font-sansBody min-h-screen">
+        <Header />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <p className="text-destructive mb-4">Failed to load products</p>
+            <Button onClick={() => window.location.reload()}>Retry</Button>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="font-sansBody">
@@ -139,7 +178,7 @@ export default function Shop() {
           searchQuery={searchQuery}
           activeFilters={activeFilters}
           productCount={filteredProducts.length}
-          products={allProducts}
+          products={allProducts || []}
           minPrice={priceRange.min}
           maxPrice={priceRange.max}
         />
