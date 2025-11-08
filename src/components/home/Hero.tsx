@@ -28,27 +28,27 @@ export default function Hero() {
               </p>
               
               {/* Trust Pills */}
-              <div className="flex flex-wrap gap-4 mb-8">
-                <div className="flex items-center gap-2 bg-background/80 backdrop-blur rounded-full px-4 py-2 text-sm font-medium">
-                  <span className="text-primary">KES</span>
-                  <span>Transparent Pricing</span>
+              <div className="flex flex-wrap gap-2 md:gap-4 mb-6 md:mb-8">
+                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium">
+                  <span className="text-primary text-xs md:text-sm">KES</span>
+                  <span className="text-xs md:text-sm">Transparent Pricing</span>
                 </div>
-                <div className="flex items-center gap-2 bg-background/80 backdrop-blur rounded-full px-4 py-2 text-sm font-medium">
-                  <Smartphone className="h-4 w-4 text-primary" />
-                  <span>M-Pesa Ready</span>
+                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium">
+                  <Smartphone className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" />
+                  <span className="text-xs md:text-sm">M-Pesa Ready</span>
                 </div>
-                <div className="flex items-center gap-2 bg-background/80 backdrop-blur rounded-full px-4 py-2 text-sm font-medium">
-                  <Shield className="h-4 w-4 text-primary" />
-                  <span>30-Day Guarantee</span>
+                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium">
+                  <Shield className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" />
+                  <span className="text-xs md:text-sm">30-Day Guarantee</span>
                 </div>
               </div>
 
               {/* CTAs */}
-              <div className="flex flex-wrap gap-4 mb-8">
+              <div className="flex flex-wrap gap-3 md:gap-4 mb-6 md:mb-8">
                 <a href="#shop">
                   <Button 
                     size="lg" 
-                    className="bg-gradient-to-r from-orange-500 to-pink-500 hover:shadow-xl hover:scale-105 transition-all duration-200 text-lg px-8 py-6"
+                    className="bg-gradient-to-r from-orange-500 to-pink-500 hover:shadow-xl hover:scale-105 transition-all duration-200 text-sm md:text-lg px-5 py-5 md:px-8 md:py-6"
                   >
                     Shop Bestsellers
                   </Button>
@@ -57,9 +57,9 @@ export default function Hero() {
                   <Button 
                     size="lg" 
                     variant="outline" 
-                    className="border-white/40 text-foreground hover:bg-white/10 backdrop-blur text-lg px-8 py-6"
+                    className="border-white/40 text-foreground hover:bg-white/10 backdrop-blur text-sm md:text-lg px-5 py-5 md:px-8 md:py-6"
                   >
-                    Take the 30-Day Challenge
+                    30-Day Challenge
                   </Button>
                 </a>
               </div>
@@ -84,17 +84,6 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Mobile Sticky CTA */}
-        <div className="md:hidden fixed bottom-4 left-4 right-4 z-50">
-          <a href="#shop" className="block">
-            <Button 
-              size="lg" 
-              className="w-full bg-gradient-to-r from-orange-500 to-pink-500 hover:shadow-xl text-lg py-4 rounded-2xl shadow-lg"
-            >
-              Shop Bestsellers
-            </Button>
-          </a>
-        </div>
       </section>
     );
   }

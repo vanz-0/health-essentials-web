@@ -17,34 +17,16 @@ import { fuzzyMatch, parsePriceQuery } from "@/lib/searchUtils";
 import { usePersistedFilters } from "@/hooks/usePersistedFilters";
 import ExitIntentModal from "@/components/contact/ExitIntentModal";
 import ScrollSlideIn from "@/components/contact/ScrollSlideIn";
-
-import productSerum from "@/assets/product-serum.jpg";
-import productBodyButter from "@/assets/product-bodybutter.jpg";
-import productShampoo from "@/assets/product-shampoo.jpg";
-import productSunscreen from "@/assets/product-sunscreen.jpg";
-
-import pSerum from "@/assets/product-serum.jpg";
-import pShampoo from "@/assets/product-shampoo.jpg";
-import pButter from "@/assets/product-bodybutter.jpg";
-import pSunscreen from "@/assets/product-sunscreen.jpg";
-
-const bestSellers = [
-  { id: "serum", name: "Vitamin C Brightening Serum", price: 1950, image: pSerum, rating: 4.8, sale: true, category: "skincare" },
-  { id: "shampoo", name: "Nourishing Shampoo", price: 1250, image: pShampoo, rating: 4.6, category: "haircare" },
-  { id: "butter", name: "Shea Body Butter", price: 1450, image: pButter, rating: 4.9, category: "bodycare" },
-  { id: "sunscreen", name: "Daily Mineral Sunscreen SPF 50", price: 2150, image: pSunscreen, rating: 4.7, category: "suncare" },
-];
-
-const arrivals = [
-  { id: "serum", name: "Vitamin C Brightening Serum", price: 1950, image: pSerum },
-  { id: "sunscreen", name: "Daily Mineral Sunscreen SPF 50", price: 2150, image: pSunscreen },
-  { id: "butter", name: "Shea Body Butter", price: 1450, image: pButter },
-  { id: "shampoo", name: "Nourishing Shampoo", price: 1250, image: pShampoo },
-];
+import WhatsAppButton from "@/components/common/WhatsAppButton";
+import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Index = () => {
   const { isEnabled: fomoEnabled } = useFeatureFlag('bit_2_fomo');
   const { isEnabled: filteringEnabled } = useFeatureFlag('bit_4_filtering');
+  
+  // Fetch catalogue products
+  const { data: catalogueProducts = [], isLoading, error } = useCatalogueProducts();
   
   // Persisted filters
   const { filters: persistedFilters, setFilters: setPersistedFilters, isLoaded } = usePersistedFilters();
@@ -62,14 +44,28 @@ const Index = () => {
     }
   }, [activeFilters, isLoaded, setPersistedFilters]);
   
+  // Get best sellers and new arrivals from catalogue
+  const bestSellers = useMemo(() => {
+    return catalogueProducts.slice(0, 8);
+  }, [catalogueProducts]);
+
+  const arrivals = useMemo(() => {
+    return catalogueProducts.slice(8, 16);
+  }, [catalogueProducts]);
+
+  const hotDeals = useMemo(() => {
+    return catalogueProducts.slice(0, 2);
+  }, [catalogueProducts]);
+
   // Calculate price range from products
   const priceRange = useMemo(() => {
-    const prices = bestSellers.map(p => p.price);
+    if (catalogueProducts.length === 0) return { min: 0, max: 10000 };
+    const prices = catalogueProducts.map(p => typeof p.price === 'number' ? p.price : 0);
     return {
       min: Math.floor(Math.min(...prices) / 100) * 100,
       max: Math.ceil(Math.max(...prices) / 100) * 100,
     };
-  }, []);
+  }, [catalogueProducts]);
   
   // Filter and sort products
   const filteredProducts = useMemo(() => {
@@ -83,10 +79,16 @@ const Index = () => {
       const priceQuery = parsePriceQuery(query);
       if (priceQuery) {
         if (priceQuery.min !== undefined) {
-          filtered = filtered.filter(product => product.price >= priceQuery.min!);
+          filtered = filtered.filter(product => {
+            const numPrice = typeof product.price === 'number' ? product.price : 0;
+            return numPrice >= priceQuery.min!;
+          });
         }
         if (priceQuery.max !== undefined) {
-          filtered = filtered.filter(product => product.price <= priceQuery.max!);
+          filtered = filtered.filter(product => {
+            const numPrice = typeof product.price === 'number' ? product.price : 0;
+            return numPrice <= priceQuery.max!;
+          });
         }
       } else {
         // Regular text search with fuzzy matching
@@ -109,9 +111,10 @@ const Index = () => {
     // Price range filter
     if (activeFilters.priceRange) {
       const { min, max } = activeFilters.priceRange;
-      filtered = filtered.filter(product => 
-        product.price >= min && product.price <= max
-      );
+      filtered = filtered.filter(product => {
+        const numPrice = typeof product.price === 'number' ? product.price : 0;
+        return numPrice >= min && numPrice <= max;
+      });
     }
     
     // Rating filter
@@ -134,10 +137,18 @@ const Index = () => {
     // Sort products
     switch (activeFilters.sortBy) {
       case 'price-low':
-        filtered.sort((a, b) => a.price - b.price);
+        filtered.sort((a, b) => {
+          const priceA = typeof a.price === 'number' ? a.price : 0;
+          const priceB = typeof b.price === 'number' ? b.price : 0;
+          return priceA - priceB;
+        });
         break;
       case 'price-high':
-        filtered.sort((a, b) => b.price - a.price);
+        filtered.sort((a, b) => {
+          const priceA = typeof a.price === 'number' ? a.price : 0;
+          const priceB = typeof b.price === 'number' ? b.price : 0;
+          return priceB - priceA;
+        });
         break;
       case 'rating':
         filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
@@ -169,13 +180,11 @@ const Index = () => {
     url: "/",
   };
 
-  const productJsonLd = {
+  const productJsonLd = bestSellers[0] ? {
     "@context": "https://schema.org/",
     "@type": "Product",
-    name: "Vitamin C Brightening Serum",
-    image: [
-      pSerum,
-    ],
+    name: bestSellers[0].name,
+    image: [bestSellers[0].image],
     brand: {
       "@type": "Brand",
       name: "1Health Essentials",
@@ -183,11 +192,28 @@ const Index = () => {
     offers: {
       "@type": "Offer",
       priceCurrency: "KES",
-      price: "1950",
+      price: bestSellers[0].price.toString(),
       availability: "https://schema.org/InStock",
       url: "/#shop",
     },
-  };
+  } : null;
+
+  if (isLoading) {
+    return (
+      <div className="font-sansBody">
+        <FlashBanner endTime={new Date(Date.now() + 2 * 60 * 60 * 1000)} message="Flash Sale ends in" />
+        <Header />
+        <main className="container py-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Skeleton key={i} className="h-64 w-full" />
+            ))}
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="font-sansBody">
@@ -196,7 +222,7 @@ const Index = () => {
         <meta name="description" content="Premium cosmetics and personal care in Thindiqua, Kiambu. Natural, cruelty-free, quality-tested. Shop online or visit Brentwood Arcade." />
         <link rel="canonical" href="/" />
         <script type="application/ld+json">{JSON.stringify(businessJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>
+        {productJsonLd && <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>}
       </Helmet>
 
       <FlashBanner endTime={flashSaleEnd} message="Flash Sale ends in" />
@@ -205,26 +231,26 @@ const Index = () => {
         <Hero />
         
         {/* FOMO Urgent Deals Section - Only shown when Bit 2 is enabled */}
-        {fomoEnabled && (
+        {fomoEnabled && hotDeals.length >= 2 && (
           <section className="container py-8">
-            <div className="grid grid-cols-2 gap-4 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
               <UrgentDeal
-                title="Vitamin C Brightening Serum"
+                title={hotDeals[0].name}
                 discount={30}
-                originalPrice={2499}
-                timeLeft={180} // 3 hours in minutes
+                originalPrice={typeof hotDeals[0].price === 'number' ? hotDeals[0].price * 1.3 : 2499}
+                timeLeft={180}
                 claimed={47}
                 total={100}
-                image={productSerum}
+                image={hotDeals[0].image}
               />
               <UrgentDeal
-                title="Shea Body Butter Special"
+                title={hotDeals[1].name}
                 discount={25}
-                originalPrice={1899}
-                timeLeft={420} // 7 hours in minutes
+                originalPrice={typeof hotDeals[1].price === 'number' ? hotDeals[1].price * 1.25 : 1899}
+                timeLeft={420}
                 claimed={23}
                 total={50}
-                image={productBodyButter}
+                image={hotDeals[1].image}
               />
             </div>
           </section>
@@ -250,7 +276,10 @@ const Index = () => {
           products={filteringEnabled ? filteredProducts : bestSellers} 
           title={filteringEnabled && (searchQuery || (activeFilters.categories && activeFilters.categories.length > 0)) ? "Search Results" : "Best Sellers"}
         />
-        <NewArrivals items={arrivals} />
+        <NewArrivals items={arrivals.map(item => ({
+          ...item,
+          price: typeof item.price === 'number' ? item.price : 0
+        }))} />
         <Trust />
         <About />
         <Testimonials />
@@ -260,6 +289,9 @@ const Index = () => {
       {/* Contact Capture Points */}
       <ExitIntentModal />
       <ScrollSlideIn />
+      
+      {/* WhatsApp Floating Button */}
+      <WhatsAppButton />
     </div>
   );
 };

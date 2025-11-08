@@ -49,20 +49,20 @@ export default function UrgentDeal({
 
   return (
     <div 
-      className="bg-gradient-to-r from-red-500 to-orange-500 text-white p-4 rounded-lg animate-pulse-glow relative overflow-hidden"
+      className="bg-gradient-to-r from-red-500 to-orange-500 text-white p-3 md:p-4 rounded-lg animate-pulse-glow relative overflow-hidden"
       style={{
         backgroundImage: `linear-gradient(to right, rgba(239, 68, 68, 0.9), rgba(249, 115, 22, 0.9)), url(${image})`,
-        backgroundSize: 'cover, 120px auto',
+        backgroundSize: 'cover, 80px auto',
         backgroundPosition: 'center, right center',
         backgroundRepeat: 'no-repeat'
       }}
     >
       {/* Blurred background image overlay */}
       <div 
-        className="absolute inset-0 bg-right bg-no-repeat opacity-30"
+        className="absolute inset-0 bg-right bg-no-repeat opacity-30 md:opacity-30"
         style={{
           backgroundImage: `url(${image})`,
-          backgroundSize: '120px auto',
+          backgroundSize: '80px auto',
           backgroundPosition: 'right center',
           filter: 'blur(1px)'
         }}
@@ -70,50 +70,50 @@ export default function UrgentDeal({
       
       {/* Content with relative positioning to stay above background */}
       <div className="relative z-10">
-      <div className="flex items-center gap-2 mb-2">
-        <Flame className="h-5 w-5 animate-urgent-bounce" />
-        <Badge variant="secondary" className="bg-white/20 text-white">
+      <div className="flex items-center gap-1.5 md:gap-2 mb-2">
+        <Flame className="h-4 w-4 md:h-5 md:w-5 animate-urgent-bounce" />
+        <Badge variant="secondary" className="bg-white/20 text-white text-[10px] md:text-xs px-1.5 md:px-2 py-0.5">
           Flash Deal
         </Badge>
-        <span className="text-sm font-mono">
-          {hours}h {minutes}m left
+        <span className="text-xs md:text-sm font-mono">
+          {hours}h {minutes}m
         </span>
       </div>
       
-      <h3 className="font-bold text-lg mb-1">{title}</h3>
+      <h3 className="font-bold text-sm md:text-lg mb-1 line-clamp-2 pr-16 md:pr-24">{title}</h3>
       
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-2xl font-bold">
-          KSh {discountedPrice.toLocaleString()}
+      <div className="flex flex-wrap items-center gap-1 md:gap-2 mb-2 md:mb-3">
+        <span className="text-lg md:text-2xl font-bold">
+          KSh {Math.round(discountedPrice).toLocaleString()}
         </span>
-        <span className="text-sm line-through opacity-75">
-          KSh {originalPrice.toLocaleString()}
+        <span className="text-xs md:text-sm line-through opacity-75">
+          KSh {Math.round(originalPrice).toLocaleString()}
         </span>
-        <Badge variant="secondary" className="bg-white/20 text-white">
+        <Badge variant="secondary" className="bg-white/20 text-white text-[10px] md:text-xs px-1 md:px-1.5">
           -{discount}%
         </Badge>
       </div>
 
       {/* Progress bar */}
-      <div className="mb-3">
-        <div className="flex justify-between text-sm mb-1">
+      <div className="mb-2 md:mb-3">
+        <div className="flex justify-between text-xs md:text-sm mb-1">
           <span>Claimed: {claimed}/{total}</span>
           <span>{Math.round(progress)}%</span>
         </div>
-        <div className="w-full bg-white/20 rounded-full h-2">
+        <div className="w-full bg-white/20 rounded-full h-1.5 md:h-2">
           <div 
-            className="bg-white h-2 rounded-full transition-all duration-500"
+            className="bg-white h-1.5 md:h-2 rounded-full transition-all duration-500"
             style={{ width: `${Math.min(progress, 100)}%` }}
           />
         </div>
       </div>
 
       <Button 
-        className="w-full bg-white text-red-600 hover:bg-gray-100 font-bold"
+        className="w-full bg-white text-red-600 hover:bg-gray-100 font-bold text-xs md:text-sm py-2"
         size="sm"
       >
-        <ShoppingCart className="h-4 w-4 mr-2" />
-        Claim Deal Now
+        <ShoppingCart className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+        Claim Deal
       </Button>
       </div>
     </div>

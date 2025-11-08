@@ -47,7 +47,14 @@ export default function Header() {
       <div className="hidden md:block bg-secondary text-secondary-foreground text-xs">
         <div className="container flex items-center justify-between py-2">
           <div className="flex items-center gap-4">
-            <span className="inline-flex items-center gap-1"><Phone className="h-3.5 w-3.5" /> 0735558830</span>
+            <a 
+              href="https://wa.me/254735558830" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 hover:text-primary transition-colors"
+            >
+              <Phone className="h-3.5 w-3.5" /> 0735558830
+            </a>
             <span className="inline-flex items-center gap-1"><MapPin className="h-3.5 w-3.5" /> Brentwood Arcade, Thindiqua, Kiambu</span>
           </div>
           <div className="text-xs">Your trusted partner in natural beauty and wellness</div>
@@ -99,19 +106,19 @@ export default function Header() {
             ))}
           </ul>
 
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" aria-label="Search" onClick={() => toast({ title: "Search", description: "Search with filters coming soon." })}>
-              <Search />
+          <div className="flex items-center gap-1 md:gap-2">
+            <Button variant="ghost" size="icon" aria-label="Search" className="h-9 w-9 md:h-10 md:w-10" onClick={() => toast({ title: "Search", description: "Search with filters coming soon." })}>
+              <Search className="h-4 w-4 md:h-5 md:w-5" />
             </Button>
             
             <ThemeToggle />
             
             {/* Wishlist Button */}
             <Link to="/wishlist">
-              <Button variant="ghost" size="icon" aria-label="Wishlist" className="relative">
-                <Heart />
+              <Button variant="ghost" size="icon" aria-label="Wishlist" className="relative h-9 w-9 md:h-10 md:w-10">
+                <Heart className="h-4 w-4 md:h-5 md:w-5" />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] px-1">
+                  <span className="absolute -top-1 -right-1 inline-flex h-4 min-w-4 md:h-5 md:min-w-5 items-center justify-center rounded-full bg-primary text-primary-foreground text-[9px] md:text-[10px] px-0.5 md:px-1">
                     {wishlistCount}
                   </span>
                 )}
@@ -123,9 +130,9 @@ export default function Header() {
               user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="relative rounded-full">
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback className="bg-primary text-primary-foreground text-sm">
+                    <Button variant="ghost" size="icon" className="relative rounded-full h-9 w-9 md:h-10 md:w-10">
+                      <Avatar className="h-7 w-7 md:h-8 md:w-8">
+                        <AvatarFallback className="bg-primary text-primary-foreground text-xs md:text-sm">
                           {user.email?.charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
@@ -164,23 +171,23 @@ export default function Header() {
                 </DropdownMenu>
               ) : (
                 <Link to="/auth">
-                  <Button variant="ghost" size="icon" aria-label="Account">
-                    <User />
+                  <Button variant="ghost" size="icon" aria-label="Account" className="h-9 w-9 md:h-10 md:w-10">
+                    <User className="h-4 w-4 md:h-5 md:w-5" />
                   </Button>
                 </Link>
               )
             ) : (
-              <Button variant="ghost" size="icon" aria-label="Account">
-                <User />
+              <Button variant="ghost" size="icon" aria-label="Account" className="h-9 w-9 md:h-10 md:w-10">
+                <User className="h-4 w-4 md:h-5 md:w-5" />
               </Button>
             )}
 
             {cartEnabled && (
               <CartDrawer>
-                <Button variant="accent" size="icon" aria-label="Cart" className="relative">
-                  <ShoppingCart />
+                <Button variant="accent" size="icon" aria-label="Cart" className="relative h-9 w-9 md:h-10 md:w-10">
+                  <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
                   {totalQty > 0 && (
-                    <span className="absolute -top-1 -right-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] px-1">
+                    <span className="absolute -top-1 -right-1 inline-flex h-4 min-w-4 md:h-5 md:min-w-5 items-center justify-center rounded-full bg-primary text-primary-foreground text-[9px] md:text-[10px] px-0.5 md:px-1">
                       {totalQty}
                     </span>
                   )}

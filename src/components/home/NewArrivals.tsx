@@ -16,7 +16,7 @@ export default function NewArrivals({ items }: { items: NewArrival[] }) {
   return (
     <section className="container mt-16" aria-labelledby="arrivals-heading">
       <div className="flex items-center justify-between">
-        <h2 id="arrivals-heading" className="font-serifDisplay text-2xl md:text-3xl font-semibold">New Arrivals</h2>
+        <h2 id="arrivals-heading" className="font-serifDisplay text-xl md:text-2xl lg:text-3xl font-semibold">New Arrivals</h2>
       </div>
       <div className="relative mt-6">
         <Carousel opts={{ align: "start", loop: true }}>

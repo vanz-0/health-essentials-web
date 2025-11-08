@@ -158,8 +158,8 @@ export default function Shop() {
       </Helmet>
 
       <Header />
-      <main className="min-h-screen">
-        <section className="bg-secondary py-12">
+      <main className="min-h-screen pt-[112px]">
+        <section className="bg-gradient-to-b from-primary/10 to-background py-8 md:py-12">
           <div className="container">
             <Link to="/">
               <Button variant="ghost" size="sm" className="mb-4">
@@ -167,8 +167,8 @@ export default function Shop() {
                 Back to Home
               </Button>
             </Link>
-            <h1 className="font-serifDisplay text-3xl md:text-4xl font-bold">Shop Our Catalog</h1>
-            <p className="mt-2 text-muted-foreground">Discover premium natural beauty and wellness products</p>
+            <h1 className="font-serifDisplay text-2xl md:text-3xl font-bold">Shop Our Collection</h1>
+            <p className="mt-2 text-sm md:text-base text-muted-foreground">Discover natural beauty and wellness products</p>
           </div>
         </section>
 
