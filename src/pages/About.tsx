@@ -4,8 +4,8 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Leaf, Heart, Award, Users } from "lucide-react";
 import { Link } from "react-router-dom";
-import aboutImage from "@/assets/category-skincare.jpg";
-import aboutImage2 from "@/assets/category-bodycare.jpg";
+import aboutImage from "@/assets/hero-1health.jpg";
+import aboutImage2 from "@/assets/testimonial-1.jpg";
 
 export default function About() {
   return (
