@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/home/Hero";
-import Categories from "@/components/home/Categories";
 import BestSellers from "@/components/home/BestSellers";
 import NewArrivals from "@/components/home/NewArrivals";
 import Trust from "@/components/home/Trust";
@@ -255,8 +254,6 @@ const Index = () => {
             </div>
           </section>
         )}
-        
-        <Categories />
         
         {/* Search and Filter - Only shown when Bit 4 is enabled */}
         {filteringEnabled && (

@@ -50,21 +50,22 @@ export default function UrgentDeal({
   return (
     <div 
       className="bg-gradient-to-r from-red-500 to-orange-500 text-white p-3 md:p-4 rounded-lg animate-pulse-glow relative overflow-hidden"
-      style={{
-        backgroundImage: `linear-gradient(to right, rgba(239, 68, 68, 0.9), rgba(249, 115, 22, 0.9)), url(${image})`,
-        backgroundSize: 'cover, 80px auto',
-        backgroundPosition: 'center, right center',
-        backgroundRepeat: 'no-repeat'
-      }}
     >
-      {/* Blurred background image overlay */}
+      {/* Product image overlay - larger and clearer */}
       <div 
-        className="absolute inset-0 bg-right bg-no-repeat opacity-30 md:opacity-30"
+        className="absolute inset-0 bg-right bg-no-repeat opacity-50"
         style={{
           backgroundImage: `url(${image})`,
-          backgroundSize: '80px auto',
-          backgroundPosition: 'right center',
-          filter: 'blur(1px)'
+          backgroundSize: '140px auto',
+          backgroundPosition: 'right 10px center'
+        }}
+      />
+      <div 
+        className="absolute inset-0 bg-right bg-no-repeat opacity-50 hidden md:block"
+        style={{
+          backgroundImage: `url(${image})`,
+          backgroundSize: '180px auto',
+          backgroundPosition: 'right 20px center'
         }}
       />
       

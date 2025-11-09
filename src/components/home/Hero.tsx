@@ -19,8 +19,8 @@ export default function Hero() {
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
           
           <div className="absolute inset-0 container flex items-center">
-            <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
-              <h1 className="font-serifDisplay text-4xl md:text-6xl font-bold tracking-tight mb-4">
+          <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
+              <h1 className="font-serifDisplay text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight mb-4">
                 Feel Better, Live Better — Essentials That Fit Kenyan Life
               </h1>
               <p className="text-lg md:text-xl text-foreground/80 mb-6 max-w-2xl">

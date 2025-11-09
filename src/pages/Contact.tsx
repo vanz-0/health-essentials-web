@@ -144,20 +144,17 @@ export default function Contact() {
         {/* Map Section */}
         <section className="container mt-16 mb-16">
           <h2 className="font-serifDisplay text-2xl font-semibold mb-6">Find Us</h2>
-          <div className="w-full h-96 bg-secondary rounded-lg flex items-center justify-center border">
-            <div className="text-center">
-              <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
-              <p className="text-muted-foreground">Brentwood Arcade, Thindiqua, Kiambu</p>
-              <a 
-                href="https://maps.google.com/?q=Brentwood+Arcade+Thindiqua+Kiambu" 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <Button variant="outline" className="mt-4">
-                  Open in Google Maps
-                </Button>
-              </a>
-            </div>
+          <div className="w-full h-96 rounded-lg overflow-hidden border shadow-md">
+            <iframe
+              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=Brentwood+Arcade,Thindiqua,Kiambu,Kenya&zoom=15"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="1Health Essentials Location - Brentwood Arcade, Thindiqua, Kiambu"
+            />
           </div>
         </section>
       </main>

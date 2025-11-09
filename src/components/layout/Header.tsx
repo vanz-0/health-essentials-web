@@ -53,7 +53,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 hover:text-primary transition-colors"
             >
-              <Phone className="h-3.5 w-3.5" /> 0735558830
+              <Phone className="h-3.5 w-3.5" /> +254 735 558 830
             </a>
             <span className="inline-flex items-center gap-1"><MapPin className="h-3.5 w-3.5" /> Brentwood Arcade, Thindiqua, Kiambu</span>
           </div>
