@@ -1,4 +1,4 @@
-import aboutImage from "@/assets/category-skincare.jpg";
+import aboutImage from "@/assets/hero-1health.jpg";
 import { Button } from "@/components/ui/button";
 
 export default function About() {
