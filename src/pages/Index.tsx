@@ -9,6 +9,8 @@ import About from "@/components/home/About";
 import Testimonials from "@/components/home/Testimonials";
 import FlashBanner from "@/components/home/FlashBanner";
 import UrgentDeal from "@/components/home/UrgentDeal";
+import Categories from "@/components/home/Categories";
+import ChallengeBanner from "@/components/home/ChallengeBanner";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { useState, useMemo } from "react";
 import SearchAndFilter, { FilterOptions } from "@/components/shop/SearchAndFilter";
@@ -273,10 +275,12 @@ const Index = () => {
           products={filteringEnabled ? filteredProducts : bestSellers} 
           title={filteringEnabled && (searchQuery || (activeFilters.categories && activeFilters.categories.length > 0)) ? "Search Results" : "Best Sellers"}
         />
+        <Categories />
         <NewArrivals items={arrivals.map(item => ({
           ...item,
           price: typeof item.price === 'number' ? item.price : 0
         }))} />
+        <ChallengeBanner />
         <Trust />
         <About />
         <Testimonials />

@@ -53,21 +53,33 @@ export default function UrgentDeal({
     >
       {/* Product image overlay - larger and clearer */}
       <div 
-        className="absolute inset-0 bg-right bg-no-repeat opacity-50"
+        className="absolute right-0 top-1/2 -translate-y-1/2 opacity-80 pointer-events-none"
         style={{
-          backgroundImage: `url(${image})`,
-          backgroundSize: '140px auto',
-          backgroundPosition: 'right 10px center'
+          width: '160px',
+          height: '160px'
         }}
-      />
+      >
+        <img 
+          src={image} 
+          alt={title}
+          className="w-full h-full object-contain drop-shadow-2xl"
+          style={{ filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.3))' }}
+        />
+      </div>
       <div 
-        className="absolute inset-0 bg-right bg-no-repeat opacity-50 hidden md:block"
+        className="absolute right-0 top-1/2 -translate-y-1/2 opacity-80 pointer-events-none hidden md:block"
         style={{
-          backgroundImage: `url(${image})`,
-          backgroundSize: '180px auto',
-          backgroundPosition: 'right 20px center'
+          width: '200px',
+          height: '200px'
         }}
-      />
+      >
+        <img 
+          src={image} 
+          alt={title}
+          className="w-full h-full object-contain drop-shadow-2xl"
+          style={{ filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.3))' }}
+        />
+      </div>
       
       {/* Content with relative positioning to stay above background */}
       <div className="relative z-10">

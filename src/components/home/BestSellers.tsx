@@ -20,9 +20,13 @@ function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   const { isEnabled: cartEnabled } = useFeatureFlag('bit_6_shopping_cart');
   
-  // Mock inventory for demonstration
-  const mockInventory = { serum: 3, shampoo: 8, butter: 2, sunscreen: 6 };
-  const remaining = mockInventory[product.id as keyof typeof mockInventory] || 5;
+  // Randomized inventory based on product id
+  const getRandomStock = (id: string) => {
+    const seed = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const oddNumbers = [3, 7, 9, 11, 13];
+    return oddNumbers[seed % oddNumbers.length];
+  };
+  const remaining = getRandomStock(product.id);
   return (
     <div className="rounded-lg border p-2 md:p-3 hover:shadow-sm transition-shadow">
       <div className="relative overflow-hidden rounded-md">
