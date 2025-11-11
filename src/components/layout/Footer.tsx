@@ -31,7 +31,7 @@ export default function Footer() {
           <ul className="mt-3 space-y-2 text-sm">
             <li className="flex items-center gap-2"><MapPin className="h-4 w-4" />Brentwood Arcade, Thindigua, Kiambu</li>
             <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> 0735558830</li>
-            <li className="flex items-center gap-2"><Mail className="h-4 w-4" />hello@1healt</li>
+            <li className="flex items-center gap-2"><Mail className="h-4 w-4" />hello@1healthessntials.com</li>
             <li>Mon-Sat: 9:00am - 6:00pm</li>
           </ul>
         </div>
