@@ -18,7 +18,9 @@ export default function WhatsAppButton({ productName }: WhatsAppButtonProps) {
   useEffect(() => {
     // Hide button when cart/dialog overlays are open
     const observer = new MutationObserver(() => {
-      const hasOpenOverlay = document.querySelector('[data-radix-presence]') !== null;
+      const hasOpenOverlay = document.querySelector(
+        '[data-radix-dialog-overlay], [data-state="open"][role="dialog"], .sheet-overlay, [data-radix-portal] [data-state="open"]'
+      ) !== null;
       setIsVisible(!hasOpenOverlay);
     });
 
@@ -26,7 +28,7 @@ export default function WhatsAppButton({ productName }: WhatsAppButtonProps) {
       childList: true,
       subtree: true,
       attributes: true,
-      attributeFilter: ['data-state']
+      attributeFilter: ['data-state', 'role']
     });
 
     return () => observer.disconnect();
@@ -43,7 +45,7 @@ export default function WhatsAppButton({ productName }: WhatsAppButtonProps) {
       >
         <Button
           size="lg"
-          className="h-14 w-14 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white transition-colors duration-200 animate-breathe"
+          className="h-14 w-14 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white transition-colors duration-200 animate-slow-bounce"
           aria-label="Chat on WhatsApp"
         >
           <MessageCircle className="h-6 w-6" />

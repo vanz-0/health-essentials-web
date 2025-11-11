@@ -144,6 +144,10 @@ export default {
 						transform: 'scale(1.05)',
 						boxShadow: '0 12px 32px rgba(37, 211, 102, 0.5)'
 					}
+				},
+				'slow-bounce': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-6px)' }
 				}
 			},
 			animation: {
@@ -158,7 +162,8 @@ export default {
 				'cart-success': 'cart-success 0.4s ease-out',
 				'cart-slide-up': 'cart-slide-up 0.3s ease-out',
 				'wiggle': 'wiggle 0.5s ease-in-out infinite',
-				'breathe': 'breathe 100s ease-in-out infinite'
+				'breathe': 'breathe 100s ease-in-out infinite',
+				'slow-bounce': 'slow-bounce 3s ease-in-out infinite'
 			}
 		}
 	},
