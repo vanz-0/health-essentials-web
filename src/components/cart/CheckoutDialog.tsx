@@ -6,34 +6,37 @@ import { Label } from "@/components/ui/label";
 import { useCart, CartItem } from "@/contexts/CartContext";
 import { MessageCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-
 interface CheckoutDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-
-export default function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
-  const { items, totalPrice, clear } = useCart();
+export default function CheckoutDialog({
+  open,
+  onOpenChange
+}: CheckoutDialogProps) {
+  const {
+    items,
+    totalPrice,
+    clear
+  } = useCart();
   const [customerName, setCustomerName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
-
   const handleConfirmOrder = () => {
     // Validate inputs
     if (!customerName.trim()) {
       toast({
         title: "Name Required",
         description: "Please enter your name for M-Pesa account",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
-
     if (!phoneNumber.trim()) {
       toast({
         title: "Phone Number Required",
         description: "Please enter your phone number",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
@@ -45,25 +48,17 @@ export default function CheckoutDialog({ open, onOpenChange }: CheckoutDialogPro
       toast({
         title: "Invalid Phone Number",
         description: "Please enter a valid Kenyan phone number",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
-
     setIsProcessing(true);
 
     // Format phone number for display
-    const formattedPhone = cleanPhone.startsWith('254') 
-      ? `+${cleanPhone}` 
-      : cleanPhone.startsWith('0') 
-      ? `+254${cleanPhone.slice(1)}` 
-      : `+254${cleanPhone}`;
+    const formattedPhone = cleanPhone.startsWith('254') ? `+${cleanPhone}` : cleanPhone.startsWith('0') ? `+254${cleanPhone.slice(1)}` : `+254${cleanPhone}`;
 
     // Generate WhatsApp message
-    const orderDetails = items.map((item: CartItem) => 
-      `- ${item.name} x${item.qty} @ KSh ${item.price.toLocaleString()} = KSh ${(item.price * item.qty).toLocaleString()}`
-    ).join('\n');
-
+    const orderDetails = items.map((item: CartItem) => `- ${item.name} x${item.qty} @ KSh ${item.price.toLocaleString()} = KSh ${(item.price * item.qty).toLocaleString()}`).join('\n');
     const message = `*Order Confirmation* 🛍️
 
 *Items:*
@@ -79,7 +74,6 @@ Phone: ${formattedPhone}
 I have completed the M-Pesa payment and would like to confirm my order. Please proceed with delivery.
 
 Thank you!`;
-
     const whatsappPhone = "254735558830";
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappPhone}&text=${encodeURIComponent(message)}`;
 
@@ -93,16 +87,13 @@ Thank you!`;
       setIsProcessing(false);
       setCustomerName("");
       setPhoneNumber("");
-      
       toast({
         title: "Order Sent!",
-        description: "Please complete your order confirmation on WhatsApp",
+        description: "Please complete your order confirmation on WhatsApp"
       });
     }, 1000);
   };
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+  return <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Complete Your Order</DialogTitle>
@@ -115,17 +106,13 @@ Thank you!`;
           {/* Order Summary */}
           <div className="bg-muted/30 rounded-lg p-4 space-y-2">
             <h3 className="font-semibold text-sm text-muted-foreground">Order Summary</h3>
-            {items.slice(0, 3).map((item: CartItem) => (
-              <div key={item.id} className="flex justify-between text-sm">
+            {items.slice(0, 3).map((item: CartItem) => <div key={item.id} className="flex justify-between text-sm">
                 <span className="truncate mr-2">{item.name} x{item.qty}</span>
                 <span className="whitespace-nowrap">KSh {(item.price * item.qty).toLocaleString()}</span>
-              </div>
-            ))}
-            {items.length > 3 && (
-              <div className="text-xs text-muted-foreground italic">
+              </div>)}
+            {items.length > 3 && <div className="text-xs text-muted-foreground italic">
                 + {items.length - 3} more item{items.length - 3 > 1 ? 's' : ''}
-              </div>
-            )}
+              </div>}
             <div className="border-t pt-2 mt-2 flex justify-between font-bold">
               <span>Total</span>
               <span className="text-primary">KSh {totalPrice.toLocaleString()}</span>
@@ -158,37 +145,19 @@ Thank you!`;
           <div className="space-y-3">
             <div className="space-y-1.5">
               <Label htmlFor="customerName">Your Name (M-Pesa Account Number)</Label>
-              <Input
-                id="customerName"
-                placeholder="Enter your full name"
-                value={customerName}
-                onChange={(e) => setCustomerName(e.target.value)}
-                maxLength={100}
-              />
-              <p className="text-xs text-muted-foreground">Use this name as Account Number in M-Pesa</p>
+              <Input id="customerName" placeholder="Enter your full name" value={customerName} onChange={e => setCustomerName(e.target.value)} maxLength={100} />
+              <p className="text-xs text-muted-foreground"> Name that is Registered with M-Pesa</p>
             </div>
 
             <div className="space-y-1.5">
               <Label htmlFor="phoneNumber">Phone Number</Label>
-              <Input
-                id="phoneNumber"
-                type="tel"
-                placeholder="0712345678 or 254712345678"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                maxLength={15}
-              />
+              <Input id="phoneNumber" type="tel" placeholder="0712345678 or 254712345678" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} maxLength={15} />
               <p className="text-xs text-muted-foreground">Your M-Pesa registered number</p>
             </div>
           </div>
 
           {/* Confirm Button */}
-          <Button 
-            onClick={handleConfirmOrder}
-            disabled={isProcessing}
-            className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold"
-            size="lg"
-          >
+          <Button onClick={handleConfirmOrder} disabled={isProcessing} className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold" size="lg">
             <MessageCircle className="h-5 w-5 mr-2" />
             {isProcessing ? "Processing..." : "Confirm Order via WhatsApp"}
           </Button>
@@ -198,6 +167,5 @@ Thank you!`;
           </p>
         </div>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>;
 }
