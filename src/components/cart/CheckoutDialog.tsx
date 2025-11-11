@@ -146,7 +146,7 @@ Thank you!`;
             <div className="space-y-1.5">
               <Label htmlFor="customerName">Your Name (M-Pesa Account Number)</Label>
               <Input id="customerName" placeholder="Enter your full name" value={customerName} onChange={e => setCustomerName(e.target.value)} maxLength={100} />
-              <p className="text-xs text-muted-foreground"> Name that is Registered with M-Pesa</p>
+              <p className="text-xs text-muted-foreground"> Name that is registered with M-Pesa</p>
             </div>
 
             <div className="space-y-1.5">
