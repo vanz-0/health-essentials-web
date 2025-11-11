@@ -115,12 +115,17 @@ Thank you!`;
           {/* Order Summary */}
           <div className="bg-muted/30 rounded-lg p-4 space-y-2">
             <h3 className="font-semibold text-sm text-muted-foreground">Order Summary</h3>
-            {items.map((item: CartItem) => (
+            {items.slice(0, 3).map((item: CartItem) => (
               <div key={item.id} className="flex justify-between text-sm">
-                <span>{item.name} x{item.qty}</span>
-                <span>KSh {(item.price * item.qty).toLocaleString()}</span>
+                <span className="truncate mr-2">{item.name} x{item.qty}</span>
+                <span className="whitespace-nowrap">KSh {(item.price * item.qty).toLocaleString()}</span>
               </div>
             ))}
+            {items.length > 3 && (
+              <div className="text-xs text-muted-foreground italic">
+                + {items.length - 3} more item{items.length - 3 > 1 ? 's' : ''}
+              </div>
+            )}
             <div className="border-t pt-2 mt-2 flex justify-between font-bold">
               <span>Total</span>
               <span className="text-primary">KSh {totalPrice.toLocaleString()}</span>

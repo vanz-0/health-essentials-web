@@ -126,13 +126,13 @@ export default function CartDrawer({ children }: CartDrawerProps) {
           </div>
           
           {items.length > 0 && (
-            <div className="border-t pt-4 space-y-4 animate-fade-in">
+            <div className="border-t pt-4 pb-6 space-y-4 animate-fade-in">
               <div className="flex items-center justify-between text-lg">
                 <span className="font-semibold">Total</span>
                 <span className="font-bold text-primary">KES {totalPrice.toLocaleString()}</span>
               </div>
               
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2 mb-4">
                 <Button 
                   variant="outline" 
                   onClick={() => setIsOpen(false)}
