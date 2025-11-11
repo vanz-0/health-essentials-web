@@ -310,7 +310,7 @@ const Index = () => {
           ...item,
           price: typeof item.price === 'number' ? item.price : 0
         }))} />
-        <div id="challenge">
+        <div id="challenge" className="scroll-mt-20">
           <ChallengeBanner />
         </div>
         <Trust />
