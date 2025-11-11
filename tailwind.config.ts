@@ -148,6 +148,10 @@ export default {
 				'slow-bounce': {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-6px)' }
+				},
+				'pulse-scale': {
+					'0%, 100%': { transform: 'scale(1)' },
+					'50%': { transform: 'scale(1.02)' }
 				}
 			},
 			animation: {
@@ -163,7 +167,8 @@ export default {
 				'cart-slide-up': 'cart-slide-up 0.3s ease-out',
 				'wiggle': 'wiggle 0.5s ease-in-out infinite',
 				'breathe': 'breathe 100s ease-in-out infinite',
-				'slow-bounce': 'slow-bounce 60s ease-in-out infinite'
+				'slow-bounce': 'slow-bounce 60s ease-in-out infinite',
+				'pulse-scale': 'pulse-scale 2s ease-in-out infinite'
 			}
 		}
 	},
