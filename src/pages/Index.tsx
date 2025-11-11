@@ -263,6 +263,7 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
               <UrgentDeal
                 key={`deal-0-${currentDealIndex}`}
+                id={hotDeals[0].id}
                 title={hotDeals[0].name}
                 discount={30}
                 originalPrice={typeof hotDeals[0].price === 'number' ? hotDeals[0].price * 1.3 : 2499}
@@ -273,6 +274,7 @@ const Index = () => {
               />
               <UrgentDeal
                 key={`deal-1-${currentDealIndex}`}
+                id={hotDeals[1].id}
                 title={hotDeals[1].name}
                 discount={25}
                 originalPrice={typeof hotDeals[1].price === 'number' ? hotDeals[1].price * 1.25 : 1899}

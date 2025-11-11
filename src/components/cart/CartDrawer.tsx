@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useCart } from "@/contexts/CartContext";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import CheckoutDialog from "@/components/cart/CheckoutDialog";
 
 interface CartDrawerProps {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ export default function CartDrawer({ children }: CartDrawerProps) {
   const { items, addItem, removeItem, totalPrice, totalQty } = useCart();
   const { isEnabled: cartEnabled } = useFeatureFlag('bit_6_shopping_cart');
   const [isOpen, setIsOpen] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const updateQuantity = (id: string, name: string, price: number, image: string, newQty: number) => {
     if (newQty <= 0) {
@@ -140,6 +142,7 @@ export default function CartDrawer({ children }: CartDrawerProps) {
                 </Button>
                 <Button 
                   className="bg-primary hover:bg-primary/90 animate-pulse"
+                  onClick={() => setCheckoutOpen(true)}
                 >
                   Checkout ({totalQty})
                 </Button>
@@ -148,6 +151,7 @@ export default function CartDrawer({ children }: CartDrawerProps) {
           )}
         </div>
       </SheetContent>
+      <CheckoutDialog open={checkoutOpen} onOpenChange={setCheckoutOpen} />
     </Sheet>
   );
 }

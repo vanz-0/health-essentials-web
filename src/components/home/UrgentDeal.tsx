@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useFeatureFlag } from '@/hooks/useFeatureFlag';
+import { useCart } from '@/contexts/CartContext';
+import { toast } from '@/hooks/use-toast';
 import { Flame, ShoppingCart } from 'lucide-react';
 
 interface UrgentDealProps {
+  id: string;
   title: string;
   discount: number;
   originalPrice: number;
@@ -15,6 +18,7 @@ interface UrgentDealProps {
 }
 
 export default function UrgentDeal({ 
+  id,
   title, 
   discount, 
   originalPrice, 
@@ -24,8 +28,10 @@ export default function UrgentDeal({
   image
 }: UrgentDealProps) {
   const { isEnabled } = useFeatureFlag('bit_2_fomo');
+  const { addItem } = useCart();
   const [timeLeft, setTimeLeft] = useState(initialTimeLeft);
   const [progress, setProgress] = useState((claimed / total) * 100);
+  const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
     if (!isEnabled) return;
@@ -46,6 +52,23 @@ export default function UrgentDeal({
   const discountedPrice = originalPrice * (1 - discount / 100);
   const hours = Math.floor(timeLeft / 60);
   const minutes = timeLeft % 60;
+
+  const handleClaimDeal = () => {
+    setIsAdding(true);
+    addItem({
+      id,
+      name: title,
+      price: Math.round(discountedPrice),
+      image,
+    }, 1);
+    
+    toast({
+      title: "Added to Cart! 🎉",
+      description: `${title} added successfully`,
+    });
+    
+    setTimeout(() => setIsAdding(false), 500);
+  };
 
   return (
     <div 
@@ -106,9 +129,11 @@ export default function UrgentDeal({
       <Button 
         className="w-full bg-white text-red-600 hover:bg-gray-100 font-bold text-xs md:text-sm py-2"
         size="sm"
+        onClick={handleClaimDeal}
+        disabled={isAdding}
       >
         <ShoppingCart className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-        Claim Deal
+        {isAdding ? "Added!" : "Claim Deal"}
       </Button>
       </div>
     </div>
