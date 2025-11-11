@@ -81,7 +81,7 @@ I have completed the M-Pesa payment and would like to confirm my order. Please p
 Thank you!`;
 
     const whatsappPhone = "254735558830";
-    const whatsappUrl = `https://web.whatsapp.com/send?phone=${whatsappPhone}&text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappPhone}&text=${encodeURIComponent(message)}`;
 
     // Open WhatsApp
     window.open(whatsappUrl, '_blank');
