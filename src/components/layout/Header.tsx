@@ -66,8 +66,8 @@ export default function Header() {
       <div className={
         `transition-colors duration-300 ${scrolled ? "bg-background/95 shadow-sm" : "bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/40"}`
       }>
-        <nav className="container flex items-center justify-between py-3">
-          <div className="flex items-center gap-2">
+        <nav className="container flex items-center justify-between py-2 md:py-3 px-2 md:px-4">
+          <div className="flex items-center gap-1.5 md:gap-2">
             {/* Mobile Menu */}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
@@ -94,13 +94,13 @@ export default function Header() {
               </SheetContent>
             </Sheet>
 
-            <Link to="/" className="flex items-center gap-2 md:gap-3">
+            <Link to="/" className="flex items-center gap-1.5 md:gap-3">
               <img 
                 src={logo} 
                 alt="1Health Essentials Logo" 
-                className="h-10 w-10 md:h-12 md:w-12 lg:h-14 lg:w-14 object-contain transition-all duration-300"
+                className="h-9 w-9 md:h-12 md:w-12 lg:h-14 lg:w-14 object-contain transition-all duration-300"
               />
-              <span className={`font-serifDisplay text-xl md:text-2xl font-bold tracking-tight transition-all duration-300 ${scrolled ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
+              <span className={`font-serifDisplay text-lg md:text-2xl font-bold tracking-tight transition-all duration-300 ${scrolled ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
                 1Health Essentials
               </span>
             </Link>
@@ -114,8 +114,8 @@ export default function Header() {
             ))}
           </ul>
 
-          <div className="flex items-center gap-1 md:gap-2">
-            <Button variant="ghost" size="icon" aria-label="Search" className="h-9 w-9 md:h-10 md:w-10" onClick={() => toast({ title: "Search", description: "Search with filters coming soon." })}>
+          <div className="flex items-center gap-0.5 md:gap-2">
+            <Button variant="ghost" size="icon" aria-label="Search" className="h-8 w-8 md:h-10 md:w-10" onClick={() => toast({ title: "Search", description: "Search with filters coming soon." })}>
               <Search className="h-4 w-4 md:h-5 md:w-5" />
             </Button>
             
@@ -123,10 +123,10 @@ export default function Header() {
             
             {/* Wishlist Button */}
             <Link to="/wishlist">
-              <Button variant="ghost" size="icon" aria-label="Wishlist" className="relative h-9 w-9 md:h-10 md:w-10">
+              <Button variant="ghost" size="icon" aria-label="Wishlist" className="relative h-8 w-8 md:h-10 md:w-10">
                 <Heart className="h-4 w-4 md:h-5 md:w-5" />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 inline-flex h-4 min-w-4 md:h-5 md:min-w-5 items-center justify-center rounded-full bg-primary text-primary-foreground text-[9px] md:text-[10px] px-0.5 md:px-1">
+                  <span className="absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 md:h-5 md:min-w-5 items-center justify-center rounded-full bg-primary text-primary-foreground text-[8px] md:text-[10px] px-0.5 md:px-1 font-bold">
                     {wishlistCount}
                   </span>
                 )}
@@ -138,9 +138,9 @@ export default function Header() {
               user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="relative rounded-full h-9 w-9 md:h-10 md:w-10">
-                      <Avatar className="h-7 w-7 md:h-8 md:w-8">
-                        <AvatarFallback className="bg-primary text-primary-foreground text-xs md:text-sm">
+                    <Button variant="ghost" size="icon" className="relative rounded-full h-8 w-8 md:h-10 md:w-10">
+                      <Avatar className="h-6 w-6 md:h-8 md:w-8">
+                        <AvatarFallback className="bg-primary text-primary-foreground text-[10px] md:text-sm">
                           {user.email?.charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
@@ -179,23 +179,23 @@ export default function Header() {
                 </DropdownMenu>
               ) : (
                 <Link to="/auth">
-                  <Button variant="ghost" size="icon" aria-label="Account" className="h-9 w-9 md:h-10 md:w-10">
+                  <Button variant="ghost" size="icon" aria-label="Account" className="h-8 w-8 md:h-10 md:w-10">
                     <User className="h-4 w-4 md:h-5 md:w-5" />
                   </Button>
                 </Link>
               )
             ) : (
-              <Button variant="ghost" size="icon" aria-label="Account" className="h-9 w-9 md:h-10 md:w-10">
+              <Button variant="ghost" size="icon" aria-label="Account" className="h-8 w-8 md:h-10 md:w-10">
                 <User className="h-4 w-4 md:h-5 md:w-5" />
               </Button>
             )}
 
             {cartEnabled && (
               <CartDrawer>
-                <Button variant="accent" size="icon" aria-label="Cart" className="relative h-9 w-9 md:h-10 md:w-10">
+                <Button variant="accent" size="icon" aria-label="Cart" className="relative h-8 w-8 md:h-10 md:w-10">
                   <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
                   {totalQty > 0 && (
-                    <span className="absolute -top-1 -right-1 inline-flex h-4 min-w-4 md:h-5 md:min-w-5 items-center justify-center rounded-full bg-primary text-primary-foreground text-[9px] md:text-[10px] px-0.5 md:px-1">
+                    <span className="absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 md:h-5 md:min-w-5 items-center justify-center rounded-full bg-primary text-primary-foreground text-[8px] md:text-[10px] px-0.5 md:px-1 font-bold">
                       {totalQty}
                     </span>
                   )}
