@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ShoppingCart, User, Search, MapPin, Phone, LogOut, Heart, Menu } from "lucide-react";
+import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
@@ -93,8 +94,15 @@ export default function Header() {
               </SheetContent>
             </Sheet>
 
-            <Link to="/" className="font-serifDisplay text-xl md:text-2xl font-bold tracking-tight">
-              1Health Essentials
+            <Link to="/" className="flex items-center gap-2 md:gap-3">
+              <img 
+                src={logo} 
+                alt="1Health Essentials Logo" 
+                className="h-8 w-8 md:h-10 md:w-10 lg:h-12 lg:w-12 object-contain transition-all duration-300"
+              />
+              <span className={`font-serifDisplay text-xl md:text-2xl font-bold tracking-tight transition-all duration-300 ${scrolled ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
+                1Health Essentials
+              </span>
             </Link>
           </div>
 
