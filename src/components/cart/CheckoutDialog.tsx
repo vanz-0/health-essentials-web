@@ -96,6 +96,17 @@ Thank you!`;
   return <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onOpenChange(false)}
+            className="absolute left-4 top-4 h-8 w-8 p-0"
+          >
+            <span className="sr-only">Back</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </Button>
           <DialogTitle className="text-xl font-bold">Complete Your Order</DialogTitle>
           <DialogDescription>
             Pay via M-Pesa and confirm your order on WhatsApp

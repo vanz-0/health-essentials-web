@@ -310,7 +310,9 @@ const Index = () => {
           ...item,
           price: typeof item.price === 'number' ? item.price : 0
         }))} />
-        <ChallengeBanner />
+        <div id="challenge">
+          <ChallengeBanner />
+        </div>
         <Trust />
         <About />
         <Testimonials />
