@@ -51,33 +51,15 @@ export default function UrgentDeal({
     <div 
       className="bg-gradient-to-r from-red-500 to-orange-500 text-white p-3 md:p-4 rounded-lg animate-pulse-glow relative overflow-hidden"
     >
-      {/* Product image overlay - larger and clearer */}
+      {/* Product image overlay - single clear image */}
       <div 
-        className="absolute right-0 top-1/2 -translate-y-1/2 opacity-80 pointer-events-none"
-        style={{
-          width: '160px',
-          height: '160px'
-        }}
+        className="absolute right-4 top-1/2 -translate-y-1/2 opacity-90 pointer-events-none w-32 h-32 md:w-44 md:h-44"
       >
         <img 
           src={image} 
           alt={title}
-          className="w-full h-full object-contain drop-shadow-2xl"
-          style={{ filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.3))' }}
-        />
-      </div>
-      <div 
-        className="absolute right-0 top-1/2 -translate-y-1/2 opacity-80 pointer-events-none hidden md:block"
-        style={{
-          width: '200px',
-          height: '200px'
-        }}
-      >
-        <img 
-          src={image} 
-          alt={title}
-          className="w-full h-full object-contain drop-shadow-2xl"
-          style={{ filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.3))' }}
+          className="w-full h-full object-contain"
+          style={{ filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.4))' }}
         />
       </div>
       

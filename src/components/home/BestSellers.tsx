@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import InventoryAlert from "./InventoryAlert";
 import WishlistButton from "@/components/wishlist/WishlistButton";
+import ProductQuickView from "@/components/shop/ProductQuickView";
 
 export type Product = {
   id: string;
@@ -19,6 +21,7 @@ export type Product = {
 function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   const { isEnabled: cartEnabled } = useFeatureFlag('bit_6_shopping_cart');
+  const [showQuickView, setShowQuickView] = useState(false);
   
   // Randomized inventory based on product id
   const getRandomStock = (id: string) => {
@@ -28,8 +31,14 @@ function ProductCard({ product }: { product: Product }) {
   };
   const remaining = getRandomStock(product.id);
   return (
-    <div className="rounded-lg border p-2 md:p-3 hover:shadow-sm transition-shadow">
-      <div className="relative overflow-hidden rounded-md">
+    <>
+      <ProductQuickView 
+        product={product} 
+        open={showQuickView} 
+        onOpenChange={setShowQuickView} 
+      />
+      <div className="rounded-lg border p-2 md:p-3 hover:shadow-sm transition-shadow">
+        <div className="relative overflow-hidden rounded-md">
         {product.sale && (
           <span className="absolute left-1.5 top-1.5 md:left-2 md:top-2 rounded bg-accent px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-xs font-medium text-accent-foreground">Sale</span>
         )}
@@ -85,10 +94,17 @@ function ProductCard({ product }: { product: Product }) {
               {remaining === 0 ? 'Out of Stock' : 'Add to Cart'}
             </Button>
           )}
-          <Button variant="outline" className={`${cartEnabled ? "flex-1" : "w-full"} text-xs md:text-sm h-8 md:h-10`}>Quick View</Button>
+          <Button 
+            variant="outline" 
+            className={`${cartEnabled ? "flex-1" : "w-full"} text-xs md:text-sm h-8 md:h-10`}
+            onClick={() => setShowQuickView(true)}
+          >
+            Quick View
+          </Button>
         </div>
       </div>
     </div>
+    </>
   );
 }
 

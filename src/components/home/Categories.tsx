@@ -1,25 +1,28 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Droplets, Heart } from "lucide-react";
+import skincareImg from "@/assets/category-skincare.jpg";
+import haircareImg from "@/assets/category-haircare.jpg";
+import bodycareImg from "@/assets/category-bodycare.jpg";
 
 const categories = [
   {
     name: "Skincare",
     icon: Sparkles,
     description: "Nourish and protect your skin",
-    color: "from-pink-500 to-rose-500"
+    image: skincareImg
   },
   {
     name: "Haircare",
     icon: Droplets,
     description: "Healthy, beautiful hair",
-    color: "from-purple-500 to-indigo-500"
+    image: haircareImg
   },
   {
     name: "Body Care",
     icon: Heart,
     description: "Pamper your body",
-    color: "from-orange-500 to-amber-500"
+    image: bodycareImg
   }
 ];
 
@@ -36,22 +39,33 @@ export default function Categories() {
             <Link 
               key={category.name} 
               to={`/shop?category=${category.name.toLowerCase()}`}
-              className="group"
+              className="group block"
             >
-              <div className="relative overflow-hidden rounded-2xl p-8 text-white h-48 flex flex-col justify-between transition-transform hover:scale-105">
-                <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-90`} />
-                <div className="relative z-10">
-                  <Icon className="h-12 w-12 mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
-                  <p className="text-sm opacity-90">{category.description}</p>
+              <div className="relative overflow-hidden rounded-2xl h-64 transition-transform hover:scale-105">
+                {/* Background Image */}
+                <img 
+                  src={category.image} 
+                  alt={`${category.name} products`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                
+                {/* Content */}
+                <div className="relative z-10 h-full flex flex-col justify-between p-6 text-white">
+                  <Icon className="h-10 w-10" />
+                  <div>
+                    <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
+                    <p className="text-sm mb-4 opacity-90">{category.description}</p>
+                    <Button 
+                      variant="secondary" 
+                      className="w-fit"
+                      asChild
+                    >
+                      <span>Explore {category.name}</span>
+                    </Button>
+                  </div>
                 </div>
-                <Button 
-                  variant="secondary" 
-                  className="relative z-10 w-fit"
-                  asChild
-                >
-                  <span>Explore {category.name}</span>
-                </Button>
               </div>
             </Link>
           );

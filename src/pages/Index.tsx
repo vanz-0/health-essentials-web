@@ -12,7 +12,7 @@ import UrgentDeal from "@/components/home/UrgentDeal";
 import Categories from "@/components/home/Categories";
 import ChallengeBanner from "@/components/home/ChallengeBanner";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import SearchAndFilter, { FilterOptions } from "@/components/shop/SearchAndFilter";
 import { fuzzyMatch, parsePriceQuery } from "@/lib/searchUtils";
 import { usePersistedFilters } from "@/hooks/usePersistedFilters";
@@ -54,9 +54,35 @@ const Index = () => {
     return catalogueProducts.slice(8, 16);
   }, [catalogueProducts]);
 
-  const hotDeals = useMemo(() => {
-    return catalogueProducts.slice(0, 2);
+  // Auto-rotating hot deals
+  const [currentDealIndex, setCurrentDealIndex] = useState(0);
+  
+  const hotDealsPool = useMemo(() => {
+    // Create pairs of deals that will rotate
+    const deals = [];
+    for (let i = 0; i < Math.min(catalogueProducts.length, 8); i += 2) {
+      if (catalogueProducts[i + 1]) {
+        deals.push([catalogueProducts[i], catalogueProducts[i + 1]]);
+      }
+    }
+    return deals;
   }, [catalogueProducts]);
+
+  const hotDeals = useMemo(() => {
+    if (hotDealsPool.length === 0) return [];
+    return hotDealsPool[currentDealIndex % hotDealsPool.length];
+  }, [hotDealsPool, currentDealIndex]);
+
+  // Auto-rotate deals every 3 minutes (180 seconds)
+  useEffect(() => {
+    if (!fomoEnabled || hotDealsPool.length <= 1) return;
+    
+    const interval = setInterval(() => {
+      setCurrentDealIndex(prev => (prev + 1) % hotDealsPool.length);
+    }, 180000); // 3 minutes
+    
+    return () => clearInterval(interval);
+  }, [fomoEnabled, hotDealsPool.length]);
 
   // Calculate price range from products
   const priceRange = useMemo(() => {
@@ -236,6 +262,7 @@ const Index = () => {
           <section className="container py-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
               <UrgentDeal
+                key={`deal-0-${currentDealIndex}`}
                 title={hotDeals[0].name}
                 discount={30}
                 originalPrice={typeof hotDeals[0].price === 'number' ? hotDeals[0].price * 1.3 : 2499}
@@ -245,6 +272,7 @@ const Index = () => {
                 image={hotDeals[0].image}
               />
               <UrgentDeal
+                key={`deal-1-${currentDealIndex}`}
                 title={hotDeals[1].name}
                 discount={25}
                 originalPrice={typeof hotDeals[1].price === 'number' ? hotDeals[1].price * 1.25 : 1899}
