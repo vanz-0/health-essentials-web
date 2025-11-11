@@ -163,7 +163,7 @@ export default {
 				'cart-slide-up': 'cart-slide-up 0.3s ease-out',
 				'wiggle': 'wiggle 0.5s ease-in-out infinite',
 				'breathe': 'breathe 100s ease-in-out infinite',
-				'slow-bounce': 'slow-bounce 3s ease-in-out infinite'
+				'slow-bounce': 'slow-bounce 10s ease-in-out infinite'
 			}
 		}
 	},
