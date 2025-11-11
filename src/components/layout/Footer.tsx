@@ -12,7 +12,7 @@ export default function Footer() {
           <div className="flex items-center gap-3 mt-4">
             <a aria-label="Instagram" href="#" className="hover-scale"><Instagram /></a>
             <a aria-label="Facebook" href="#" className="hover-scale"><Facebook /></a>
-            <a aria-label="Email" href="#" className="hover-scale"><Mail /></a>
+            <a aria-label="Email" href="mailto:hello@1healthessentials.com" className="hover-scale"><Mail /></a>
           </div>
         </div>
 
