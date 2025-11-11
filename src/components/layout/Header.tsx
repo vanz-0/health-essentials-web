@@ -49,7 +49,7 @@ export default function Header() {
         <div className="container flex items-center justify-between py-2">
           <div className="flex items-center gap-4">
             <a 
-              href="https://wa.me/254735558830" 
+              href="https://web.whatsapp.com/send?phone=254735558830" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 hover:text-primary transition-colors"

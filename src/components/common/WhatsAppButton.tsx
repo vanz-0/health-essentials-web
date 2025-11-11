@@ -12,7 +12,7 @@ export default function WhatsAppButton({ productName }: WhatsAppButtonProps) {
     ? `Hi! I'd like to know more about ${productName}`
     : "Hello 1Health Essentials! I'm interested in your products.";
   
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(baseMessage)}`;
+  const whatsappUrl = `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(baseMessage)}`;
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
