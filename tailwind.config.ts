@@ -158,7 +158,7 @@ export default {
 				'cart-success': 'cart-success 0.4s ease-out',
 				'cart-slide-up': 'cart-slide-up 0.3s ease-out',
 				'wiggle': 'wiggle 0.5s ease-in-out infinite',
-				'breathe': 'breathe 6s ease-in-out infinite'
+				'breathe': 'breathe 10s ease-in-out infinite'
 			}
 		}
 	},
