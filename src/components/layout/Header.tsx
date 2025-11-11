@@ -98,7 +98,7 @@ export default function Header() {
               <img 
                 src={logo} 
                 alt="1Health Essentials Logo" 
-                className="h-8 w-8 md:h-10 md:w-10 lg:h-12 lg:w-12 object-contain transition-all duration-300"
+                className="h-10 w-10 md:h-12 md:w-12 lg:h-14 lg:w-14 object-contain transition-all duration-300"
               />
               <span className={`font-serifDisplay text-xl md:text-2xl font-bold tracking-tight transition-all duration-300 ${scrolled ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
                 1Health Essentials
