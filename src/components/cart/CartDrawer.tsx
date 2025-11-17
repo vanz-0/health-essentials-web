@@ -142,7 +142,10 @@ export default function CartDrawer({ children }: CartDrawerProps) {
                 </Button>
                 <Button 
                   className="bg-primary hover:bg-primary/90 animate-pulse"
-                  onClick={() => setCheckoutOpen(true)}
+                  onClick={() => {
+                    setIsOpen(false);
+                    setCheckoutOpen(true);
+                  }}
                 >
                   Checkout ({totalQty})
                 </Button>
