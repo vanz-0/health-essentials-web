@@ -150,13 +150,59 @@ export default function ProductQuickView({ product, open, onOpenChange }: Produc
               </Button>
             </div>
 
-            {/* Product Description Placeholder */}
-            <div className="mt-4 pt-4 border-t">
-              <h3 className="font-semibold mb-2">Product Details</h3>
-              <p className="text-sm text-muted-foreground">
-                Premium quality beauty and wellness product from 1Health Essentials. 
-                Natural ingredients, cruelty-free, and quality-tested for your peace of mind.
-              </p>
+            {/* Product Information Tabs */}
+            <div className="mt-4 pt-4 border-t space-y-4">
+              {/* Product Description */}
+              {product.copy && (
+                <div>
+                  <h3 className="font-semibold mb-2">About This Product</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {product.copy}
+                  </p>
+                </div>
+              )}
+
+              {/* Product Details */}
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                {product.size && (
+                  <div>
+                    <span className="font-medium text-foreground">Size:</span>
+                    <p className="text-muted-foreground">{product.size}</p>
+                  </div>
+                )}
+                {product.productType && (
+                  <div>
+                    <span className="font-medium text-foreground">Type:</span>
+                    <p className="text-muted-foreground capitalize">{product.productType}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Use Case */}
+              {product.useCase && (
+                <div>
+                  <h3 className="font-semibold mb-2">Perfect For</h3>
+                  <p className="text-sm text-muted-foreground">{product.useCase}</p>
+                </div>
+              )}
+
+              {/* Instructions */}
+              {product.instructions && (
+                <div>
+                  <h3 className="font-semibold mb-2">How to Use</h3>
+                  <div className="text-sm text-muted-foreground whitespace-pre-line">
+                    {product.instructions}
+                  </div>
+                </div>
+              )}
+
+              {/* Fun Fact */}
+              {product.funFact && (
+                <div className="bg-accent/20 rounded-lg p-3">
+                  <h3 className="font-semibold mb-1 text-sm">Did You Know?</h3>
+                  <p className="text-sm text-muted-foreground">{product.funFact}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
