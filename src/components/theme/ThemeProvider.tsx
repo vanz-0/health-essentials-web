@@ -40,16 +40,16 @@ function ThemeSyncWrapper({
 }) {
   const { theme, setTheme } = useTheme();
 
-  // Sync theme from user settings on mount
+  // Only sync from user settings if explicitly set (not 'system')
   useEffect(() => {
-    if (user && settings?.theme && theme !== settings.theme) {
+    if (user && settings?.theme && settings.theme !== 'system' && theme !== settings.theme) {
       setTheme(settings.theme);
     }
   }, [user, settings?.theme]);
 
-  // Save theme changes to user settings
+  // Save theme changes to user settings (only if user manually changes it)
   useEffect(() => {
-    if (user && theme && settings?.theme !== theme) {
+    if (user && theme && settings?.theme !== theme && theme !== 'system') {
       updateSettings({ theme });
     }
   }, [theme, user]);
