@@ -102,35 +102,110 @@ export type Database = {
         Row: {
           category: string | null
           created_at: string
-          description: string
-          "Estimated Price (KES)": string
           fun_fact: string
-          id: number
           image_number: string | null
           Name: string
-          Product_poto_link: string
+          Price: number | null
+          Product_copy: string | null
+          Product_instructions: string | null
+          size: string | null
+          Use_case: string | null
         }
         Insert: {
           category?: string | null
           created_at?: string
-          description: string
-          "Estimated Price (KES)"?: string
           fun_fact: string
-          id?: number
           image_number?: string | null
           Name?: string
-          Product_poto_link?: string
+          Price?: number | null
+          Product_copy?: string | null
+          Product_instructions?: string | null
+          size?: string | null
+          Use_case?: string | null
         }
         Update: {
           category?: string | null
           created_at?: string
-          description?: string
-          "Estimated Price (KES)"?: string
           fun_fact?: string
-          id?: number
           image_number?: string | null
           Name?: string
-          Product_poto_link?: string
+          Price?: number | null
+          Product_copy?: string | null
+          Product_instructions?: string | null
+          size?: string | null
+          Use_case?: string | null
+        }
+        Relationships: []
+      }
+      Catalogue1: {
+        Row: {
+          "Attatchment Copy": string | null
+          "Attatchment funfact": string | null
+          "Attatchment Instructions": string | null
+          Name: string
+          Price: number
+          "Product Name": string | null
+          "Product Type": string | null
+          Size: string | null
+          "Use case": string | null
+        }
+        Insert: {
+          "Attatchment Copy"?: string | null
+          "Attatchment funfact"?: string | null
+          "Attatchment Instructions"?: string | null
+          Name: string
+          Price: number
+          "Product Name"?: string | null
+          "Product Type"?: string | null
+          Size?: string | null
+          "Use case"?: string | null
+        }
+        Update: {
+          "Attatchment Copy"?: string | null
+          "Attatchment funfact"?: string | null
+          "Attatchment Instructions"?: string | null
+          Name?: string
+          Price?: number
+          "Product Name"?: string | null
+          "Product Type"?: string | null
+          Size?: string | null
+          "Use case"?: string | null
+        }
+        Relationships: []
+      }
+      Catalogue2: {
+        Row: {
+          "Attatchment Copy": string | null
+          "Attatchment funfact": string | null
+          "Attatchment Instructions": string | null
+          Price: number | null
+          "Product Name": string | null
+          "Product Num": string
+          "Product Type": string | null
+          Size: string | null
+          "Use case": string | null
+        }
+        Insert: {
+          "Attatchment Copy"?: string | null
+          "Attatchment funfact"?: string | null
+          "Attatchment Instructions"?: string | null
+          Price?: number | null
+          "Product Name"?: string | null
+          "Product Num": string
+          "Product Type"?: string | null
+          Size?: string | null
+          "Use case"?: string | null
+        }
+        Update: {
+          "Attatchment Copy"?: string | null
+          "Attatchment funfact"?: string | null
+          "Attatchment Instructions"?: string | null
+          Price?: number | null
+          "Product Name"?: string | null
+          "Product Num"?: string
+          "Product Type"?: string | null
+          Size?: string | null
+          "Use case"?: string | null
         }
         Relationships: []
       }
