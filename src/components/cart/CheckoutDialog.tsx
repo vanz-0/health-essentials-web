@@ -109,7 +109,7 @@ Thank you!`;
           </Button>
           <DialogTitle className="text-xl font-bold">Complete Your Order</DialogTitle>
           <DialogDescription>
-            Pay via M-Pesa and confirm your order on WhatsApp
+            Provide your M-Pesa registered number for prompting or Pay via M-Pesa and confirm your order on WhatsApp
           </DialogDescription>
         </DialogHeader>
 
