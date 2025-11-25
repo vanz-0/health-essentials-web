@@ -12,21 +12,29 @@ interface BeautyTipCardProps {
 
 export function BeautyTipCard({ product, onImageClick }: BeautyTipCardProps) {
   const [isUseCaseOpen, setIsUseCaseOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
       <div 
-        className="relative h-56 overflow-hidden cursor-pointer group"
+        className="relative h-56 overflow-hidden cursor-pointer group bg-muted"
         onClick={onImageClick}
       >
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover transition-transform group-hover:scale-105"
-          onError={(e) => {
-            e.currentTarget.src = '/placeholder.svg';
-          }}
-        />
+        {!imageError ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover transition-transform group-hover:scale-105"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-muted">
+            <div className="text-center p-4">
+              <div className="text-4xl mb-2">📷</div>
+              <p className="text-xs text-muted-foreground">Image unavailable</p>
+            </div>
+          </div>
+        )}
         {product.category && (
           <Badge className="absolute top-2 right-2 capitalize">
             {product.category}
