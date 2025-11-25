@@ -85,6 +85,12 @@ export default function Shop() {
         activeFilters.categories!.includes(product.category || '')
       );
     }
+
+    if (activeFilters.productTypes && activeFilters.productTypes.length > 0) {
+      filtered = filtered.filter(product => 
+        activeFilters.productTypes!.includes(product.product_type || '')
+      );
+    }
     
     if (activeFilters.priceRange) {
       const { min, max } = activeFilters.priceRange;

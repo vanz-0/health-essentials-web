@@ -17,6 +17,7 @@ export type Product = {
   rating?: number;
   sale?: boolean;
   category?: string;
+  product_type?: string;
   productNum?: string;
   productType?: string;
   size?: string;

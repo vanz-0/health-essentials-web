@@ -17,6 +17,7 @@ import type { Product } from "@/components/home/BestSellers";
 
 export type FilterOptions = {
   categories: string[];
+  productTypes: string[];
   priceRange: { min: number; max: number };
   sortBy: 'name' | 'price-low' | 'price-high' | 'rating';
   minRating?: number;
@@ -35,12 +36,20 @@ interface SearchAndFilterProps {
   maxPrice: number;
 }
 
-const categories = [
-  { id: 'skincare', name: 'Skincare', count: 12 },
-  { id: 'haircare', name: 'Hair Care', count: 8 },
-  { id: 'bodycare', name: 'Body Care', count: 15 },
-  { id: 'suncare', name: 'Sun Care', count: 5 },
-];
+// Helper function to get unique values with counts
+const getUniqueValuesWithCount = (items: Product[], key: 'category' | 'product_type') => {
+  const counts = items.reduce((acc, item) => {
+    const value = item[key];
+    if (value && typeof value === 'string') {
+      acc[value] = (acc[value] || 0) + 1;
+    }
+    return acc;
+  }, {} as Record<string, number>);
+  
+  return Object.entries(counts)
+    .map(([value, count]) => ({ id: value, name: value, count }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+};
 
 const sortOptions = [
   { value: 'name', label: 'Name A-Z' },
@@ -65,6 +74,10 @@ export default function SearchAndFilter({
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
   const debouncedSearch = useDebounce(localSearchQuery, 300);
   
+  // Generate dynamic categories and product types from products
+  const categories = getUniqueValuesWithCount(products, 'category');
+  const productTypes = getUniqueValuesWithCount(products, 'product_type');
+  
   // Update parent when debounced search changes
   useState(() => {
     if (debouncedSearch !== searchQuery) {
@@ -84,6 +97,15 @@ export default function SearchAndFilter({
       : [...currentCategories, categoryId];
     
     onFilter({ ...activeFilters, categories: newCategories });
+  };
+
+  const handleProductTypeToggle = (typeId: string) => {
+    const currentTypes = activeFilters.productTypes || [];
+    const newTypes = currentTypes.includes(typeId)
+      ? currentTypes.filter(t => t !== typeId)
+      : [...currentTypes, typeId];
+    
+    onFilter({ ...activeFilters, productTypes: newTypes });
   };
 
   const handleSortChange = (sortBy: FilterOptions['sortBy']) => {
@@ -106,6 +128,7 @@ export default function SearchAndFilter({
 
   const activeFilterCount = 
     (activeFilters.categories?.length || 0) + 
+    (activeFilters.productTypes?.length || 0) +
     (activeFilters.sortBy && activeFilters.sortBy !== 'name' ? 1 : 0) +
     (activeFilters.minRating ? 1 : 0) +
     (activeFilters.inStock ? 1 : 0) +
@@ -194,6 +217,27 @@ export default function SearchAndFilter({
                       >
                         <span>{category.name}</span>
                         <span className="text-sm text-muted-foreground">({category.count})</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Product Types */}
+                <div>
+                  <h3 className="font-medium mb-3">Product Type</h3>
+                  <div className="space-y-2">
+                    {productTypes.map((type) => (
+                      <button
+                        key={type.id}
+                        onClick={() => handleProductTypeToggle(type.id)}
+                        className={`flex w-full items-center justify-between rounded-lg p-3 text-left transition-colors hover:bg-muted ${
+                          activeFilters.productTypes?.includes(type.id) 
+                            ? 'bg-primary/10 text-primary border border-primary/20' 
+                            : 'bg-muted/30'
+                        }`}
+                      >
+                        <span>{type.name}</span>
+                        <span className="text-sm text-muted-foreground">({type.count})</span>
                       </button>
                     ))}
                   </div>
@@ -317,9 +361,10 @@ export default function SearchAndFilter({
           </Sheet>
 
           {/* Active Filters */}
-          {activeFilters.categories && activeFilters.categories.length > 0 && (
+          {((activeFilters.categories && activeFilters.categories.length > 0) || 
+            (activeFilters.productTypes && activeFilters.productTypes.length > 0)) && (
             <div className="flex flex-wrap gap-2">
-              {activeFilters.categories.map((categoryId) => {
+              {activeFilters.categories?.map((categoryId) => {
                 const category = categories.find(c => c.id === categoryId);
                 return (
                   <Badge
@@ -329,6 +374,20 @@ export default function SearchAndFilter({
                     onClick={() => handleCategoryToggle(categoryId)}
                   >
                     {category?.name}
+                    <X className="h-3 w-3" />
+                  </Badge>
+                );
+              })}
+              {activeFilters.productTypes?.map((typeId) => {
+                const type = productTypes.find(t => t.id === typeId);
+                return (
+                  <Badge
+                    key={typeId}
+                    variant="secondary"
+                    className="gap-1 animate-fade-in hover:bg-destructive hover:text-destructive-foreground transition-colors cursor-pointer"
+                    onClick={() => handleProductTypeToggle(typeId)}
+                  >
+                    {type?.name}
                     <X className="h-3 w-3" />
                   </Badge>
                 );
