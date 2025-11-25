@@ -98,48 +98,6 @@ export type Database = {
         }
         Relationships: []
       }
-      catalogue: {
-        Row: {
-          created_at: string
-          fun_fact: string
-          id: number
-          instructions: string | null
-          name: string
-          price: number
-          product_copy: string | null
-          product_num: string
-          product_type: string | null
-          size: string | null
-          use_case: string | null
-        }
-        Insert: {
-          created_at?: string
-          fun_fact: string
-          id?: number
-          instructions?: string | null
-          name: string
-          price: number
-          product_copy?: string | null
-          product_num: string
-          product_type?: string | null
-          size?: string | null
-          use_case?: string | null
-        }
-        Update: {
-          created_at?: string
-          fun_fact?: string
-          id?: number
-          instructions?: string | null
-          name?: string
-          price?: number
-          product_copy?: string | null
-          product_num?: string
-          product_type?: string | null
-          size?: string | null
-          use_case?: string | null
-        }
-        Relationships: []
-      }
       Catalogue1: {
         Row: {
           "Attatchment Copy": string | null
