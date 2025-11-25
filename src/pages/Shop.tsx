@@ -48,6 +48,14 @@ export default function Shop() {
   );
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Initialize search query from URL parameter
+  useEffect(() => {
+    const queryParam = searchParams.get('q');
+    if (queryParam) {
+      setSearchQuery(queryParam);
+    }
+  }, [searchParams]);
+
   // Handle initial category from URL
   useEffect(() => {
     const categoryParam = searchParams.get('category');

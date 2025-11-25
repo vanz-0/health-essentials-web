@@ -61,7 +61,14 @@ export default function Header() {
             </a>
             <span className="inline-flex items-center gap-1"><MapPin className="h-3.5 w-3.5" /> Brentwood Arcade, Thindiqua, Kiambu</span>
           </div>
-          <div className="text-xs">Your trusted partner in natural beauty and wellness</div>
+          <a 
+            href="https://1healthessentials.netlify.app/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors animate-pulse"
+          >
+            🔥 Black November Sale! Save BIG on Premium Beauty Essentials - Shop Now →
+          </a>
         </div>
       </div>
 
