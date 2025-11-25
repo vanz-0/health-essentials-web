@@ -14,6 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { Link } from "react-router-dom";
+import GlobalSearch from "@/components/common/GlobalSearch";
 
 const navItems = [
   { label: "Home", to: "/" },
@@ -35,6 +36,7 @@ export default function Header() {
   const { isEnabled: authEnabled } = useFeatureFlag('bit_5_auth');
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -116,11 +118,15 @@ export default function Header() {
           </ul>
 
           <div className="flex items-center gap-0.5 md:gap-2">
-            <Link to="/shop">
-              <Button variant="ghost" size="icon" aria-label="Search" className="h-8 w-8 md:h-10 md:w-10">
-                <Search className="h-4 w-4 md:h-5 md:w-5" />
-              </Button>
-            </Link>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              aria-label="Search" 
+              className="h-8 w-8 md:h-10 md:w-10"
+              onClick={() => setSearchOpen(true)}
+            >
+              <Search className="h-4 w-4 md:h-5 md:w-5" />
+            </Button>
             
             <ThemeToggle />
             
@@ -208,6 +214,8 @@ export default function Header() {
           </div>
         </nav>
       </div>
+      
+      <GlobalSearch open={searchOpen} onOpenChange={setSearchOpen} />
     </header>
   );
 }
