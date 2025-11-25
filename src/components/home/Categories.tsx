@@ -1,28 +1,59 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Droplets, Heart } from "lucide-react";
+import { Droplets, Sparkles, Palette, Wind, Scissors, Package, Flame } from "lucide-react";
 import skincareImg from "@/assets/category-skincare.jpg";
 import haircareImg from "@/assets/category-haircare.jpg";
 import bodycareImg from "@/assets/category-bodycare.jpg";
 
 const categories = [
   {
-    name: "Skincare",
-    icon: Sparkles,
-    description: "Nourish and protect your skin",
-    image: skincareImg
-  },
-  {
-    name: "Haircare",
+    name: "Soaps & Cleansers",
     icon: Droplets,
-    description: "Healthy, beautiful hair",
-    image: haircareImg
+    description: "Body washes, soaps & cleansers",
+    image: bodycareImg,
+    filter: "soaps"
   },
   {
-    name: "Body Care",
-    icon: Heart,
-    description: "Pamper your body",
-    image: bodycareImg
+    name: "Body Lotions & Oils",
+    icon: Sparkles,
+    description: "Moisturizers, oils & butters",
+    image: bodycareImg,
+    filter: "body-lotions"
+  },
+  {
+    name: "Hair Care",
+    icon: Scissors,
+    description: "Shampoos, conditioners & treatments",
+    image: haircareImg,
+    filter: "hair-care"
+  },
+  {
+    name: "Face Care",
+    icon: Sparkles,
+    description: "Serums, creams & toners",
+    image: skincareImg,
+    filter: "face-care"
+  },
+  {
+    name: "Makeup",
+    icon: Palette,
+    description: "Foundations, lipsticks & more",
+    image: skincareImg,
+    filter: "makeup"
+  },
+  {
+    name: "Fragrances",
+    icon: Wind,
+    description: "Perfumes & body mists",
+    image: bodycareImg,
+    filter: "fragrances"
+  },
+  {
+    name: "Hair Styling",
+    icon: Flame,
+    description: "Gels, mousses & sprays",
+    image: haircareImg,
+    filter: "hair-styling"
   }
 ];
 
@@ -32,16 +63,16 @@ export default function Categories() {
       <h2 className="font-serifDisplay text-2xl md:text-3xl font-semibold text-center mb-8">
         Shop by Category
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
         {categories.map((category) => {
           const Icon = category.icon;
           return (
             <Link 
               key={category.name} 
-              to={`/shop?category=${category.name.toLowerCase()}`}
+              to={`/shop?category=${category.filter}`}
               className="group block"
             >
-              <div className="relative overflow-hidden rounded-2xl h-64 transition-transform hover:scale-105">
+              <div className="relative overflow-hidden rounded-2xl h-48 md:h-64 transition-transform hover:scale-105">
                 {/* Background Image */}
                 <img 
                   src={category.image} 
@@ -53,10 +84,10 @@ export default function Categories() {
                 
                 {/* Content */}
                 <div className="relative z-10 h-full flex flex-col justify-between p-6 text-white">
-                  <Icon className="h-10 w-10" />
+                  <Icon className="h-8 w-8 md:h-10 md:w-10" />
                   <div>
-                    <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
-                    <p className="text-sm mb-4 opacity-90">{category.description}</p>
+                    <h3 className="text-lg md:text-xl font-bold mb-1 md:mb-2">{category.name}</h3>
+                    <p className="text-xs md:text-sm mb-2 md:mb-4 opacity-90">{category.description}</p>
                     <Button 
                       variant="secondary" 
                       className="w-fit"

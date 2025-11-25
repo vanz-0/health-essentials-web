@@ -51,6 +51,32 @@ const getUniqueValuesWithCount = (items: Product[], key: 'category' | 'product_t
     .sort((a, b) => a.name.localeCompare(b.name));
 };
 
+// Predefined categories based on product types
+const predefinedCategories = [
+  { id: 'soaps', name: 'Soaps & Cleansers', description: 'Body washes, soaps & cleansers' },
+  { id: 'body-lotions', name: 'Body Lotions & Oils', description: 'Moisturizers, oils & butters' },
+  { id: 'hair-care', name: 'Hair Care', description: 'Shampoos, conditioners & treatments' },
+  { id: 'face-care', name: 'Face Care', description: 'Serums, creams & toners' },
+  { id: 'makeup', name: 'Makeup', description: 'Foundations, lipsticks & more' },
+  { id: 'fragrances', name: 'Fragrances', description: 'Perfumes & body mists' },
+  { id: 'hair-styling', name: 'Hair Styling', description: 'Gels, mousses & sprays' },
+];
+
+const getCategoryProductCount = (products: Product[], categoryId: string): number => {
+  const mappings: Record<string, string[]> = {
+    'soaps': ['Body wash', 'Body Wash', 'Cleanser', 'Cleaning Soap', 'Cleanser (bar soap)', 'Cleanser (Bar Soap)'],
+    'body-lotions': ['Body lotion', 'Body Lotion', 'Body cream', 'Body Cream', 'Body butter', 'Body oil', 'Body Oil'],
+    'hair-care': ['Hair Shampoo', 'Shampoo', 'Conditioner', 'Hair treatment', 'Hair food', 'Hair Food', 'Hair lotion'],
+    'face-care': ['Face cream', 'Facial serum', 'Facial Serum', 'Face Serum', 'Facial toner', 'Eye cream'],
+    'makeup': ['Foundation', 'Lipstick', 'Lipgloss', 'Mascara', 'Eyeliner', 'Eyeshadow palette'],
+    'fragrances': ['Eau de Parfum', 'Eau de Toilette (fragrance)', 'Perfume'],
+    'hair-styling': ['Hair gel', 'Hair spray', 'Hair styling mousse', 'Hair pomade'],
+  };
+  
+  const productTypes = mappings[categoryId] || [];
+  return products.filter(p => productTypes.some(type => p.product_type?.includes(type))).length;
+};
+
 const sortOptions = [
   { value: 'name', label: 'Name A-Z' },
   { value: 'price-low', label: 'Price: Low to High' },
@@ -74,8 +100,13 @@ export default function SearchAndFilter({
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
   const debouncedSearch = useDebounce(localSearchQuery, 300);
   
-  // Generate dynamic categories and product types from products
-  const categories = getUniqueValuesWithCount(products, 'category');
+  // Generate categories with counts
+  const categories = predefinedCategories.map(cat => ({
+    ...cat,
+    count: getCategoryProductCount(products, cat.id)
+  }));
+  
+  // Generate dynamic product types from products
   const productTypes = getUniqueValuesWithCount(products, 'product_type');
   
   // Update parent when debounced search changes

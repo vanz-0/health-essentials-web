@@ -8,7 +8,7 @@ import { fuzzyMatch, parsePriceQuery } from "@/lib/searchUtils";
 import { usePersistedFilters } from "@/hooks/usePersistedFilters";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   Pagination,
   PaginationContent,
@@ -22,15 +22,42 @@ import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
 
 const PRODUCTS_PER_PAGE = 50;
 
+// Category mapping from URL filter to product types
+const getCategoryProductTypes = (categoryFilter: string): string[] => {
+  const mappings: Record<string, string[]> = {
+    'soaps': ['Body wash', 'Body Wash', 'Cleanser', 'Cleaning Soap', 'Cleanser (bar soap)', 'Cleanser (Bar Soap)', 'Bath & shampoo (2-in-1 cleanser)', 'Body Cleanser', 'Bubble bath / Bath and shower cleanser', 'Face wash', 'Facial Cleanser', 'Handwash', 'Hair & Body Wash (2-in-1)', 'Makeup Remover & Facial Cleanser'],
+    'body-lotions': ['Body lotion', 'Body Lotion', 'Body cream', 'Body Cream', 'Body butter', 'Body oil', 'Body Oil', 'Body Oil Gel', 'Body Gel Oil', 'Body Oil (Body Gel Oil)', 'Body serum', 'Body gloss (moisturizer)', 'Hand & body lotion', 'Hand & Body Lotion', 'Hand and body lotion', 'Deep Hydrating Hand & Body Lotion', 'Lotion'],
+    'hair-care': ['Hair Shampoo', 'Shampoo', 'Conditioner', 'Hair & Scalp Conditioner', 'Herbal Hair & Scalp Conditioner', 'Hair treatment', 'Hair masque', 'Hair food', 'Hair Food', 'Hair food (moisture treatment)', 'Hair lotion', 'Hair Lotion', 'Hair oil', 'Leave-in conditioner', 'Leave-in treatment', 'Leave-in hair treatment', 'Leave-in hair strengthener', 'Hair conditioner/moisturizer', 'Hair & scalp treatment', 'Hair care (anti-dandruff treatment)', 'Hair treatment/moisturising cream', 'Hair loss treatment (ampoules/serum)', 'Growth Lotion'],
+    'face-care': ['Face cream', 'Facial serum', 'Facial Serum', 'Face Serum', 'Face & Body Serum', 'Facial toner', 'Facial Toner', 'Eye cream', 'Eye Cream', 'Face & body lotion', 'Face & Body Scrub', 'Facial Whitening & Firming Cream', 'Fairness Cream', 'Firming + Brightening Cream', 'Beauty cream (moisturizer)', 'Cream (moisturizer)', 'Cream (moisturiser)', 'Daily Moisturizer', 'Anti-aging serum', 'Cleanser (Micellar Water)', 'Face wash foam', 'Cleanser foam', 'Cleanser (mousse)', 'Foaming Mousse', 'Eye mask', 'Aloe Vera Gel'],
+    'makeup': ['Foundation', 'Lipstick', 'Lipgloss', 'Lip gloss (matte)', 'Mascara', 'Eyeliner', 'Eyeshadow palette', 'Blush palette', 'Concealer', 'Contouring Palette', 'Highlighter, Eyeshadow, Face Powder', 'Lip balm', 'Lip oil', 'Lip scrub', 'Flavored Lip Gloss', 'Eyelash extension'],
+    'fragrances': ['Eau de Parfum', 'Eau de Parfum (perfume)', 'Eau de Parfum (Perfume)', 'Eau de Toilette (fragrance)', 'Eau de Toilette (fragrance/perfume)', 'Fragrance (Eau de Toilette)', 'Fine Fragrance Mist', 'Perfume', 'Perfume (Eau de Toilette)', 'Perfume Mist', 'Scent Mist'],
+    'hair-styling': ['Hair gel', 'Hair styling gel wax', 'Gel Wax', 'Hair spray', 'Hair Sheen Spray', 'Hair styling mousse', 'Foam wrap (hair styling mousse)', 'Curling mousse', 'Hair pomade', 'Hair wax', 'Styling Gel', 'Leave-in spray']
+  };
+  
+  return mappings[categoryFilter] || [];
+};
+
 export default function Shop() {
   const { data: allProducts, isLoading, error } = useCatalogueProducts();
   const { filters: persistedFilters, setFilters: setPersistedFilters, isLoaded } = usePersistedFilters();
+  const [searchParams] = useSearchParams();
   
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilters, setActiveFilters] = useState<Partial<FilterOptions>>(
     isLoaded ? persistedFilters : { sortBy: 'name' }
   );
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Handle initial category from URL
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam && !activeFilters.categories?.length) {
+      const productTypes = getCategoryProductTypes(categoryParam);
+      if (productTypes.length > 0) {
+        setActiveFilters(prev => ({ ...prev, productTypes }));
+      }
+    }
+  }, [searchParams]);
   
   useMemo(() => {
     if (isLoaded) {
@@ -81,9 +108,24 @@ export default function Shop() {
     }
     
     if (activeFilters.categories && activeFilters.categories.length > 0) {
-      filtered = filtered.filter(product => 
-        activeFilters.categories!.includes(product.category || '')
-      );
+      // Map category IDs to product types
+      const categoryMappings: Record<string, string[]> = {
+        'soaps': ['Body wash', 'Body Wash', 'Cleanser', 'Cleaning Soap', 'Cleanser (bar soap)', 'Cleanser (Bar Soap)', 'Bath & shampoo (2-in-1 cleanser)', 'Body Cleanser', 'Bubble bath / Bath and shower cleanser', 'Face wash', 'Facial Cleanser', 'Handwash'],
+        'body-lotions': ['Body lotion', 'Body Lotion', 'Body cream', 'Body Cream', 'Body butter', 'Body oil', 'Body Oil', 'Body Oil Gel', 'Body Gel Oil', 'Body serum', 'Hand & body lotion', 'Hand & Body Lotion'],
+        'hair-care': ['Hair Shampoo', 'Shampoo', 'Conditioner', 'Hair & Scalp Conditioner', 'Hair treatment', 'Hair food', 'Hair Food', 'Hair lotion', 'Hair Lotion', 'Hair oil', 'Leave-in conditioner'],
+        'face-care': ['Face cream', 'Facial serum', 'Facial Serum', 'Face Serum', 'Facial toner', 'Facial Toner', 'Eye cream', 'Eye Cream', 'Face & body lotion', 'Anti-aging serum'],
+        'makeup': ['Foundation', 'Lipstick', 'Lipgloss', 'Mascara', 'Eyeliner', 'Eyeshadow palette', 'Blush palette', 'Concealer'],
+        'fragrances': ['Eau de Parfum', 'Eau de Toilette (fragrance)', 'Perfume', 'Fine Fragrance Mist'],
+        'hair-styling': ['Hair gel', 'Hair spray', 'Hair styling mousse', 'Hair pomade', 'Gel Wax'],
+      };
+      
+      const allowedProductTypes = activeFilters.categories.flatMap(cat => categoryMappings[cat] || []);
+      
+      if (allowedProductTypes.length > 0) {
+        filtered = filtered.filter(product => 
+          allowedProductTypes.some(type => product.product_type?.includes(type))
+        );
+      }
     }
 
     if (activeFilters.productTypes && activeFilters.productTypes.length > 0) {
