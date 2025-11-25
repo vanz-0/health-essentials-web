@@ -22,6 +22,7 @@ import ProductManagement from "./pages/admin/ProductManagement";
 import OrderManagement from "./pages/admin/OrderManagement";
 import ContactManagement from "./pages/admin/ContactManagement";
 import AnalyticsDashboard from "./pages/admin/AnalyticsDashboard";
+import CatalogueImport from "./pages/admin/CatalogueImport";
 import { usePerformance } from "./hooks/usePerformance";
 import { useAnalytics } from "./hooks/useAnalytics";
 import { useErrorLogging } from "./hooks/useErrorLogging";
@@ -64,6 +65,7 @@ const AppContent = () => {
                     <Route path="/admin/orders" element={<AdminRoute><OrderManagement /></AdminRoute>} />
                     <Route path="/admin/contacts" element={<AdminRoute><ContactManagement /></AdminRoute>} />
                     <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
+                    <Route path="/admin/catalogue-import" element={<AdminRoute><CatalogueImport /></AdminRoute>} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
