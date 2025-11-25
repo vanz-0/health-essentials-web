@@ -11,6 +11,7 @@ import FlashBanner from "@/components/home/FlashBanner";
 import UrgentDeal from "@/components/home/UrgentDeal";
 import Categories from "@/components/home/Categories";
 import ChallengeBanner from "@/components/home/ChallengeBanner";
+import HotDealsCarousel from "@/components/home/HotDealsCarousel";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { useState, useMemo, useEffect } from "react";
 import SearchAndFilter, { FilterOptions } from "@/components/shop/SearchAndFilter";
@@ -306,6 +307,10 @@ const Index = () => {
           title={filteringEnabled && (searchQuery || (activeFilters.categories && activeFilters.categories.length > 0)) ? "Search Results" : "Best Sellers"}
         />
         <Categories />
+        
+        {/* Hot Deals Carousel using copywriting tone */}
+        {catalogueProducts.length > 0 && <HotDealsCarousel products={catalogueProducts} />}
+        
         <NewArrivals items={arrivals.map(item => ({
           ...item,
           price: typeof item.price === 'number' ? item.price : 0

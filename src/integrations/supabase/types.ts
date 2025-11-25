@@ -140,6 +140,42 @@ export type Database = {
         }
         Relationships: []
       }
+      Catalogue1: {
+        Row: {
+          "Attatchment Copy": string | null
+          "Attatchment funfact": string | null
+          "Attatchment Instructions": string | null
+          Price: number | null
+          "Product Name": string | null
+          "Product Num": string | null
+          "Product Type": string | null
+          Size: string | null
+          "Use case": string | null
+        }
+        Insert: {
+          "Attatchment Copy"?: string | null
+          "Attatchment funfact"?: string | null
+          "Attatchment Instructions"?: string | null
+          Price?: number | null
+          "Product Name"?: string | null
+          "Product Num"?: string | null
+          "Product Type"?: string | null
+          Size?: string | null
+          "Use case"?: string | null
+        }
+        Update: {
+          "Attatchment Copy"?: string | null
+          "Attatchment funfact"?: string | null
+          "Attatchment Instructions"?: string | null
+          Price?: number | null
+          "Product Name"?: string | null
+          "Product Num"?: string | null
+          "Product Type"?: string | null
+          Size?: string | null
+          "Use case"?: string | null
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           consent_given: boolean | null

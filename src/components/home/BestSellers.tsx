@@ -16,6 +16,14 @@ export type Product = {
   rating?: number;
   sale?: boolean;
   category?: string;
+  productNum?: string;
+  productType?: string;
+  size?: string;
+  useCase?: string;
+  copy?: string;
+  instructions?: string;
+  funFact?: string;
+  description?: string;
 };
 
 function ProductCard({ product }: { product: Product }) {
