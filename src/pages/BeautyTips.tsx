@@ -24,7 +24,7 @@ export default function BeautyTips() {
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
   // Filter and group products by category
-  const categorizedProducts = useMemo(() => {
+  const { categorizedProducts, allProducts } = useMemo(() => {
     // Filter out products without fun facts or with "Insufficient information"
     const validProducts = products.filter(
       (product) => 
@@ -34,6 +34,7 @@ export default function BeautyTips() {
 
     // Group by categories
     const grouped: Record<string, CatalogueProduct[]> = {};
+    const categorizedProductIds = new Set<string>();
 
     Object.entries(categoryMapping).forEach(([categoryName, productTypes]) => {
       const categoryProducts = validProducts.filter((product) =>
@@ -44,10 +45,17 @@ export default function BeautyTips() {
 
       if (categoryProducts.length > 0) {
         grouped[categoryName] = categoryProducts;
+        categoryProducts.forEach(p => categorizedProductIds.add(p.id));
       }
     });
 
-    return grouped;
+    // Get all products not in specific categories
+    const remainingProducts = validProducts.filter(p => !categorizedProductIds.has(p.id));
+
+    return {
+      categorizedProducts: grouped,
+      allProducts: remainingProducts
+    };
   }, [products]);
 
   const handleProductClick = (product: CatalogueProduct) => {
@@ -93,15 +101,26 @@ export default function BeautyTips() {
         </section>
 
         <section className="container py-12">
-          {Object.keys(categorizedProducts).length > 0 ? (
-            Object.entries(categorizedProducts).map(([categoryName, categoryProducts]) => (
-              <CategoryCarousel
-                key={categoryName}
-                categoryName={categoryName}
-                products={categoryProducts}
-                onProductClick={handleProductClick}
-              />
-            ))
+          {Object.keys(categorizedProducts).length > 0 || allProducts.length > 0 ? (
+            <>
+              {Object.entries(categorizedProducts).map(([categoryName, categoryProducts]) => (
+                <CategoryCarousel
+                  key={categoryName}
+                  categoryName={categoryName}
+                  products={categoryProducts}
+                  onProductClick={handleProductClick}
+                />
+              ))}
+              
+              {allProducts.length > 0 && (
+                <CategoryCarousel
+                  key="all-products"
+                  categoryName="More Beauty Tips"
+                  products={allProducts}
+                  onProductClick={handleProductClick}
+                />
+              )}
+            </>
           ) : (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No beauty tips available at the moment.</p>
