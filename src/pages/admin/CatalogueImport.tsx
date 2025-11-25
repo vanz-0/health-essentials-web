@@ -109,7 +109,7 @@ export default function CatalogueImport() {
         
         try {
           const { error } = await supabase
-            .from('catalogue')
+            .from('Catalogue1')
             .insert(batch);
           
           if (error) throw error;

@@ -6,6 +6,7 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import InventoryAlert from "./InventoryAlert";
 import WishlistButton from "@/components/wishlist/WishlistButton";
 import ProductQuickView from "@/components/shop/ProductQuickView";
+import { Link } from "react-router-dom";
 
 export type Product = {
   id: string;
@@ -68,7 +69,11 @@ function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="mt-2 md:mt-3">
         <div className="flex items-start justify-between gap-2 md:gap-3">
-          <h3 className="font-medium leading-tight text-sm md:text-base">{product.name}</h3>
+          <Link to={`/product/${product.id}`}>
+            <h3 className="font-medium leading-tight text-sm md:text-base hover:text-primary transition-colors">
+              {product.name}
+            </h3>
+          </Link>
           {product.rating && (
             <div className="inline-flex items-center gap-0.5 md:gap-1 text-primary">
               <Star className="h-3 w-3 md:h-4 md:w-4 fill-current" />

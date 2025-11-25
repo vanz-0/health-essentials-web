@@ -20,6 +20,7 @@ const navItems = [
   { label: "Shop", to: "/shop" },
   { label: "About", to: "/about" },
   { label: "Services", to: "/services" },
+  { label: "Beauty Tips", to: "/beauty-tips" },
   { label: "Contact", to: "/contact" },
   { label: "Blog", to: "/blog" },
 ];

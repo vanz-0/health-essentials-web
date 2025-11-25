@@ -9,6 +9,8 @@ import Shop from "./pages/Shop";
 import About from "./pages/About";
 import Services from "./pages/Services";
 import Blog from "./pages/Blog";
+import BeautyTips from "./pages/BeautyTips";
+import ProductDetail from "./pages/ProductDetail";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
@@ -29,6 +31,7 @@ import { useErrorLogging } from "./hooks/useErrorLogging";
 import AdminRoute from "./components/auth/AdminRoute";
 import { CartProvider } from "./contexts/CartContext";
 import { WishlistProvider } from "./contexts/WishlistContext";
+import { ComparisonProvider } from "./contexts/ComparisonContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 import ErrorBoundary from "./components/error/ErrorBoundary";
@@ -51,6 +54,8 @@ const AppContent = () => {
                 <Route path="/about" element={<About />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/blog" element={<Blog />} />
+                <Route path="/beauty-tips" element={<BeautyTips />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/wishlist" element={<Wishlist />} />
@@ -85,7 +90,9 @@ const App = () => {
               <ThemeProvider>
                 <CartProvider>
                   <WishlistProvider>
-                    <AppContent />
+                    <ComparisonProvider>
+                      <AppContent />
+                    </ComparisonProvider>
                   </WishlistProvider>
                 </CartProvider>
               </ThemeProvider>
