@@ -1,43 +1,59 @@
 import { Helmet } from "react-helmet-async";
+import { useState, useMemo } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Sparkles, BookOpen } from "lucide-react";
-import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
-import { useMemo } from "react";
+import { Sparkles } from "lucide-react";
+import { useCatalogueProducts, CatalogueProduct } from "@/hooks/useCatalogueProducts";
+import { CategoryCarousel } from "@/components/beauty/CategoryCarousel";
+import ProductQuickView from "@/components/shop/ProductQuickView";
+
+// Category mapping (same as shop filters)
+const categoryMapping: Record<string, string[]> = {
+  "Soaps & Cleansers": ["Body wash", "Cleanser", "Cleaning Soap"],
+  "Body Lotions & Oils": ["Body lotion", "Body cream", "Body butter", "Body oil"],
+  "Hair Care": ["Shampoo", "Conditioner", "Hair treatment", "Hair food"],
+  "Face Care": ["Face cream", "Facial serum", "Facial toner"],
+  "Makeup": ["Foundation", "Lipstick", "Mascara", "Eyeliner"],
+  "Fragrances": ["Eau de Parfum", "Perfume"],
+  "Hair Styling": ["Hair gel", "Hair spray", "Hair mousse"],
+};
 
 export default function BeautyTips() {
   const { data: products = [], isLoading } = useCatalogueProducts();
+  const [selectedProduct, setSelectedProduct] = useState<CatalogueProduct | null>(null);
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
-  // Extract unique tips from products
-  const beautyTips = useMemo(() => {
-    const tips: Array<{
-      id: string;
-      title: string;
-      funFact?: string;
-      instructions?: string;
-      category?: string;
-      productName: string;
-      image: string;
-    }> = [];
+  // Filter and group products by category
+  const categorizedProducts = useMemo(() => {
+    // Filter out products without fun facts or with "Insufficient information"
+    const validProducts = products.filter(
+      (product) => 
+        product.funFact && 
+        !product.funFact.includes("Insufficient information available")
+    );
 
-    products.forEach((product) => {
-      if (product.funFact || product.instructions) {
-        tips.push({
-          id: product.id,
-          title: `${product.category || 'Beauty'} Care Tips`,
-          funFact: product.funFact,
-          instructions: product.instructions,
-          category: product.category,
-          productName: product.name,
-          image: product.image,
-        });
+    // Group by categories
+    const grouped: Record<string, CatalogueProduct[]> = {};
+
+    Object.entries(categoryMapping).forEach(([categoryName, productTypes]) => {
+      const categoryProducts = validProducts.filter((product) =>
+        productTypes.some((type) => 
+          product.product_type?.toLowerCase() === type.toLowerCase()
+        )
+      );
+
+      if (categoryProducts.length > 0) {
+        grouped[categoryName] = categoryProducts;
       }
     });
 
-    return tips;
+    return grouped;
   }, [products]);
+
+  const handleProductClick = (product: CatalogueProduct) => {
+    setSelectedProduct(product);
+    setIsQuickViewOpen(true);
+  };
 
   if (isLoading) {
     return (
@@ -77,57 +93,16 @@ export default function BeautyTips() {
         </section>
 
         <section className="container py-12">
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {beautyTips.map((tip) => (
-              <Card key={tip.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={tip.image}
-                    alt={tip.productName}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = '/placeholder.svg';
-                    }}
-                  />
-                  {tip.category && (
-                    <Badge className="absolute top-2 right-2 capitalize">
-                      {tip.category}
-                    </Badge>
-                  )}
-                </div>
-                <CardHeader>
-                  <CardTitle className="flex items-start gap-2">
-                    <BookOpen className="h-5 w-5 text-primary shrink-0 mt-1" />
-                    <span>{tip.title}</span>
-                  </CardTitle>
-                  <CardDescription className="text-sm font-medium">
-                    Featured: {tip.productName}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {tip.funFact && (
-                    <div className="bg-accent/20 rounded-lg p-3">
-                      <h3 className="font-semibold text-sm mb-1 flex items-center gap-1">
-                        <Sparkles className="h-4 w-4 text-primary" />
-                        Did You Know?
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{tip.funFact}</p>
-                    </div>
-                  )}
-                  {tip.instructions && (
-                    <div>
-                      <h3 className="font-semibold text-sm mb-2">How to Use</h3>
-                      <p className="text-sm text-muted-foreground whitespace-pre-line">
-                        {tip.instructions}
-                      </p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {beautyTips.length === 0 && (
+          {Object.keys(categorizedProducts).length > 0 ? (
+            Object.entries(categorizedProducts).map(([categoryName, categoryProducts]) => (
+              <CategoryCarousel
+                key={categoryName}
+                categoryName={categoryName}
+                products={categoryProducts}
+                onProductClick={handleProductClick}
+              />
+            ))
+          ) : (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No beauty tips available at the moment.</p>
             </div>
@@ -135,6 +110,14 @@ export default function BeautyTips() {
         </section>
       </main>
       <Footer />
+      
+      {selectedProduct && (
+        <ProductQuickView
+          product={selectedProduct}
+          open={isQuickViewOpen}
+          onOpenChange={setIsQuickViewOpen}
+        />
+      )}
     </div>
   );
 }
