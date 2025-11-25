@@ -116,9 +116,11 @@ export default function Header() {
           </ul>
 
           <div className="flex items-center gap-0.5 md:gap-2">
-            <Button variant="ghost" size="icon" aria-label="Search" className="h-8 w-8 md:h-10 md:w-10" onClick={() => toast({ title: "Search", description: "Search with filters coming soon." })}>
-              <Search className="h-4 w-4 md:h-5 md:w-5" />
-            </Button>
+            <Link to="/shop">
+              <Button variant="ghost" size="icon" aria-label="Search" className="h-8 w-8 md:h-10 md:w-10">
+                <Search className="h-4 w-4 md:h-5 md:w-5" />
+              </Button>
+            </Link>
             
             <ThemeToggle />
             
