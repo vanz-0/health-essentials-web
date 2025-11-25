@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Filter, X, Star } from "lucide-react";
+import { Search, Filter, X, Star, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { useDebounce } from "@/hooks/useDebounce";
 import { addRecentSearch } from "@/lib/searchUtils";
@@ -99,6 +100,7 @@ export default function SearchAndFilter({
   const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
   const debouncedSearch = useDebounce(localSearchQuery, 300);
+  const [isProductTypesOpen, setIsProductTypesOpen] = useState(false);
   
   // Generate categories with counts
   const categories = predefinedCategories.map(cat => ({
@@ -253,26 +255,40 @@ export default function SearchAndFilter({
                   </div>
                 </div>
 
-                {/* Product Types */}
-                <div>
-                  <h3 className="font-medium mb-3">Product Type</h3>
-                  <div className="space-y-2">
-                    {productTypes.map((type) => (
-                      <button
-                        key={type.id}
-                        onClick={() => handleProductTypeToggle(type.id)}
-                        className={`flex w-full items-center justify-between rounded-lg p-3 text-left transition-colors hover:bg-muted ${
-                          activeFilters.productTypes?.includes(type.id) 
-                            ? 'bg-primary/10 text-primary border border-primary/20' 
-                            : 'bg-muted/30'
-                        }`}
-                      >
-                        <span>{type.name}</span>
-                        <span className="text-sm text-muted-foreground">({type.count})</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                {/* Product Types - Collapsible */}
+                <Collapsible open={isProductTypesOpen} onOpenChange={setIsProductTypesOpen}>
+                  <CollapsibleTrigger className="w-full">
+                    <div className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-muted/50 transition-colors bg-background border border-border">
+                      <h3 className="font-medium">Product Type</h3>
+                      <div className="flex items-center gap-2">
+                        {activeFilters.productTypes && activeFilters.productTypes.length > 0 && (
+                          <Badge variant="secondary" className="h-5 w-5 rounded-full p-0 text-xs">
+                            {activeFilters.productTypes.length}
+                          </Badge>
+                        )}
+                        <ChevronDown className={`h-4 w-4 transition-transform ${isProductTypesOpen ? 'rotate-180' : ''}`} />
+                      </div>
+                    </div>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-3">
+                    <div className="space-y-2 max-h-[300px] overflow-y-auto bg-background rounded-lg border border-border p-2">
+                      {productTypes.map((type) => (
+                        <button
+                          key={type.id}
+                          onClick={() => handleProductTypeToggle(type.id)}
+                          className={`flex w-full items-center justify-between rounded-lg p-3 text-left transition-colors hover:bg-muted ${
+                            activeFilters.productTypes?.includes(type.id) 
+                              ? 'bg-primary/10 text-primary border border-primary/20' 
+                              : 'bg-muted/30'
+                          }`}
+                        >
+                          <span className="text-sm">{type.name}</span>
+                          <span className="text-xs text-muted-foreground">({type.count})</span>
+                        </button>
+                      ))}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
 
                 {/* Price Range */}
                 <div>
