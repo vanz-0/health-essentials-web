@@ -39,7 +39,7 @@ export function useCatalogueProducts() {
         
         // Construct image URL from Product Num using Supabase storage
         const imageUrl = productNum 
-          ? `https://syymqotfxkmchtjsmhkr.supabase.co/storage/v1/object/public/Cosmetics%20Photos/${productNum}`
+          ? supabase.storage.from('Cosmetics Photos').getPublicUrl(productNum).data.publicUrl
           : '/placeholder.svg';
         
         // Randomize ratings between 4.0 and 4.9
