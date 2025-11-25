@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Star, ShoppingCart, Heart } from 'lucide-react';
+import { Star, ShoppingCart, Heart, ExternalLink } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useFeatureFlag } from '@/hooks/useFeatureFlag';
 import { Product } from '@/components/home/BestSellers';
+import { useCatalogueProducts } from '@/hooks/useCatalogueProducts';
+import { Card, CardContent } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
 
 interface ProductQuickViewProps {
   product: Product | null;
@@ -18,6 +21,18 @@ export default function ProductQuickView({ product, open, onOpenChange }: Produc
   const { addToWishlist, isInWishlist } = useWishlist();
   const { isEnabled: cartEnabled } = useFeatureFlag('bit_6_shopping_cart');
   const [quantity, setQuantity] = useState(1);
+  const { data: allProducts = [] } = useCatalogueProducts();
+
+  // Get related products based on category and use case
+  const relatedProducts = useMemo(() => {
+    if (!product) return [];
+    return allProducts
+      .filter((p) => 
+        p.id !== product.id && 
+        (p.category === product.category || p.use_case === product.useCase)
+      )
+      .slice(0, 3);
+  }, [product, allProducts]);
 
   if (!product) return null;
 
@@ -205,6 +220,43 @@ export default function ProductQuickView({ product, open, onOpenChange }: Produc
               )}
             </div>
           </div>
+        </div>
+
+        {/* Related Products Section */}
+        {relatedProducts.length > 0 && (
+          <div className="border-t pt-6 mt-6">
+            <h3 className="font-semibold text-lg mb-4">You May Also Like</h3>
+            <div className="grid grid-cols-3 gap-4">
+              {relatedProducts.map((related) => (
+                <Card key={related.id} className="overflow-hidden group cursor-pointer">
+                  <Link to={`/product/${related.id}`} onClick={() => onOpenChange(false)}>
+                    <img
+                      src={related.image}
+                      alt={related.name}
+                      className="w-full h-32 object-cover group-hover:scale-105 transition-transform"
+                      onError={(e) => {
+                        e.currentTarget.src = '/placeholder.svg';
+                      }}
+                    />
+                    <CardContent className="p-3">
+                      <h4 className="font-medium text-sm line-clamp-2 mb-1">{related.name}</h4>
+                      <div className="text-primary font-semibold text-sm">{related.priceDisplay}</div>
+                    </CardContent>
+                  </Link>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* View Full Details Link */}
+        <div className="border-t pt-4 mt-4">
+          <Link to={`/product/${product.id}`} onClick={() => onOpenChange(false)}>
+            <Button variant="outline" className="w-full">
+              <ExternalLink className="h-4 w-4 mr-2" />
+              View Full Product Details
+            </Button>
+          </Link>
         </div>
       </DialogContent>
     </Dialog>
