@@ -3,13 +3,24 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BestSellers from "@/components/home/BestSellers";
 import SearchAndFilter, { FilterOptions } from "@/components/shop/SearchAndFilter";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { fuzzyMatch, parsePriceQuery } from "@/lib/searchUtils";
 import { usePersistedFilters } from "@/hooks/usePersistedFilters";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
+
+const PRODUCTS_PER_PAGE = 50;
 
 export default function Shop() {
   const { data: allProducts, isLoading, error } = useCatalogueProducts();
@@ -19,6 +30,7 @@ export default function Shop() {
   const [activeFilters, setActiveFilters] = useState<Partial<FilterOptions>>(
     isLoaded ? persistedFilters : { sortBy: 'name' }
   );
+  const [currentPage, setCurrentPage] = useState(1);
   
   useMemo(() => {
     if (isLoaded) {
@@ -117,7 +129,43 @@ export default function Shop() {
     }
     
     return filtered;
+  }, [allProducts, searchQuery, activeFilters]);
+
+  // Reset to page 1 when filters or search changes
+  useEffect(() => {
+    setCurrentPage(1);
   }, [searchQuery, activeFilters]);
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+  const endIndex = startIndex + PRODUCTS_PER_PAGE;
+  const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const pages: (number | 'ellipsis')[] = [];
+    const maxVisible = 5;
+    
+    if (totalPages <= maxVisible) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    
+    if (currentPage <= 3) {
+      pages.push(1, 2, 3, 4, 'ellipsis', totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      pages.push(1, 'ellipsis', totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      pages.push(1, 'ellipsis', currentPage - 1, currentPage, currentPage + 1, 'ellipsis', totalPages);
+    }
+    
+    return pages;
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   if (isLoading) {
     return (
@@ -184,9 +232,51 @@ export default function Shop() {
         />
         
         <BestSellers 
-          products={filteredProducts} 
+          products={paginatedProducts} 
           title={searchQuery || (activeFilters.categories && activeFilters.categories.length > 0) ? "Search Results" : "All Products"}
         />
+
+        {totalPages > 1 && (
+          <div className="container py-8">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  />
+                </PaginationItem>
+                
+                {getPageNumbers().map((page, index) => (
+                  <PaginationItem key={index}>
+                    {page === 'ellipsis' ? (
+                      <PaginationEllipsis />
+                    ) : (
+                      <PaginationLink
+                        onClick={() => handlePageChange(page)}
+                        isActive={currentPage === page}
+                        className="cursor-pointer"
+                      >
+                        {page}
+                      </PaginationLink>
+                    )}
+                  </PaginationItem>
+                ))}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            
+            <div className="text-center mt-4 text-sm text-muted-foreground">
+              Showing {startIndex + 1}-{Math.min(endIndex, filteredProducts.length)} of {filteredProducts.length} products
+            </div>
+          </div>
+        )}
       </main>
       <Footer />
     </div>
