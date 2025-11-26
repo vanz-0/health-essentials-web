@@ -57,10 +57,10 @@ export default function Header() {
         <div className="ticker-wrapper py-2">
           <div className="ticker-content">
             <span className="ticker-item text-black font-medium text-xs md:text-sm">
-              🎉 BLACK NOVEMBER! Up to 50% OFF • 📍 Thindigua, Kiambu • 📞 0757 968 945 • Free Delivery Available • Shop Now! •
+              🎉 BLACK NOVEMBER! Up to 50% OFF • 📍 Thindigua, Kiambu • 📞 0735 558 830 • Free Delivery Available • Shop Now! •
             </span>
             <span className="ticker-item text-black font-medium text-xs md:text-sm">
-              🎉 BLACK NOVEMBER! Up to 50% OFF • 📍 Thindigua, Kiambu • 📞 0757 968 945 • Free Delivery Available • Shop Now! •
+              🎉 BLACK NOVEMBER! Up to 50% OFF • 📍 Thindigua, Kiambu • 📞 0735 558 830 • Free Delivery Available • Shop Now! •
             </span>
           </div>
         </div>
