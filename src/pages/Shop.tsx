@@ -292,6 +292,7 @@ export default function Shop() {
         <BestSellers 
           products={paginatedProducts} 
           title={searchQuery || (activeFilters.categories && activeFilters.categories.length > 0) ? "Search Results" : "All Products"}
+          displayMode="grid"
         />
 
         {totalPages > 1 && (
