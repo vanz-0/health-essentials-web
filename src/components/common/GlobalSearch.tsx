@@ -18,16 +18,13 @@ export default function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) 
   const { data: products } = useCatalogueProducts();
   const navigate = useNavigate();
 
+  // Strict search - only show exact matches
   const searchResults = products?.filter(product => {
     if (!debouncedQuery.trim()) return false;
-    const query = debouncedQuery.toLowerCase();
+    const query = debouncedQuery.toLowerCase().trim();
     return (
       product.name.toLowerCase().includes(query) ||
-      product.category?.toLowerCase().includes(query) ||
-      product.use_case?.toLowerCase().includes(query) ||
-      fuzzyMatch(product.name, query) ||
-      (product.category && fuzzyMatch(product.category, query)) ||
-      (product.use_case && fuzzyMatch(product.use_case, query))
+      product.use_case?.toLowerCase().includes(query)
     );
   }).slice(0, 8) || [];
 

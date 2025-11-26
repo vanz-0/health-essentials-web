@@ -98,6 +98,39 @@ export type Database = {
         }
         Relationships: []
       }
+      best_sellers_config: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string | null
+          display_order: number
+          id: string
+          notes: string | null
+          product_num: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          display_order?: number
+          id?: string
+          notes?: string | null
+          product_num: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          display_order?: number
+          id?: string
+          notes?: string | null
+          product_num?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       Catalogue1: {
         Row: {
           "Attatchment Copy": string | null

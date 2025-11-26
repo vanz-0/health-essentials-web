@@ -279,4 +279,31 @@ All colors MUST be HSL.
     transform: scaleX(1);
     transform-origin: bottom left;
   }
+  
+  /* News Ticker Animation */
+  .ticker-wrapper {
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .ticker-content {
+    display: flex;
+    animation: ticker 30s linear infinite;
+    will-change: transform;
+  }
+  
+  .ticker-item {
+    display: inline-block;
+    white-space: nowrap;
+    padding-right: 2rem;
+  }
+  
+  @keyframes ticker {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
 }
