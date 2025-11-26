@@ -152,6 +152,10 @@ export default {
 				'pulse-scale': {
 					'0%, 100%': { transform: 'scale(1)' },
 					'50%': { transform: 'scale(1.02)' }
+				},
+				'float-subtle': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-4px)' }
 				}
 			},
 			animation: {
@@ -168,7 +172,8 @@ export default {
 				'wiggle': 'wiggle 0.5s ease-in-out infinite',
 				'breathe': 'breathe 100s ease-in-out infinite',
 				'slow-bounce': 'slow-bounce 60s ease-in-out infinite',
-				'pulse-scale': 'pulse-scale 2s ease-in-out infinite'
+				'pulse-scale': 'pulse-scale 2s ease-in-out infinite',
+				'float-subtle': 'float-subtle 3s ease-in-out infinite'
 			}
 		}
 	},
