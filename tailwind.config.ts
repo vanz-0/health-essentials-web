@@ -178,7 +178,7 @@ export default {
 				'slow-bounce': 'slow-bounce 60s ease-in-out infinite',
 				'pulse-scale': 'pulse-scale 2s ease-in-out infinite',
 				'float-subtle': 'float-subtle 3s ease-in-out infinite',
-				'float-super-slow': 'float-super-slow 60s ease-in-out infinite'
+				'float-super-slow': 'float-super-slow 100s ease-in-out infinite'
 			}
 		}
 	},
