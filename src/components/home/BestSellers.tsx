@@ -7,6 +7,8 @@ import InventoryAlert from "./InventoryAlert";
 import WishlistButton from "@/components/wishlist/WishlistButton";
 import ProductQuickView from "@/components/shop/ProductQuickView";
 import { Link } from "react-router-dom";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 export type Product = {
   id: string;
@@ -125,18 +127,41 @@ function ProductCard({ product }: { product: Product }) {
 export default function BestSellers({ products, title = "Best Sellers" }: { products: Product[]; title?: string }) {
   return (
     <section id="shop" className="container mt-8" aria-labelledby="bestsellers-heading">
-      <h2 id="bestsellers-heading" className="font-serifDisplay text-xl md:text-2xl lg:text-3xl font-semibold">{title}</h2>
+      <div className="mb-6">
+        <h2 id="bestsellers-heading" className="font-serifDisplay text-xl md:text-2xl lg:text-3xl font-semibold">{title}</h2>
+        <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary/30 rounded-full mt-2" />
+      </div>
       {products.length === 0 ? (
         <div className="mt-8 text-center py-12">
           <p className="text-muted-foreground text-lg">No products found matching your criteria.</p>
           <p className="text-muted-foreground text-sm mt-2">Try adjusting your search or filters.</p>
         </div>
       ) : (
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 animate-fade-in">
-          {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+            dragFree: true,
+          }}
+          plugins={[
+            Autoplay({
+              delay: 3000,
+              stopOnInteraction: true,
+              stopOnMouseEnter: true,
+            }),
+          ]}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-2 md:-ml-4">
+            {products.map((p) => (
+              <CarouselItem key={p.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                <ProductCard product={p} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="hidden md:flex -left-4" />
+          <CarouselNext className="hidden md:flex -right-4" />
+        </Carousel>
       )}
     </section>
   );
