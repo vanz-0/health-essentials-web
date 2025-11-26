@@ -48,18 +48,23 @@ export default function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       {/* Top bar - Kenya flag gradient with news ticker */}
-      <div className="bg-gradient-to-r from-red-600 via-yellow-500 to-green-600 overflow-hidden relative">
+      <a 
+        href="https://1healthessentials.netlify.app/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="block bg-gradient-to-r from-red-600 via-yellow-500 to-green-600 overflow-hidden relative cursor-pointer hover:opacity-90 transition-opacity"
+      >
         <div className="ticker-wrapper py-2">
           <div className="ticker-content">
-            <span className="ticker-item text-black font-bold text-xs md:text-sm">
-              🎉 BLACK NOVEMBER IS HERE! Special discounts on all products! • Up to 50% OFF • Free Delivery Available • Shop Now! •
+            <span className="ticker-item text-black font-medium text-xs md:text-sm">
+              🎉 BLACK NOVEMBER! Up to 50% OFF • 📍 Thindigua, Kiambu • 📞 0757 968 945 • Free Delivery Available • Shop Now! •
             </span>
-            <span className="ticker-item text-black font-bold text-xs md:text-sm">
-              🎉 BLACK NOVEMBER IS HERE! Special discounts on all products! • Up to 50% OFF • Free Delivery Available • Shop Now! •
+            <span className="ticker-item text-black font-medium text-xs md:text-sm">
+              🎉 BLACK NOVEMBER! Up to 50% OFF • 📍 Thindigua, Kiambu • 📞 0757 968 945 • Free Delivery Available • Shop Now! •
             </span>
           </div>
         </div>
-      </div>
+      </a>
 
       {/* Main nav */}
       <div className={
