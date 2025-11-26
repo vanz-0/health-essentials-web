@@ -21,6 +21,7 @@ import ExitIntentModal from "@/components/contact/ExitIntentModal";
 import ScrollSlideIn from "@/components/contact/ScrollSlideIn";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
 import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
+import { useBestSellerProducts } from "@/hooks/useBestSellerProducts";
 import BlackNovemberPopup from "@/components/home/BlackNovemberPopup";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -28,8 +29,13 @@ const Index = () => {
   const { isEnabled: fomoEnabled } = useFeatureFlag('bit_2_fomo');
   const { isEnabled: filteringEnabled } = useFeatureFlag('bit_4_filtering');
   
-  // Fetch catalogue products
-  const { data: catalogueProducts = [], isLoading, error } = useCatalogueProducts();
+  // Fetch optimized best sellers (only 4-8 products)
+  const { data: bestSellerProducts = [], isLoading: bestSellersLoading } = useBestSellerProducts();
+  
+  // Fetch all catalogue products for other sections (Hot Deals, New Arrivals)
+  const { data: catalogueProducts = [], isLoading: catalogueLoading, error } = useCatalogueProducts();
+  
+  const isLoading = bestSellersLoading || catalogueLoading;
   
   // Persisted filters
   const { filters: persistedFilters, setFilters: setPersistedFilters, isLoaded } = usePersistedFilters();
@@ -47,10 +53,8 @@ const Index = () => {
     }
   }, [activeFilters, isLoaded, setPersistedFilters]);
   
-  // Get best sellers and new arrivals from catalogue
-  const bestSellers = useMemo(() => {
-    return catalogueProducts.slice(0, 8);
-  }, [catalogueProducts]);
+  // Use optimized best sellers from dedicated hook
+  const bestSellers = bestSellerProducts;
 
   const arrivals = useMemo(() => {
     return catalogueProducts.slice(8, 16);
@@ -227,22 +231,8 @@ const Index = () => {
     },
   } : null;
 
-  if (isLoading) {
-    return (
-      <div className="font-sansBody">
-        <FlashBanner endTime={new Date(Date.now() + 2 * 60 * 60 * 1000)} message="Flash Sale ends in" />
-        <Header />
-        <main className="container py-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton key={i} className="h-64 w-full" />
-            ))}
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
+  // Show loading skeletons only for best sellers, let other sections load progressively
+  const showBestSellersLoading = bestSellersLoading && bestSellers.length === 0;
 
   return (
     <div className="font-sansBody">
@@ -303,11 +293,25 @@ const Index = () => {
           />
         )}
         
-        <BestSellers 
-          products={filteringEnabled ? filteredProducts : bestSellers} 
-          title={filteringEnabled && (searchQuery || (activeFilters.categories && activeFilters.categories.length > 0)) ? "Search Results" : "Best Sellers"}
-          displayMode="carousel"
-        />
+        {showBestSellersLoading ? (
+          <section className="container mt-8">
+            <div className="mb-6">
+              <Skeleton className="h-8 w-48" />
+              <Skeleton className="h-1 w-20 mt-2" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <Skeleton key={i} className="h-96 w-full rounded-lg" />
+              ))}
+            </div>
+          </section>
+        ) : (
+          <BestSellers 
+            products={filteringEnabled ? filteredProducts : bestSellers} 
+            title={filteringEnabled && (searchQuery || (activeFilters.categories && activeFilters.categories.length > 0)) ? "Search Results" : "Best Sellers"}
+            displayMode="carousel"
+          />
+        )}
         <Categories />
         
         {/* Hot Deals Carousel using copywriting tone */}
