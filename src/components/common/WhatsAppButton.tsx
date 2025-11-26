@@ -22,7 +22,7 @@ export default function WhatsAppButton({ productName }: WhatsAppButtonProps) {
       >
         <Button
           size="lg"
-          className="h-14 w-14 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white transition-colors duration-200 animate-float-super-slow"
+          className="h-14 w-14 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white transition-colors duration-[400ms] animate-float-super-slow"
           aria-label="Chat on WhatsApp"
         >
           <MessageCircle className="h-6 w-6" />
