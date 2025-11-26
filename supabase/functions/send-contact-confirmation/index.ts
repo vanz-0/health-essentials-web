@@ -81,14 +81,15 @@ const handler = async (req: Request): Promise<Response> => {
 
     const { name, email, source } = validationResult.data;
 
-    // Verify email exists in contacts table
+    // Verify email exists in contacts table (limit to 1 to handle duplicates)
     const { data: contactExists, error: contactError } = await supabaseAdmin
       .from('contacts')
       .select('email')
       .eq('email', email)
-      .maybeSingle();
+      .limit(1)
+      .single();
 
-    if (contactError) {
+    if (contactError && contactError.code !== 'PGRST116') {
       console.error("Error verifying contact:", contactError);
       return new Response(
         JSON.stringify({ 
