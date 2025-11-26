@@ -306,6 +306,7 @@ const Index = () => {
         <BestSellers 
           products={filteringEnabled ? filteredProducts : bestSellers} 
           title={filteringEnabled && (searchQuery || (activeFilters.categories && activeFilters.categories.length > 0)) ? "Search Results" : "Best Sellers"}
+          displayMode="carousel"
         />
         <Categories />
         

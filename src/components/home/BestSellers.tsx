@@ -124,7 +124,7 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
-export default function BestSellers({ products, title = "Best Sellers" }: { products: Product[]; title?: string }) {
+export default function BestSellers({ products, title = "Best Sellers", displayMode = "carousel" }: { products: Product[]; title?: string; displayMode?: "carousel" | "grid" }) {
   return (
     <section id="shop" className="container mt-8" aria-labelledby="bestsellers-heading">
       <div className="mb-6">
@@ -135,6 +135,12 @@ export default function BestSellers({ products, title = "Best Sellers" }: { prod
         <div className="mt-8 text-center py-12">
           <p className="text-muted-foreground text-lg">No products found matching your criteria.</p>
           <p className="text-muted-foreground text-sm mt-2">Try adjusting your search or filters.</p>
+        </div>
+      ) : displayMode === "grid" ? (
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 animate-fade-in">
+          {products.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
         </div>
       ) : (
         <Carousel
