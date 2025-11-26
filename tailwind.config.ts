@@ -156,6 +156,10 @@ export default {
 				'float-subtle': {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-4px)' }
+				},
+				'float-super-slow': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-4px)' }
 				}
 			},
 			animation: {
@@ -173,7 +177,8 @@ export default {
 				'breathe': 'breathe 100s ease-in-out infinite',
 				'slow-bounce': 'slow-bounce 60s ease-in-out infinite',
 				'pulse-scale': 'pulse-scale 2s ease-in-out infinite',
-				'float-subtle': 'float-subtle 3s ease-in-out infinite'
+				'float-subtle': 'float-subtle 3s ease-in-out infinite',
+				'float-super-slow': 'float-super-slow 60s ease-in-out infinite'
 			}
 		}
 	},

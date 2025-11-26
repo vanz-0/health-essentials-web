@@ -73,9 +73,15 @@ export default function Footer() {
         <div>
           <h5 className="font-semibold">Contact</h5>
           <ul className="mt-3 space-y-2 text-sm">
-            <li className="flex items-center gap-2"><MapPin className="h-4 w-4" />Brentwood Arcade, Thindigua, Kiambu</li>
-            <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> 0735558830</li>
-            <li className="flex items-center gap-2"><Mail className="h-4 w-4" />hello@1healthessentials.com</li>
+            <li className="flex items-center gap-2"><MapPin className="h-4 w-4" />Brentwood Arcade, Thindiqua, Kiambu, Kenya</li>
+            <li className="flex items-center gap-2">
+              <Phone className="h-4 w-4" /> 
+              <a href="tel:+254735558830" className="hover:underline">0735 558 830</a>
+            </li>
+            <li className="flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              <a href="mailto:hello@1healthessentials.com" className="hover:underline">hello@1healthessentials.com</a>
+            </li>
             <li>Mon-Sat: 9:00am - 6:00pm</li>
           </ul>
         </div>
