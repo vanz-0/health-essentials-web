@@ -56,13 +56,13 @@ export default function Header() {
             rel="noopener noreferrer"
             className="flex-1 cursor-pointer hover:opacity-90 transition-opacity"
           >
-            <div className="ticker-wrapper py-1">
+            <div className="ticker-wrapper py-0.5">
               <div className="ticker-content">
-                <span className="ticker-item text-black font-medium text-xs md:text-sm">
-                  🎉 BLACK NOVEMBER! Up to 50% OFF • 📍 Thindigua, Kiambu • 📞 0735 558 830 • Free Delivery Available • Shop Now! •
+                <span className="ticker-item text-black font-semibold text-xs md:text-sm">
+                  🎉 BLACK NOVEMBER! Up to 50% OFF • 📍 Brentwood Arcade, Thindiqua, Kiambu, Kenya • 📞 0735 558 830 • Free Delivery Available • Shop Now! •
                 </span>
-                <span className="ticker-item text-black font-medium text-xs md:text-sm">
-                  🎉 BLACK NOVEMBER! Up to 50% OFF • 📍 Thindigua, Kiambu • 📞 0735 558 830 • Free Delivery Available • Shop Now! •
+                <span className="ticker-item text-black font-semibold text-xs md:text-sm">
+                  🎉 BLACK NOVEMBER! Up to 50% OFF • 📍 Brentwood Arcade, Thindiqua, Kiambu, Kenya • 📞 0735 558 830 • Free Delivery Available • Shop Now! •
                 </span>
               </div>
             </div>
