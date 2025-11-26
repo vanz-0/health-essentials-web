@@ -3,8 +3,11 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Package, Truck, DollarSign, Heart, Sparkles, Shield } from "lucide-react";
+import { ArrowLeft, Package, Truck, DollarSign, Heart, Sparkles, Shield, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import Autoplay from "embla-carousel-autoplay";
 
 export default function Services() {
   const bundles = [
@@ -121,41 +124,59 @@ export default function Services() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {bundles.map((bundle) => (
-              <Card key={bundle.title} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4">
-                    <bundle.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-lg">{bundle.title}</CardTitle>
-                  <CardDescription>{bundle.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="mb-3">
-                    <span className="text-2xl font-bold text-primary">{bundle.price}</span>
-                  </div>
-                  <ul className="space-y-2 text-sm mb-4">
-                    {bundle.items.map((item) => (
-                      <li key={item} className="flex items-start">
-                        <span className="text-primary mr-2">•</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <a
-                    href={`https://wa.me/254757968945?text=${encodeURIComponent(`Hi! I'm interested in the ${bundle.title} bundle (${bundle.price}). Can you provide more details?`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Button className="w-full" variant="outline">
-                      Inquire via WhatsApp
-                    </Button>
-                  </a>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+              dragFree: true,
+            }}
+            plugins={[
+              Autoplay({
+                delay: 3000,
+              }),
+            ]}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-4">
+              {bundles.map((bundle) => (
+                <CarouselItem key={bundle.title} className="pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                  <Card className="hover:shadow-lg transition-shadow h-full">
+                    <CardHeader>
+                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4">
+                        <bundle.icon className="h-6 w-6 text-primary" />
+                      </div>
+                      <CardTitle className="text-lg">{bundle.title}</CardTitle>
+                      <CardDescription>{bundle.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="mb-3">
+                        <span className="text-2xl font-bold text-primary">{bundle.price}</span>
+                      </div>
+                      <ul className="space-y-2 text-sm mb-4">
+                        {bundle.items.map((item) => (
+                          <li key={item} className="flex items-start">
+                            <span className="text-primary mr-2">•</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <a
+                        href={`https://wa.me/254757968945?text=${encodeURIComponent(`Hi! I'm interested in the ${bundle.title} bundle (${bundle.price}). Can you provide more details?`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Button className="w-full" variant="outline">
+                          Inquire via WhatsApp
+                        </Button>
+                      </a>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
         </section>
 
         {/* Free Delivery Section */}
@@ -182,47 +203,61 @@ export default function Services() {
               </div>
               
               <div className="space-y-6">
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="h-3 w-3 rounded-full bg-green-500"></div>
-                    <h3 className="font-semibold text-lg">FREE for Orders Above KSh 1,000</h3>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {freeDeliveryAreas.map((area) => (
-                      <div key={area} className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-900">
-                        <span className="text-sm">{area}</span>
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="always-free">
+                    <AccordionTrigger>
+                      <div className="flex items-center gap-2">
+                        <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                        <span className="font-semibold text-lg">🟢 Always FREE Delivery</span>
                       </div>
-                    ))}
-                  </div>
-                </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="grid grid-cols-1 gap-2 pt-2">
+                        {freeDeliveryThindigua.map((area) => (
+                          <div key={area} className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-900">
+                            <span className="text-sm font-medium">{area}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
 
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="h-3 w-3 rounded-full bg-green-500"></div>
-                    <h3 className="font-semibold text-lg">Always FREE</h3>
-                  </div>
-                  <div className="grid grid-cols-1 gap-2">
-                    {freeDeliveryThindigua.map((area) => (
-                      <div key={area} className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-900">
-                        <span className="text-sm font-medium">{area}</span>
+                  <AccordionItem value="free-over-1000">
+                    <AccordionTrigger>
+                      <div className="flex items-center gap-2">
+                        <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                        <span className="font-semibold text-lg">🟢 FREE Delivery (Orders Above KSh 1,000)</span>
                       </div>
-                    ))}
-                  </div>
-                </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="grid grid-cols-2 gap-2 pt-2">
+                        {freeDeliveryAreas.map((area) => (
+                          <div key={area} className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-900">
+                            <span className="text-sm">{area}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
 
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="h-3 w-3 rounded-full bg-blue-500"></div>
-                    <h3 className="font-semibold text-lg">KSh 200 Delivery Fee</h3>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {paidDeliveryAreas.map((area) => (
-                      <div key={area} className="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-900">
-                        <span className="text-sm">{area}</span>
+                  <AccordionItem value="paid-200">
+                    <AccordionTrigger>
+                      <div className="flex items-center gap-2">
+                        <div className="h-3 w-3 rounded-full bg-blue-500"></div>
+                        <span className="font-semibold text-lg">🔵 KSh 200 Delivery Fee</span>
                       </div>
-                    ))}
-                  </div>
-                </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="grid grid-cols-2 gap-2 pt-2">
+                        {paidDeliveryAreas.map((area) => (
+                          <div key={area} className="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-900">
+                            <span className="text-sm">{area}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
 
                 <div className="mt-6 p-4 bg-muted rounded-lg">
                   <p className="text-sm font-semibold mb-2">📍 Calculate Delivery for Your Location</p>
@@ -230,12 +265,20 @@ export default function Services() {
                     Don't see your area? Send us your location via WhatsApp for a quick delivery quote!
                   </p>
                   <a
-                    href={`https://wa.me/254757968945?text=${encodeURIComponent("Hi! I'd like to know the delivery cost for my location. Can you help?")}`}
+                    href={`https://wa.me/254757968945?text=${encodeURIComponent("Hi! I'd like to know the delivery cost for my location: [Your Location]. Please advise. 📍")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <Button size="sm" className="w-full">
-                      Get Delivery Quote
+                      Get Delivery Quote via WhatsApp
+                    </Button>
+                  </a>
+                  <a
+                    href="tel:+254757968945"
+                    className="block mt-2"
+                  >
+                    <Button size="sm" variant="outline" className="w-full">
+                      📞 Call 0757 968 945
                     </Button>
                   </a>
                 </div>
