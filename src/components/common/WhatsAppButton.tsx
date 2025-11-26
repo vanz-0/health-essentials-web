@@ -14,20 +14,20 @@ export default function WhatsAppButton({ productName }: WhatsAppButtonProps) {
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(baseMessage)}`;
 
   return (
-    <div className="!fixed !bottom-4 !right-4 !z-[9999] md:!bottom-6 md:!right-6">
-      <a 
-        href={whatsappUrl} 
-        target="_blank" 
-        rel="noopener noreferrer"
+    <a 
+      href={whatsappUrl} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="fixed bottom-4 right-4 z-[9999] md:bottom-6 md:right-6"
+      style={{ position: 'fixed' }}
+    >
+      <Button
+        size="lg"
+        className="h-14 w-14 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white shadow-lg transition-all duration-300"
+        aria-label="Chat on WhatsApp"
       >
-        <Button
-          size="lg"
-          className="h-14 w-14 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white transition-colors duration-300 animate-float-super-slow"
-          aria-label="Chat on WhatsApp"
-        >
-          <MessageCircle className="h-6 w-6" />
-        </Button>
-      </a>
-    </div>
+        <MessageCircle className="h-6 w-6" />
+      </Button>
+    </a>
   );
 }
