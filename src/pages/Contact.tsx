@@ -6,10 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, MapPin, Phone, Mail, Clock, Instagram, Facebook } from "lucide-react";
 import { Link } from "react-router-dom";
-
 export default function Contact() {
-  return (
-    <div className="font-sansBody">
+  return <div className="font-sansBody">
       <Helmet>
         <title>Contact Us | 1Health Essentials - Get in Touch</title>
         <meta name="description" content="Contact 1Health Essentials for inquiries, orders, or consultations. Visit us at Brentwood Arcade, Thindiqua, Kiambu or call 0735558830." />
@@ -39,12 +37,7 @@ export default function Contact() {
               <p className="text-muted-foreground mb-6">
                 Fill out the form below and we'll get back to you as soon as possible.
               </p>
-              <ContactCaptureForm 
-                source="contact_page"
-                variant="inline"
-                showPhoneField={true}
-                incentiveText="We typically respond within 24 hours"
-              />
+              <ContactCaptureForm source="contact_page" variant="inline" showPhoneField={true} incentiveText="We typically respond within 24 hours" />
             </div>
 
             {/* Contact Information */}
@@ -62,12 +55,7 @@ export default function Contact() {
                   <CardContent>
                     <p className="text-sm">Brentwood Arcade, Thindiqua</p>
                     <p className="text-sm">Kiambu, Kenya</p>
-                    <a 
-                      href="https://maps.google.com/?q=Brentwood+Arcade+Thindiqua+Kiambu" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-sm text-primary hover:underline mt-2 inline-block"
-                    >
+                    <a href="https://maps.google.com/?q=Brentwood+Arcade+Thindiqua+Kiambu" target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline mt-2 inline-block">
                       Get Directions →
                     </a>
                   </CardContent>
@@ -96,9 +84,7 @@ export default function Contact() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <a href="mailto:hello@1health.co.ke" className="text-sm hover:text-primary">
-                      hello@1health.co.ke
-                    </a>
+                    <a href="mailto:hello@1health.co.ke" className="text-sm hover:text-primary">hello@1healthessentials.com</a>
                     <p className="text-xs text-muted-foreground mt-1">We respond within 24 hours</p>
                   </CardContent>
                 </Card>
@@ -145,20 +131,12 @@ export default function Contact() {
         <section className="container mt-16 mb-16">
           <h2 className="font-serifDisplay text-2xl font-semibold mb-6">Find Us</h2>
           <div className="w-full h-96 rounded-lg overflow-hidden border shadow-md">
-            <iframe
-              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=Brentwood+Arcade,Thindiqua,Kiambu,Kenya&zoom=15"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="1Health Essentials Location - Brentwood Arcade, Thindiqua, Kiambu"
-            />
+            <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=Brentwood+Arcade,Thindiqua,Kiambu,Kenya&zoom=15" width="100%" height="100%" style={{
+            border: 0
+          }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="1Health Essentials Location - Brentwood Arcade, Thindiqua, Kiambu" />
           </div>
         </section>
       </main>
       <Footer />
-    </div>
-  );
+    </div>;
 }
