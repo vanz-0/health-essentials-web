@@ -169,7 +169,7 @@ export default {
 				'scale-in': 'scale-in 0.2s ease-out',
 				'slide-in-right': 'slide-in-right 0.3s ease-out',
 				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
-				'urgent-bounce': 'urgent-bounce 100s infinite',
+				'urgent-bounce': 'urgent-bounce 2s infinite',
 				'cart-bounce-in': 'cart-bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
 				'cart-success': 'cart-success 0.4s ease-out',
 				'cart-slide-up': 'cart-slide-up 0.3s ease-out',
