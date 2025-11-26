@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
 import { useNavigate } from "react-router-dom";
-import { fuzzyMatch } from "@/lib/searchUtils";
+import { fuzzyMatch, highlightMatch } from "@/lib/searchUtils";
 
 interface GlobalSearchProps {
   open: boolean;
@@ -24,8 +24,10 @@ export default function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) 
     return (
       product.name.toLowerCase().includes(query) ||
       product.category?.toLowerCase().includes(query) ||
+      product.use_case?.toLowerCase().includes(query) ||
       fuzzyMatch(product.name, query) ||
-      (product.category && fuzzyMatch(product.category, query))
+      (product.category && fuzzyMatch(product.category, query)) ||
+      (product.use_case && fuzzyMatch(product.use_case, query))
     );
   }).slice(0, 8) || [];
 
@@ -91,7 +93,22 @@ export default function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) 
                       }}
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium truncate">{product.name}</p>
+                      <p className="font-medium">
+                        {highlightMatch(product.name, debouncedQuery).map((part, i) => (
+                          <span key={i} className={part.isMatch ? "bg-yellow-200 dark:bg-yellow-800" : ""}>
+                            {part.text}
+                          </span>
+                        ))}
+                      </p>
+                      {product.use_case && product.use_case.toLowerCase().includes(debouncedQuery.toLowerCase()) && (
+                        <p className="text-xs text-muted-foreground line-clamp-1">
+                          {highlightMatch(product.use_case, debouncedQuery).map((part, i) => (
+                            <span key={i} className={part.isMatch ? "bg-yellow-200 dark:bg-yellow-800" : ""}>
+                              {part.text}
+                            </span>
+                          ))}
+                        </p>
+                      )}
                       <p className="text-sm text-muted-foreground truncate">{product.product_type}</p>
                     </div>
                     <p className="font-semibold text-primary">{product.priceDisplay}</p>

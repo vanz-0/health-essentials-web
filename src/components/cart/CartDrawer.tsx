@@ -143,8 +143,19 @@ export default function CartDrawer({ children }: CartDrawerProps) {
                 <Button 
                   className="bg-primary hover:bg-primary/90 animate-pulse"
                   onClick={() => {
-                    setIsOpen(false);
-                    setCheckoutOpen(true);
+                    // Dismiss any existing toasts before opening checkout
+                    const toasts = document.querySelectorAll('[data-sonner-toast]');
+                    toasts.forEach(toast => {
+                      const closeButton = toast.querySelector('button[data-close-button]');
+                      if (closeButton instanceof HTMLElement) {
+                        closeButton.click();
+                      }
+                    });
+                    
+                    setTimeout(() => {
+                      setIsOpen(false);
+                      setCheckoutOpen(true);
+                    }, 100);
                   }}
                 >
                   Checkout ({totalQty})

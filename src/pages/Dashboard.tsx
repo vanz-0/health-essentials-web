@@ -11,6 +11,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import DashboardStats from "@/components/dashboard/DashboardStats";
+import LoyaltyCard from "@/components/dashboard/LoyaltyCard";
 import RecentOrders from "@/components/dashboard/RecentOrders";
 
 export default function Dashboard() {
@@ -78,6 +79,9 @@ export default function Dashboard() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Loyalty Points Card */}
+            <LoyaltyCard />
 
             {/* Recent Orders */}
             <RecentOrders orders={orders} />

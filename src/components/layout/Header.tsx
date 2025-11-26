@@ -47,15 +47,15 @@ export default function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* Top bar */}
-      <div className="hidden md:block bg-secondary text-secondary-foreground text-xs">
+      {/* Top bar - Kenya flag gradient */}
+      <div className="bg-gradient-to-r from-red-600 via-yellow-500 to-green-600 text-white text-xs">
         <div className="container flex items-center justify-between py-2">
           <div className="flex items-center gap-4">
             <a 
               href="https://api.whatsapp.com/send?phone=254735558830" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 hover:text-primary transition-colors"
+              className="inline-flex items-center gap-1 hover:text-white/80 transition-colors"
             >
               <Phone className="h-3.5 w-3.5" /> +254 735 558 830
             </a>
@@ -65,7 +65,7 @@ export default function Header() {
             href="https://1healthessentials.netlify.app/" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors animate-pulse"
+            className="text-xs font-semibold hover:text-white/80 transition-colors animate-pulse"
           >
             🔥 Black November Sale! Save BIG on Premium Beauty Essentials - Shop Now →
           </a>
@@ -76,7 +76,7 @@ export default function Header() {
       <div className={
         `transition-colors duration-300 ${scrolled ? "bg-background/95 shadow-sm" : "bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/40"}`
       }>
-        <nav className="container flex items-center justify-between py-2 md:py-3 px-2 md:px-4">
+        <nav className="container flex items-center justify-between py-1 md:py-2 px-2 md:px-4">
           <div className="flex items-center gap-1.5 md:gap-2">
             {/* Mobile Menu */}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>

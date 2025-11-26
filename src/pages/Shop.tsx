@@ -109,8 +109,10 @@ export default function Shop() {
         filtered = filtered.filter(product => 
           product.name.toLowerCase().includes(query) ||
           product.category?.toLowerCase().includes(query) ||
+          product.use_case?.toLowerCase().includes(query) ||
           fuzzyMatch(product.name, query) ||
-          (product.category && fuzzyMatch(product.category, query))
+          (product.category && fuzzyMatch(product.category, query)) ||
+          (product.use_case && fuzzyMatch(product.use_case, query))
         );
       }
     }
