@@ -21,6 +21,7 @@ import ExitIntentModal from "@/components/contact/ExitIntentModal";
 import ScrollSlideIn from "@/components/contact/ScrollSlideIn";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
 import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
+import BlackNovemberPopup from "@/components/home/BlackNovemberPopup";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const Index = () => {
@@ -330,6 +331,9 @@ const Index = () => {
       
       {/* WhatsApp Floating Button */}
       <WhatsAppButton />
+      
+      {/* Black November Popup */}
+      <BlackNovemberPopup />
     </div>
   );
 };
