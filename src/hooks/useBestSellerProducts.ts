@@ -15,8 +15,44 @@ export function useBestSellerProducts() {
 
       if (configError) throw configError;
       
-      // If no best sellers configured, return empty array
-      if (!config || config.length === 0) return [];
+      // If no best sellers configured, fetch random products
+      if (!config || config.length === 0) {
+        const { data: randomProducts, error: randomError } = await supabase
+          .from("Catalogue1")
+          .select("*")
+          .limit(8);
+        
+        if (randomError) throw randomError;
+        if (!randomProducts) return [];
+        
+        // Shuffle and transform random products
+        const shuffled = [...randomProducts].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, 8).map((item) => {
+          const productNum = item["Product Num"] || "";
+          const imageNumber = productNum.match(/\d+/)?.[0] || "1";
+          const seed = productNum.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+          const rating = 4.0 + (seed % 11) / 10;
+
+          return {
+            id: productNum,
+            name: item["Product Name"] || "Product",
+            price: item.Price || 0,
+            priceDisplay: `KES ${(item.Price || 0).toLocaleString()}`,
+            image: `https://syymqotfxkmchtjsmhkr.supabase.co/storage/v1/object/public/Cosmetics%20Photos/${imageNumber}.png`,
+            rating: Number(rating.toFixed(1)),
+            sale: false,
+            category: item["Product Type"] || undefined,
+            product_type: item["Product Type"] || undefined,
+            productNum: productNum,
+            productType: item["Product Type"] || undefined,
+            size: item.Size || undefined,
+            useCase: item["Use case"] || undefined,
+            copy: item["Attatchment Copy"] || undefined,
+            instructions: item["Attatchment Instructions"] || undefined,
+            funFact: item["Attatchment funfact"] || undefined,
+          };
+        });
+      }
 
       // Step 2: Fetch only those specific products from Catalogue1
       const productNums = config.map(c => c.product_num);
