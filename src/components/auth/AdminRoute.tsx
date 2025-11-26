@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
+import { supabase } from "@/integrations/supabase/client";
 
 type AdminRouteProps = {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ export default function AdminRoute({ children }: AdminRouteProps) {
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: roleLoading } = useUserRole();
   const navigate = useNavigate();
+  const [serverVerified, setServerVerified] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !roleLoading) {
@@ -18,11 +20,23 @@ export default function AdminRoute({ children }: AdminRouteProps) {
         navigate("/auth", { replace: true });
       } else if (!isAdmin) {
         navigate("/", { replace: true });
+      } else {
+        // Server-side verification
+        const verifyAdmin = async () => {
+          const { data, error } = await supabase.rpc('verify_admin_access');
+          if (error || !data) {
+            console.error('Server-side admin verification failed');
+            navigate("/", { replace: true });
+          } else {
+            setServerVerified(true);
+          }
+        };
+        verifyAdmin();
       }
     }
   }, [user, isAdmin, authLoading, roleLoading, navigate]);
 
-  if (authLoading || roleLoading) {
+  if (authLoading || roleLoading || !serverVerified) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
@@ -33,7 +47,7 @@ export default function AdminRoute({ children }: AdminRouteProps) {
     );
   }
 
-  if (!user || !isAdmin) {
+  if (!user || !isAdmin || !serverVerified) {
     return null;
   }
 
