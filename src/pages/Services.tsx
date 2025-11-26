@@ -161,7 +161,7 @@ export default function Services() {
                         ))}
                       </ul>
                       <a
-                        href={`https://wa.me/254757968945?text=${encodeURIComponent(`Hi! I'm interested in the ${bundle.title} bundle (${bundle.price}). Can you provide more details?`)}`}
+                        href={`https://wa.me/254735558830?text=${encodeURIComponent(`Hi! I'm interested in the ${bundle.title} bundle (${bundle.price}). Can you provide more details?`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -265,7 +265,7 @@ export default function Services() {
                     Don't see your area? Send us your location via WhatsApp for a quick delivery quote!
                   </p>
                   <a
-                    href={`https://wa.me/254757968945?text=${encodeURIComponent("Hi! I'd like to know the delivery cost for my location: [Your Location]. Please advise. 📍")}`}
+                    href={`https://wa.me/254735558830?text=${encodeURIComponent("Hi! I'd like to know the delivery cost for my location: [Your Location]. Please advise. 📍")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -274,11 +274,11 @@ export default function Services() {
                     </Button>
                   </a>
                   <a
-                    href="tel:+254757968945"
+                    href="tel:+254735558830"
                     className="block mt-2"
                   >
                     <Button size="sm" variant="outline" className="w-full">
-                      📞 Call 0757 968 945
+                      📞 Call 0735 558 830
                     </Button>
                   </a>
                 </div>
