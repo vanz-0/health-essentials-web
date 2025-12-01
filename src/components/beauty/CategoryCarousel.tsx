@@ -1,6 +1,4 @@
-import { useEffect } from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 import { CatalogueProduct } from "@/hooks/useCatalogueProducts";
 import { BeautyTipCard } from "./BeautyTipCard";
 
@@ -26,13 +24,6 @@ export function CategoryCarousel({ categoryName, products, onProductClick }: Cat
           loop: true,
           dragFree: true,
         }}
-        plugins={[
-          Autoplay({
-            delay: 3000,
-            stopOnInteraction: true,
-            stopOnMouseEnter: true,
-          }),
-        ]}
         className="w-full"
       >
         <CarouselContent className="-ml-2 md:-ml-4">

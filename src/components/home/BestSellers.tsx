@@ -8,7 +8,6 @@ import WishlistButton from "@/components/wishlist/WishlistButton";
 import ProductQuickView from "@/components/shop/ProductQuickView";
 import { Link } from "react-router-dom";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 
 export type Product = {
   id: string;
@@ -151,13 +150,6 @@ export default function BestSellers({ products, title = "Best Sellers", displayM
             loop: true,
             dragFree: true,
           }}
-          plugins={[
-            Autoplay({
-              delay: 4000,
-              stopOnInteraction: true,
-              stopOnMouseEnter: true,
-            }),
-          ]}
           className="w-full animate-fade-in"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
