@@ -15,7 +15,7 @@ export default function Footer() {
           <p className="mt-3 text-sm text-muted-foreground">
             Premium cosmetics and personal care made with natural ingredients. Your trusted partner in natural beauty and wellness.
           </p>
-          <p className="mt-3 text-sm font-semibold text-christmas-red text-primary">
+          <p className="mt-3 text-sm font-semibold text-christmas-green">
             🎊 Wishing you a Merry Christmas and Happy New Year!
           </p>
           <div className="flex items-center gap-3 mt-4">

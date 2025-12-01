@@ -25,7 +25,7 @@ export default function Hero() {
               <p className="text-lg md:text-xl text-foreground/80 mb-2 max-w-2xl">
                 Science-guided wellness, fast delivery in Nairobi & beyond.
               </p>
-              <p className="text-base md:text-lg text-christmas-red font-semibold mb-6">
+              <p className="text-base md:text-lg text-christmas-green font-semibold mb-6">
                 🎄 Christmas Specials Now Available
               </p>
               
