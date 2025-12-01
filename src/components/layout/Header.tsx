@@ -76,7 +76,7 @@ export default function Header() {
           <a href="https://1healthessentials.netlify.app/" target="_blank" rel="noopener noreferrer" className="flex-1 cursor-pointer hover:opacity-90 transition-opacity">
             <div className="ticker-wrapper py-0.5">
               <div className="ticker-content">
-                <span className="ticker-item text-white font-semibold text-xs md:text-sm">
+                <span className="ticker-item font-semibold text-xs md:text-sm text-zinc-950">
                   🎄 CHRISTMAS SALE! Up to 50% OFF • 🎁 Perfect Gifts for Your Loved Ones • ❄️ Free Delivery on Orders Over KES 3,000 • 🌟 Shop Now! •
                 </span>
                 <span className="ticker-item font-semibold text-xs md:text-sm text-zinc-950">
