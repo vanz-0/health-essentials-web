@@ -166,9 +166,14 @@ export default {
 					'25%': { transform: 'rotate(15deg)' },
 					'75%': { transform: 'rotate(-15deg)' }
 				},
-				'snowman-slide': {
-					'0%': { transform: 'translateX(0)', opacity: '1' },
-					'100%': { transform: 'translateX(-150vw)', opacity: '0' }
+				'snowman-sequence': {
+					'0%': { transform: 'translateX(0) rotate(0deg)', opacity: '1' },
+					'10%': { transform: 'translateX(0) rotate(15deg)', opacity: '1' },
+					'20%': { transform: 'translateX(0) rotate(-15deg)', opacity: '1' },
+					'30%': { transform: 'translateX(0) rotate(0deg)', opacity: '1' },
+					'50%': { transform: 'translateX(-150vw) rotate(0deg)', opacity: '0' },
+					'51%': { transform: 'translateX(100vw) rotate(0deg)', opacity: '0' },
+					'100%': { transform: 'translateX(0) rotate(0deg)', opacity: '1' }
 				}
 			},
 			animation: {
@@ -189,8 +194,7 @@ export default {
 				'float-subtle': 'float-subtle 3s ease-in-out infinite',
 				'float-super-slow': 'float-super-slow 100s ease-in-out infinite',
 				'snowman-wave': 'snowman-wave 2s ease-in-out',
-				'snowman-slide': 'snowman-slide 1s ease-in 2s forwards',
-				'snowman-sequence': 'snowman-wave 2s ease-in-out, snowman-slide 1s ease-in 2s forwards'
+				'snowman-sequence': 'snowman-sequence 10s ease-in-out infinite'
 			}
 		}
 	},
