@@ -48,7 +48,7 @@ const AppContent = () => {
   return (
     <>
       {/* Festive Snowfall Effect - Appears on all pages */}
-      <Snowfall count={25} />
+      <Snowfall count={15} />
       
       {/* Festive Snowman Animation - Appears on all pages */}
       <Snowman />
