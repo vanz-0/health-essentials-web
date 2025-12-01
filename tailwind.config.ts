@@ -168,12 +168,12 @@ export default {
 				},
 				'snowman-sequence': {
 					'0%': { transform: 'translateX(0) rotate(0deg)' },
-					'8%': { transform: 'translateX(0) rotate(12deg)' },
-					'16%': { transform: 'translateX(0) rotate(-12deg)' },
-					'24%': { transform: 'translateX(0) rotate(0deg)' },
-					'45%': { transform: 'translateX(-120vw) rotate(0deg)' },
-					'46%': { transform: 'translateX(120vw) rotate(0deg)' },
-					'100%': { transform: 'translateX(0) rotate(0deg)' }
+					'1%': { transform: 'translateX(0) rotate(12deg)' },
+					'2%': { transform: 'translateX(0) rotate(-12deg)' },
+					'3%': { transform: 'translateX(0) rotate(0deg)' },
+					'4%': { transform: 'translateX(-120vw) rotate(0deg)' },
+					'4.5%': { transform: 'translateX(120vw) rotate(0deg)' },
+					'100%': { transform: 'translateX(120vw) rotate(0deg)' }
 				}
 			},
 			animation: {
@@ -194,7 +194,7 @@ export default {
 				'float-subtle': 'float-subtle 3s ease-in-out infinite',
 				'float-super-slow': 'float-super-slow 100s ease-in-out infinite',
 				'snowman-wave': 'snowman-wave 2s ease-in-out',
-				'snowman-sequence': 'snowman-sequence 8s ease-in-out infinite'
+				'snowman-sequence': 'snowman-sequence 180s ease-in-out infinite'
 			}
 		}
 	},
