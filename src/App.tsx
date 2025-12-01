@@ -35,6 +35,7 @@ import { ComparisonProvider } from "./contexts/ComparisonContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 import ErrorBoundary from "./components/error/ErrorBoundary";
+import Snowfall from "./components/home/Snowfall";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,9 @@ const AppContent = () => {
   
   return (
     <>
+      {/* Festive Snowfall Effect - Appears on all pages */}
+      <Snowfall count={25} />
+      
       <Toaster />
       <Sonner />
       <BrowserRouter>

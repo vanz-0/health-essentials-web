@@ -23,7 +23,6 @@ import WhatsAppButton from "@/components/common/WhatsAppButton";
 import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
 import { useBestSellerProducts } from "@/hooks/useBestSellerProducts";
 import HolidayPopup from "@/components/home/HolidayPopup";
-import Snowfall from "@/components/home/Snowfall";
 import FestiveDivider from "@/components/home/FestiveDivider";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -246,9 +245,6 @@ const Index = () => {
         {productJsonLd && <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>}
       </Helmet>
 
-      {/* Festive Snowfall Effect */}
-      <Snowfall count={25} />
-      
       <FlashBanner endTime={flashSaleEnd} message="🎄 Holiday Flash Sale ends in" />
       <Header />
       <main>
