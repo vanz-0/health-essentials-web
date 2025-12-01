@@ -22,7 +22,9 @@ import ScrollSlideIn from "@/components/contact/ScrollSlideIn";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
 import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
 import { useBestSellerProducts } from "@/hooks/useBestSellerProducts";
-import BlackNovemberPopup from "@/components/home/BlackNovemberPopup";
+import HolidayPopup from "@/components/home/HolidayPopup";
+import Snowfall from "@/components/home/Snowfall";
+import FestiveDivider from "@/components/home/FestiveDivider";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const Index = () => {
@@ -244,10 +246,15 @@ const Index = () => {
         {productJsonLd && <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>}
       </Helmet>
 
-      <FlashBanner endTime={flashSaleEnd} message="Flash Sale ends in" />
+      {/* Festive Snowfall Effect */}
+      <Snowfall count={25} />
+      
+      <FlashBanner endTime={flashSaleEnd} message="🎄 Holiday Flash Sale ends in" />
       <Header />
       <main>
         <Hero />
+        
+        <FestiveDivider />
         
         {/* FOMO Urgent Deals Section - Only shown when Bit 2 is enabled */}
         {fomoEnabled && hotDeals.length >= 2 && (
@@ -312,18 +319,31 @@ const Index = () => {
             displayMode="carousel"
           />
         )}
+        
+        <FestiveDivider />
+        
         <Categories />
+        
+        <FestiveDivider />
         
         {/* Hot Deals Carousel using copywriting tone */}
         {catalogueProducts.length > 0 && <HotDealsCarousel products={catalogueProducts} />}
+        
+        <FestiveDivider />
         
         <NewArrivals items={arrivals.map(item => ({
           ...item,
           price: typeof item.price === 'number' ? item.price : 0
         }))} />
+        
+        <FestiveDivider />
+        
         <div id="challenge" className="scroll-mt-20">
           <ChallengeBanner />
         </div>
+        
+        <FestiveDivider />
+        
         <Trust />
         <About />
         <Testimonials />
@@ -337,8 +357,8 @@ const Index = () => {
       {/* WhatsApp Floating Button */}
       <WhatsAppButton />
       
-      {/* Black November Popup */}
-      <BlackNovemberPopup />
+      {/* Holiday Popup */}
+      <HolidayPopup />
     </div>
   );
 };

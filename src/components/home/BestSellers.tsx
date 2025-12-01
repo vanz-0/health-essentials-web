@@ -50,9 +50,11 @@ function ProductCard({ product }: { product: Product }) {
         onOpenChange={setShowQuickView} 
       />
       <div className="rounded-lg border p-2 md:p-3 hover:shadow-sm transition-shadow">
-        <div className="relative overflow-hidden rounded-md">
+        <div className="relative overflow-hidden rounded-md group">
         {product.sale && (
-          <span className="absolute left-1.5 top-1.5 md:left-2 md:top-2 rounded bg-accent px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-xs font-medium text-accent-foreground">Sale</span>
+          <span className="absolute left-1.5 top-1.5 md:left-2 md:top-2 rounded bg-gradient-holiday px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-xs font-medium text-white shadow-lg">
+            🎄 Holiday Deal
+          </span>
         )}
         <WishlistButton 
           product={product} 
