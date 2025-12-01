@@ -14,27 +14,34 @@ export default function Hero() {
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
           
           <div className="absolute inset-0 container flex items-center">
-          <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
+          <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-1000 relative">
+            {/* Subtle Christmas decorations */}
+            <div className="absolute -top-8 -left-4 text-4xl animate-bounce opacity-80" style={{ animationDuration: '3s' }}>❄️</div>
+            <div className="absolute -top-6 right-12 text-3xl twinkle-star opacity-70">⭐</div>
+            
               <h1 className="font-serifDisplay text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight mb-4">
-                Feel Better, Live Better — Essentials That Fit Kenyan Life
+                This Holiday Season, Feel Better, Live Better
               </h1>
-              <p className="text-lg md:text-xl text-foreground/80 mb-6 max-w-2xl">
+              <p className="text-lg md:text-xl text-foreground/80 mb-2 max-w-2xl">
                 Science-guided wellness, fast delivery in Nairobi & beyond.
               </p>
+              <p className="text-base md:text-lg text-christmas-red font-semibold mb-6">
+                🎄 Christmas Specials Now Available
+              </p>
               
-              {/* Trust Pills */}
+              {/* Trust Pills - Holiday Edition */}
               <div className="flex flex-wrap gap-2 md:gap-4 mb-6 md:mb-8">
-                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium">
-                  <span className="text-primary text-xs md:text-sm">KES</span>
-                  <span className="text-xs md:text-sm">Transparent Pricing</span>
+                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium border border-christmas-gold/30">
+                  <span className="text-xs md:text-sm">🎁</span>
+                  <span className="text-xs md:text-sm">Perfect Holiday Gifts</span>
                 </div>
-                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium">
+                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium border border-christmas-gold/30">
                   <Smartphone className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" />
-                  <span className="text-xs md:text-sm">M-Pesa Ready</span>
+                  <span className="text-xs md:text-sm">📞 M-Pesa Ready</span>
                 </div>
-                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium">
-                  <Shield className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" />
-                  <span className="text-xs md:text-sm">30-Day Guarantee</span>
+                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium border border-christmas-gold/30">
+                  <span className="text-xs md:text-sm">❄️</span>
+                  <span className="text-xs md:text-sm">Fast Christmas Delivery</span>
                 </div>
               </div>
 

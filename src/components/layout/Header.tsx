@@ -47,8 +47,8 @@ export default function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* Top bar - Kenya flag gradient with news ticker */}
-      <div className="bg-gradient-to-r from-red-600 via-yellow-500 to-green-600 overflow-hidden relative">
+      {/* Top bar - Christmas themed with news ticker */}
+      <div className="bg-gradient-christmas overflow-hidden relative">
         <div className="container flex items-center justify-between">
           <a 
             href="https://1healthessentials.netlify.app/" 
@@ -58,11 +58,11 @@ export default function Header() {
           >
             <div className="ticker-wrapper py-0.5">
               <div className="ticker-content">
-                <span className="ticker-item text-black font-semibold text-xs md:text-sm">
-                  🎉 BLACK NOVEMBER! Up to 50% OFF • 📍 Brentwood Arcade, Thindiqua, Kiambu, Kenya • 📞 0735 558 830 • Free Delivery Available • Shop Now! •
+                <span className="ticker-item text-white font-semibold text-xs md:text-sm">
+                  🎄 CHRISTMAS SALE! Up to 50% OFF • 🎁 Perfect Gifts for Your Loved Ones • ❄️ Free Delivery on Orders Over KES 3,000 • 🌟 Shop Now! •
                 </span>
-                <span className="ticker-item text-black font-semibold text-xs md:text-sm">
-                  🎉 BLACK NOVEMBER! Up to 50% OFF • 📍 Brentwood Arcade, Thindiqua, Kiambu, Kenya • 📞 0735 558 830 • Free Delivery Available • Shop Now! •
+                <span className="ticker-item text-white font-semibold text-xs md:text-sm">
+                  🎄 CHRISTMAS SALE! Up to 50% OFF • 🎁 Perfect Gifts for Your Loved Ones • ❄️ Free Delivery on Orders Over KES 3,000 • 🌟 Shop Now! •
                 </span>
               </div>
             </div>
@@ -75,7 +75,7 @@ export default function Header() {
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="X (Twitter)"
-              className="text-black hover:opacity-70 transition-opacity"
+              className="text-white hover:opacity-70 transition-opacity"
             >
               <svg className="h-3.5 w-3.5 md:h-4 md:w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -86,7 +86,7 @@ export default function Header() {
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="Facebook"
-              className="text-black hover:opacity-70 transition-opacity"
+              className="text-white hover:opacity-70 transition-opacity"
             >
               <Facebook className="h-3.5 w-3.5 md:h-4 md:w-4" />
             </a>
@@ -95,7 +95,7 @@ export default function Header() {
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="text-black hover:opacity-70 transition-opacity"
+              className="text-white hover:opacity-70 transition-opacity"
             >
               <Instagram className="h-3.5 w-3.5 md:h-4 md:w-4" />
             </a>
@@ -104,7 +104,7 @@ export default function Header() {
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="TikTok"
-              className="text-black hover:opacity-70 transition-opacity"
+              className="text-white hover:opacity-70 transition-opacity"
             >
               <svg className="h-3.5 w-3.5 md:h-4 md:w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
@@ -113,7 +113,7 @@ export default function Header() {
             <a 
               href="mailto:hello@1healthessentials.com" 
               aria-label="Email"
-              className="text-black hover:opacity-70 transition-opacity"
+              className="text-white hover:opacity-70 transition-opacity"
             >
               <Mail className="h-3.5 w-3.5 md:h-4 md:w-4" />
             </a>

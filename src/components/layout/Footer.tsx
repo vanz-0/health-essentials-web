@@ -2,12 +2,21 @@ import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import ContactCaptureForm from "@/components/contact/ContactCaptureForm";
 export default function Footer() {
-  return <footer className="border-t mt-24">
+  return <footer className="border-t mt-24 relative">
+      {/* Festive accent */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-christmas-alt" />
+      
       <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 py-12">
         <div>
-          <h4 className="font-serifDisplay text-xl font-semibold">1Health Essentials</h4>
+          <h4 className="font-serifDisplay text-xl font-semibold flex items-center gap-2">
+            1Health Essentials
+            <span className="text-sm">🎄</span>
+          </h4>
           <p className="mt-3 text-sm text-muted-foreground">
             Premium cosmetics and personal care made with natural ingredients. Your trusted partner in natural beauty and wellness.
+          </p>
+          <p className="mt-3 text-sm font-semibold text-christmas-red">
+            🎊 Wishing you a Merry Christmas and Happy New Year!
           </p>
           <div className="flex items-center gap-3 mt-4">
             <a 
@@ -87,8 +96,11 @@ export default function Footer() {
         </div>
 
         <div>
-          <h5 className="font-semibold">Newsletter</h5>
-          <p className="mt-3 text-sm text-muted-foreground">Get 10% off your first order.</p>
+          <h5 className="font-semibold flex items-center gap-2">
+            Newsletter
+            <span className="text-sm">🎁</span>
+          </h5>
+          <p className="mt-3 text-sm text-muted-foreground">Get Holiday Deals First! 🎄</p>
           <div className="mt-3">
             <ContactCaptureForm source="footer_newsletter" variant="footer" incentiveText="Join 5,000+ health-conscious Kenyans" />
           </div>

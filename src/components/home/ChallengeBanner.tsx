@@ -13,28 +13,32 @@ export default function ChallengeBanner() {
   const [isOpen, setIsOpen] = useState(false);
 
   const benefits = [
-    "Transform your skin with our curated skincare routine",
-    "Daily tips and guidance from beauty experts",
-    "Exclusive product recommendations",
-    "Track your progress with our challenge tracker",
-    "Join a community of beauty enthusiasts"
+    "🎁 Transform your skin with our curated holiday skincare routine",
+    "❄️ Daily tips and guidance from beauty experts",
+    "🌟 Exclusive festive product recommendations",
+    "📊 Track your progress with our challenge tracker",
+    "🎄 Join a community of holiday beauty enthusiasts"
   ];
 
   return (
     <>
       <div 
-        className="container mt-12 bg-gradient-to-r from-primary to-indigo rounded-2xl p-8 text-white cursor-pointer hover:shadow-xl transition-shadow"
+        className="container mt-12 bg-gradient-christmas rounded-2xl p-8 text-white cursor-pointer hover:shadow-xl transition-shadow border-2 border-christmas-gold/30 relative overflow-hidden"
         onClick={() => setIsOpen(true)}
       >
+        {/* Decorative elements */}
+        <div className="absolute top-4 right-4 text-3xl animate-bounce opacity-60" style={{ animationDuration: '2s' }}>🎁</div>
+        <div className="absolute bottom-4 left-4 text-2xl twinkle-star opacity-50">✨</div>
+        
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <Trophy className="h-16 w-16 flex-shrink-0" />
+            <Trophy className="h-16 w-16 flex-shrink-0 text-christmas-gold" />
             <div>
               <h3 className="text-2xl md:text-3xl font-bold mb-2">
-                Join Our 30-Day Glow Challenge
+                🎄 Join Our Holiday Glow Challenge
               </h3>
               <p className="text-white/90">
-                Transform your beauty routine in just one month
+                Start the New Year with radiant, glowing skin
               </p>
             </div>
           </div>
