@@ -18,8 +18,11 @@ export default function WhatsAppButton({ productName }: WhatsAppButtonProps) {
       href={whatsappUrl} 
       target="_blank" 
       rel="noopener noreferrer"
-      className="fixed bottom-4 right-4 z-[9999] md:bottom-6 md:right-6"
-      style={{ position: 'fixed' }}
+      className="fixed z-[9999] animate-float-super-slow"
+      style={{ 
+        bottom: 'max(1rem, env(safe-area-inset-bottom, 1rem))',
+        right: '1rem',
+      }}
     >
       <Button
         size="lg"
