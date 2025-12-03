@@ -89,7 +89,7 @@ export default function Shop() {
     let filtered = [...allProducts];
     
     if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
+      const query = searchQuery.toLowerCase().trim();
       const priceQuery = parsePriceQuery(query);
       
       if (priceQuery) {
@@ -106,13 +106,10 @@ export default function Shop() {
           });
         }
       } else {
+        // Strict keyword matching on name and use_case only
         filtered = filtered.filter(product => 
           product.name.toLowerCase().includes(query) ||
-          product.category?.toLowerCase().includes(query) ||
-          product.use_case?.toLowerCase().includes(query) ||
-          fuzzyMatch(product.name, query) ||
-          (product.category && fuzzyMatch(product.category, query)) ||
-          (product.use_case && fuzzyMatch(product.use_case, query))
+          product.use_case?.toLowerCase().includes(query)
         );
       }
     }

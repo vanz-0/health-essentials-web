@@ -9,6 +9,7 @@ interface SearchAutocompleteProps {
   products: Product[];
   searchQuery: string;
   onSelect: (query: string) => void;
+  onProductSelect?: (product: Product) => void;
   show: boolean;
 }
 
@@ -18,6 +19,7 @@ export default function SearchAutocomplete({
   products, 
   searchQuery, 
   onSelect,
+  onProductSelect,
   show 
 }: SearchAutocompleteProps) {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -63,13 +65,21 @@ export default function SearchAutocomplete({
     ) : null;
   }
 
-  // Filter and score products
+  // Filter and score products - strict matching on name and useCase only
   const matchedProducts = products
+    .filter(product => {
+      const query = searchQuery.toLowerCase();
+      // Handle both useCase (Product type) and use_case (CatalogueProduct) 
+      const useCase = product.useCase || (product as any).use_case || '';
+      return (
+        product.name.toLowerCase().includes(query) ||
+        useCase.toLowerCase().includes(query)
+      );
+    })
     .map(product => ({
       product,
       score: getFuzzyScore(product.name, searchQuery),
     }))
-    .filter(item => item.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, 5);
 
@@ -79,6 +89,14 @@ export default function SearchAutocomplete({
     .slice(0, 3);
 
   const hasResults = matchedProducts.length > 0 || matchedCategories.length > 0;
+
+  const handleProductClick = (product: Product) => {
+    if (onProductSelect) {
+      onProductSelect(product);
+    } else {
+      onSelect(product.name);
+    }
+  };
 
   return (
     <div className="absolute top-full mt-2 w-full rounded-lg border bg-popover shadow-lg z-50 animate-fade-in">
@@ -100,7 +118,7 @@ export default function SearchAutocomplete({
                 return (
                   <CommandItem
                     key={product.id}
-                    onSelect={() => onSelect(product.name)}
+                    onSelect={() => handleProductClick(product)}
                     className="flex items-center gap-3 cursor-pointer"
                   >
                     <img 
@@ -113,7 +131,7 @@ export default function SearchAutocomplete({
                         {highlighted.map((part, i) => (
                           <span 
                             key={i} 
-                            className={part.isMatch ? "font-semibold text-primary" : ""}
+                            className={part.isMatch ? "font-semibold bg-yellow-200 dark:bg-yellow-800" : ""}
                           >
                             {part.text}
                           </span>
