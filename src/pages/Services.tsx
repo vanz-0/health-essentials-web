@@ -115,6 +115,94 @@ export default function Services() {
           </div>
         </section>
 
+        {/* Nuga Best Beds Section */}
+        <section className="container mt-12">
+          <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 via-background to-accent/5">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+              {/* Video/Visual Side */}
+              <div className="relative aspect-video lg:aspect-auto lg:min-h-[400px] bg-black">
+                <iframe
+                  src="https://www.youtube.com/embed/Ns2dpxg6KQg"
+                  title="Nuga Best Thermal Massage Bed"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                />
+              </div>
+              
+              {/* Content Side */}
+              <div className="p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium w-fit mb-4">
+                  <Sparkles className="h-4 w-4" />
+                  <span>NEW SERVICE</span>
+                </div>
+                
+                <h2 className="font-serifDisplay text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
+                  Nuga Best Thermal Massage Beds
+                </h2>
+                
+                <p className="text-muted-foreground mb-6">
+                  Experience the healing power of Korean thermal therapy. Our Nuga Best beds combine 
+                  far-infrared heat, acupressure, and jade stones to provide deep relaxation, 
+                  pain relief, and improved circulation.
+                </p>
+                
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  <div className="flex items-start gap-2">
+                    <Shield className="h-5 w-5 text-primary mt-0.5" />
+                    <div>
+                      <p className="text-sm font-semibold">Pain Relief</p>
+                      <p className="text-xs text-muted-foreground">Back & joint therapy</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Heart className="h-5 w-5 text-primary mt-0.5" />
+                    <div>
+                      <p className="text-sm font-semibold">Relaxation</p>
+                      <p className="text-xs text-muted-foreground">Stress reduction</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Sparkles className="h-5 w-5 text-primary mt-0.5" />
+                    <div>
+                      <p className="text-sm font-semibold">Far-Infrared Heat</p>
+                      <p className="text-xs text-muted-foreground">Deep tissue therapy</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Package className="h-5 w-5 text-primary mt-0.5" />
+                    <div>
+                      <p className="text-sm font-semibold">Jade & Tourmaline</p>
+                      <p className="text-xs text-muted-foreground">Natural healing stones</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href={`https://wa.me/254735558830?text=${encodeURIComponent("Hi! I'm interested in booking a Nuga Best thermal massage bed session. Please share availability and pricing. 🛏️")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1"
+                  >
+                    <Button className="w-full" size="lg">
+                      Book a Session
+                    </Button>
+                  </a>
+                  <a
+                    href="tel:+254735558830"
+                    className="flex-1"
+                  >
+                    <Button variant="outline" className="w-full" size="lg">
+                      📞 Call to Inquire
+                    </Button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </section>
+
         {/* Bundles Section */}
         <section className="container mt-16">
           <div className="text-center mb-12">
