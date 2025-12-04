@@ -27,7 +27,7 @@ export function useBestSellerProducts() {
         
         // Shuffle and transform random products
         const shuffled = [...randomProducts].sort(() => Math.random() - 0.5);
-        return shuffled.slice(0, 8).map((item) => {
+        return shuffled.slice(0, 8).map((item, index) => {
           const productNum = item["Product Num"] || "";
           const imageNumber = productNum.match(/\d+/)?.[0] || "1";
           const seed = productNum.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -40,7 +40,7 @@ export function useBestSellerProducts() {
             priceDisplay: `KES ${(item.Price || 0).toLocaleString()}`,
             image: `https://syymqotfxkmchtjsmhkr.supabase.co/storage/v1/object/public/Cosmetics%20Photos/${imageNumber}.png`,
             rating: Number(rating.toFixed(1)),
-            sale: false,
+            sale: index < 3, // First 3 products are Holiday Deals
             category: item["Product Type"] || undefined,
             product_type: item["Product Type"] || undefined,
             productNum: productNum,
@@ -65,7 +65,7 @@ export function useBestSellerProducts() {
       if (!catalogueData) return [];
 
       // Step 3: Transform to Product format with proper ordering
-      const products: Product[] = catalogueData.map((item) => {
+      const products: Product[] = catalogueData.map((item, index) => {
         const productNum = item["Product Num"] || "";
         const imageNumber = productNum.match(/\d+/)?.[0] || "1";
         
@@ -80,7 +80,7 @@ export function useBestSellerProducts() {
           priceDisplay: `KES ${(item.Price || 0).toLocaleString()}`,
           image: `https://syymqotfxkmchtjsmhkr.supabase.co/storage/v1/object/public/Cosmetics%20Photos/${imageNumber}.png`,
           rating: Number(rating.toFixed(1)),
-          sale: false,
+          sale: index < 3, // First 3 products in display order are Holiday Deals
           category: item["Product Type"] || undefined,
           product_type: item["Product Type"] || undefined,
           productNum: productNum,
@@ -98,7 +98,11 @@ export function useBestSellerProducts() {
         .map(num => products.find(p => p.productNum === num))
         .filter((p): p is Product => p !== undefined);
 
-      return orderedProducts;
+      // Mark first 3 products (in display order) as Holiday Deals
+      return orderedProducts.map((p, index) => ({
+        ...p,
+        sale: index < 3
+      }));
     },
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
     gcTime: 10 * 60 * 1000, // Keep in cache for 10 minutes

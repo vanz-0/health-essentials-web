@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Star } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Star, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
@@ -126,20 +126,38 @@ function ProductCard({ product }: { product: Product }) {
 }
 
 export default function BestSellers({ products, title = "Best Sellers", displayMode = "carousel" }: { products: Product[]; title?: string; displayMode?: "carousel" | "grid" }) {
+  // Sort products to show holiday deals first
+  const sortedProducts = useMemo(() => {
+    return [...products].sort((a, b) => {
+      // Holiday deals (sale items) come first
+      if (a.sale && !b.sale) return -1;
+      if (!a.sale && b.sale) return 1;
+      return 0;
+    });
+  }, [products]);
+
   return (
     <section id="shop" className="container mt-8" aria-labelledby="bestsellers-heading">
-      <div className="mb-6">
-        <h2 id="bestsellers-heading" className="font-serifDisplay text-xl md:text-2xl lg:text-3xl font-semibold">{title}</h2>
-        <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary/30 rounded-full mt-2" />
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 id="bestsellers-heading" className="font-serifDisplay text-xl md:text-2xl lg:text-3xl font-semibold">{title}</h2>
+          <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary/30 rounded-full mt-2" />
+        </div>
+        <Link to="/shop">
+          <Button variant="outline" className="group">
+            Shop Bestsellers
+            <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+          </Button>
+        </Link>
       </div>
-      {products.length === 0 ? (
+      {sortedProducts.length === 0 ? (
         <div className="mt-8 text-center py-12">
           <p className="text-muted-foreground text-lg">No products found matching your criteria.</p>
           <p className="text-muted-foreground text-sm mt-2">Try adjusting your search or filters.</p>
         </div>
       ) : displayMode === "grid" ? (
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 animate-fade-in">
-          {products.map((p) => (
+          {sortedProducts.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
@@ -153,7 +171,7 @@ export default function BestSellers({ products, title = "Best Sellers", displayM
           className="w-full animate-fade-in"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
-            {products.map((p) => (
+            {sortedProducts.map((p) => (
               <CarouselItem key={p.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                 <ProductCard product={p} />
               </CarouselItem>
