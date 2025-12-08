@@ -101,8 +101,21 @@ const Index = () => {
     };
   }, [catalogueProducts]);
   
-  // Filter and sort products
+  // Filter and sort products - only apply filters if user has actively searched or filtered
   const filteredProducts = useMemo(() => {
+    // If no active search/filter, return all best sellers
+    const hasActiveSearch = searchQuery.trim().length > 0;
+    const hasActiveCategories = activeFilters.categories && activeFilters.categories.length > 0;
+    const hasActivePriceRange = activeFilters.priceRange && 
+      (activeFilters.priceRange.min > 0 || activeFilters.priceRange.max < 10000);
+    const hasActiveRating = activeFilters.minRating && activeFilters.minRating > 0;
+    const hasActiveFilters = hasActiveSearch || hasActiveCategories || hasActivePriceRange || hasActiveRating || activeFilters.onSale;
+    
+    // If no active filters, return all best sellers
+    if (!hasActiveFilters) {
+      return [...bestSellers];
+    }
+    
     let filtered = [...bestSellers];
     
     // Search filter - enhanced with fuzzy matching and natural language price
@@ -194,7 +207,7 @@ const Index = () => {
     }
     
     return filtered;
-  }, [searchQuery, activeFilters]);
+  }, [searchQuery, activeFilters, bestSellers]);
   
   // Flash sale ends in 2 hours (example)
   const flashSaleEnd = new Date(Date.now() + 2 * 60 * 60 * 1000);
@@ -310,8 +323,8 @@ const Index = () => {
           </section>
         ) : (
           <BestSellers 
-            products={filteringEnabled ? filteredProducts : bestSellers} 
-            title={filteringEnabled && (searchQuery || (activeFilters.categories && activeFilters.categories.length > 0)) ? "Search Results" : "Best Sellers"}
+            products={filteringEnabled && filteredProducts.length > 0 ? filteredProducts : bestSellers} 
+            title={filteringEnabled && (searchQuery || (activeFilters.categories && activeFilters.categories.length > 0)) && filteredProducts.length > 0 ? "Search Results" : "Holiday Deals"}
             displayMode="carousel"
           />
         )}
