@@ -167,6 +167,168 @@ export type Database = {
         }
         Relationships: []
       }
+      challenge_alerts: {
+        Row: {
+          alert_type: Database["public"]["Enums"]["alert_type"]
+          created_at: string
+          id: string
+          sent: boolean
+          sent_at: string | null
+          user_challenge_id: string
+        }
+        Insert: {
+          alert_type: Database["public"]["Enums"]["alert_type"]
+          created_at?: string
+          id?: string
+          sent?: boolean
+          sent_at?: string | null
+          user_challenge_id: string
+        }
+        Update: {
+          alert_type?: Database["public"]["Enums"]["alert_type"]
+          created_at?: string
+          id?: string
+          sent?: boolean
+          sent_at?: string | null
+          user_challenge_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_alerts_user_challenge_id_fkey"
+            columns: ["user_challenge_id"]
+            isOneToOne: false
+            referencedRelation: "user_challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_days: {
+        Row: {
+          challenge_id: string
+          created_at: string
+          day_number: number
+          id: string
+          product_nums: Json
+          routine_time: string
+          tip: string
+          title: string
+        }
+        Insert: {
+          challenge_id: string
+          created_at?: string
+          day_number: number
+          id?: string
+          product_nums?: Json
+          routine_time?: string
+          tip: string
+          title: string
+        }
+        Update: {
+          challenge_id?: string
+          created_at?: string
+          day_number?: number
+          id?: string
+          product_nums?: Json
+          routine_time?: string
+          tip?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_days_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_progress: {
+        Row: {
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          day_number: number
+          id: string
+          notes: string | null
+          user_challenge_id: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          day_number: number
+          id?: string
+          notes?: string | null
+          user_challenge_id: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          day_number?: number
+          id?: string
+          notes?: string | null
+          user_challenge_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_progress_user_challenge_id_fkey"
+            columns: ["user_challenge_id"]
+            isOneToOne: false
+            referencedRelation: "user_challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenges: {
+        Row: {
+          active: boolean
+          category: string
+          challenge_type: Database["public"]["Enums"]["challenge_type"]
+          created_at: string
+          description: string
+          difficulty: string
+          discount_percent: number
+          duration_days: number
+          icon: string
+          id: string
+          recommended_products: Json
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          category: string
+          challenge_type: Database["public"]["Enums"]["challenge_type"]
+          created_at?: string
+          description: string
+          difficulty?: string
+          discount_percent?: number
+          duration_days?: number
+          icon: string
+          id?: string
+          recommended_products?: Json
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          challenge_type?: Database["public"]["Enums"]["challenge_type"]
+          created_at?: string
+          description?: string
+          difficulty?: string
+          discount_percent?: number
+          duration_days?: number
+          icon?: string
+          id?: string
+          recommended_products?: Json
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           consent_given: boolean | null
@@ -688,6 +850,68 @@ export type Database = {
         }
         Relationships: []
       }
+      user_challenges: {
+        Row: {
+          challenge_id: string
+          completed_at: string | null
+          created_at: string
+          current_day: number
+          discount_code: string | null
+          email: string
+          full_name: string | null
+          id: string
+          last_activity_at: string | null
+          missed_days_streak: number
+          product_snapshot: Json | null
+          started_at: string
+          status: Database["public"]["Enums"]["challenge_status"]
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          challenge_id: string
+          completed_at?: string | null
+          created_at?: string
+          current_day?: number
+          discount_code?: string | null
+          email: string
+          full_name?: string | null
+          id?: string
+          last_activity_at?: string | null
+          missed_days_streak?: number
+          product_snapshot?: Json | null
+          started_at?: string
+          status?: Database["public"]["Enums"]["challenge_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          challenge_id?: string
+          completed_at?: string | null
+          created_at?: string
+          current_day?: number
+          discount_code?: string | null
+          email?: string
+          full_name?: string | null
+          id?: string
+          last_activity_at?: string | null
+          missed_days_streak?: number
+          product_snapshot?: Json | null
+          started_at?: string
+          status?: Database["public"]["Enums"]["challenge_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_challenges_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -819,7 +1043,16 @@ export type Database = {
       verify_admin_access: { Args: never; Returns: boolean }
     }
     Enums: {
+      alert_type: "2_days" | "5_days" | "7_days_reset"
       app_role: "admin" | "moderator" | "user"
+      challenge_status: "active" | "paused" | "completed" | "abandoned"
+      challenge_type:
+        | "glow_up"
+        | "hair_revival"
+        | "stretch_mark_fade"
+        | "clear_skin"
+        | "makeup_mastery"
+        | "body_care"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -947,7 +1180,17 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      alert_type: ["2_days", "5_days", "7_days_reset"],
       app_role: ["admin", "moderator", "user"],
+      challenge_status: ["active", "paused", "completed", "abandoned"],
+      challenge_type: [
+        "glow_up",
+        "hair_revival",
+        "stretch_mark_fade",
+        "clear_skin",
+        "makeup_mastery",
+        "body_care",
+      ],
     },
   },
 } as const
