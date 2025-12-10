@@ -72,8 +72,7 @@ export default function DayDetailModal({
       name: product.name,
       price: product.price,
       image: product.image,
-      quantity: 1,
-    });
+    }, 1);
   };
   
   const routineIcon = dayData?.routine_time === 'morning' 
