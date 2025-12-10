@@ -22,6 +22,9 @@ const navItems = [{
   label: "Shop",
   to: "/shop"
 }, {
+  label: "Challenges",
+  to: "/challenges"
+}, {
   label: "About",
   to: "/about"
 }, {

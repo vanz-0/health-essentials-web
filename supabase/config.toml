@@ -1,1 +1,13 @@
 project_id = "syymqotfxkmchtjsmhkr"
+
+[functions.import-catalogue]
+verify_jwt = false
+
+[functions.send-contact-confirmation]
+verify_jwt = false
+
+[functions.send-challenge-welcome]
+verify_jwt = false
+
+[functions.process-challenge-alerts]
+verify_jwt = false

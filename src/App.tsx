@@ -25,6 +25,8 @@ import OrderManagement from "./pages/admin/OrderManagement";
 import ContactManagement from "./pages/admin/ContactManagement";
 import AnalyticsDashboard from "./pages/admin/AnalyticsDashboard";
 import CatalogueImport from "./pages/admin/CatalogueImport";
+import Challenges from "./pages/Challenges";
+import ChallengeDetail from "./pages/ChallengeDetail";
 import { usePerformance } from "./hooks/usePerformance";
 import { useAnalytics } from "./hooks/useAnalytics";
 import { useErrorLogging } from "./hooks/useErrorLogging";
@@ -71,6 +73,10 @@ const AppContent = () => {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/orders" element={<OrderHistory />} />
                 <Route path="/addresses" element={<Addresses />} />
+                
+                {/* Challenge Routes */}
+                <Route path="/challenges" element={<Challenges />} />
+                <Route path="/challenges/:challengeId" element={<ChallengeDetail />} />
                 
                 {/* Admin Routes */}
                 <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
