@@ -52,31 +52,31 @@ export default function Challenges() {
       
       <Header />
       
-      <main className="min-h-screen bg-gradient-to-b from-background to-secondary/10">
+      <main className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="relative py-16 md:py-24 bg-gradient-christmas overflow-hidden">
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="container relative z-10 text-center text-white">
-            <Badge className="bg-white/20 text-white border-white/30 mb-4">
+        <section className="relative py-16 md:py-24 bg-gradient-challenge overflow-hidden">
+          <div className="absolute inset-0 bg-black/10" />
+          <div className="container relative z-10 text-center text-primary-foreground">
+            <Badge className="bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30 mb-4">
               <Gift className="h-3 w-3 mr-1" />
               Exclusive Discounts on Products
             </Badge>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               30-Day Beauty Challenges
             </h1>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8">
+            <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto mb-8">
               Transform your routine with guided daily steps, expert tips, and exclusive product discounts. Track your progress and see real results.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <div className="flex items-center gap-2 bg-white/20 rounded-full px-4 py-2">
+              <div className="flex items-center gap-2 bg-primary-foreground/20 rounded-full px-4 py-2">
                 <Trophy className="h-5 w-5" />
                 <span>6 Challenges Available</span>
               </div>
-              <div className="flex items-center gap-2 bg-white/20 rounded-full px-4 py-2">
+              <div className="flex items-center gap-2 bg-primary-foreground/20 rounded-full px-4 py-2">
                 <Calendar className="h-5 w-5" />
                 <span>30 Days Each</span>
               </div>
-              <div className="flex items-center gap-2 bg-white/20 rounded-full px-4 py-2">
+              <div className="flex items-center gap-2 bg-primary-foreground/20 rounded-full px-4 py-2">
                 <Gift className="h-5 w-5" />
                 <span>Up to 20% Off Products</span>
               </div>
@@ -86,12 +86,12 @@ export default function Challenges() {
         
         {/* Active Challenges Banner */}
         {activeChallenges.length > 0 && (
-          <section className="py-6 bg-christmas-green/10 border-y border-christmas-green/30">
+          <section className="py-6 bg-primary/10 border-y border-primary/20">
             <div className="container">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-full bg-christmas-green/20">
-                    <Sparkles className="h-5 w-5 text-christmas-green" />
+                  <div className="p-2 rounded-full bg-primary/20">
+                    <Sparkles className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <p className="font-semibold">You have {activeChallenges.length} active challenge{activeChallenges.length > 1 ? 's' : ''}!</p>
@@ -100,7 +100,7 @@ export default function Challenges() {
                 </div>
                 <Button 
                   onClick={() => navigate(`/challenges/${activeChallenges[0].id}`)}
-                  className="bg-christmas-green hover:bg-christmas-green/90"
+                  className="bg-primary hover:bg-primary/90"
                 >
                   Continue Challenge
                   <ArrowRight className="h-4 w-4 ml-2" />
@@ -111,7 +111,7 @@ export default function Challenges() {
         )}
         
         {/* Category Filter */}
-        <section className="py-8 border-b">
+        <section className="py-8 border-b border-border/50">
           <div className="container">
             <div className="flex items-center gap-2 overflow-x-auto pb-2">
               <Filter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
@@ -176,7 +176,7 @@ export default function Challenges() {
         </section>
         
         {/* How It Works */}
-        <section className="py-16 bg-secondary/30">
+        <section className="py-16 bg-secondary/20">
           <div className="container">
             <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -187,7 +187,7 @@ export default function Challenges() {
                 { step: 4, title: "See Results", desc: "Complete the challenge and celebrate your transformation" },
               ].map(item => (
                 <div key={item.step} className="text-center">
-                  <div className="w-12 h-12 rounded-full bg-gradient-christmas text-white font-bold text-xl flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-challenge text-primary-foreground font-bold text-xl flex items-center justify-center mx-auto mb-4">
                     {item.step}
                   </div>
                   <h3 className="font-semibold mb-2">{item.title}</h3>

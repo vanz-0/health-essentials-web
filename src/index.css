@@ -55,6 +55,10 @@
     --gradient-christmas-alt: linear-gradient(90deg, hsl(0 84% 50%), hsl(45 93% 47%), hsl(140 60% 35%));
     --gradient-gold-shimmer: linear-gradient(90deg, hsl(45 93% 47%), hsl(0 0% 80%), hsl(45 93% 47%));
     --gradient-holiday: linear-gradient(135deg, hsl(0 84% 60%), hsl(45 93% 55%));
+    
+    /* Challenge Brand Gradient - Light Blue to Dark Green */
+    --gradient-challenge: linear-gradient(135deg, hsl(188 94% 43% / 0.9), hsl(160 84% 31%));
+    --gradient-challenge-subtle: linear-gradient(135deg, hsl(188 94% 43% / 0.2), hsl(160 84% 31% / 0.3));
   }
 
   .dark {
@@ -396,6 +400,15 @@ All colors MUST be HSL.
   
   .bg-gradient-holiday {
     background: var(--gradient-holiday);
+  }
+  
+  /* Challenge Brand Gradient */
+  .bg-gradient-challenge {
+    background: var(--gradient-challenge);
+  }
+  
+  .bg-gradient-challenge-subtle {
+    background: var(--gradient-challenge-subtle);
   }
   
   .text-christmas-red {

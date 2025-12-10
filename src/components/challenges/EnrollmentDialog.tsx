@@ -94,7 +94,7 @@ export default function EnrollmentDialog({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-gradient-christmas text-white">
+            <div className="p-2 rounded-lg bg-gradient-challenge text-primary-foreground">
               <Sparkles className="h-6 w-6" />
             </div>
             <div>
@@ -108,16 +108,16 @@ export default function EnrollmentDialog({
         
         <div className="space-y-6 py-4">
           {/* Discount Banner */}
-          <div className="bg-gradient-christmas rounded-xl p-4 text-white">
+          <div className="bg-gradient-challenge rounded-xl p-4 text-primary-foreground">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Gift className="h-8 w-8" />
                 <div>
                   <p className="font-bold text-lg">{challenge.discount_percent}% OFF</p>
-                  <p className="text-sm text-white/80">On all challenge products</p>
+                  <p className="text-sm text-primary-foreground/80">On all challenge products</p>
                 </div>
               </div>
-              <Badge className="bg-white/20 text-white border-white/30">
+              <Badge className="bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30">
                 Exclusive Offer
               </Badge>
             </div>
@@ -126,7 +126,7 @@ export default function EnrollmentDialog({
           {/* Benefits */}
           <div className="space-y-3">
             <h4 className="font-semibold flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-christmas-green" />
+              <CheckCircle2 className="h-5 w-5 text-primary" />
               What You'll Get
             </h4>
             <ul className="space-y-2">
@@ -141,9 +141,9 @@ export default function EnrollmentDialog({
           {/* Recommended Products Preview */}
           {recommendedProducts.length > 0 && (
             <div className="space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <ShoppingBag className="h-5 w-5 text-christmas-gold" />
-                Recommended Products
+            <h4 className="font-semibold flex items-center gap-2">
+              <ShoppingBag className="h-5 w-5 text-accent" />
+              Recommended Products
               </h4>
               <div className="grid grid-cols-2 gap-2">
                 {recommendedProducts.map((product) => (
@@ -162,7 +162,7 @@ export default function EnrollmentDialog({
                         <span className="text-xs line-through text-muted-foreground">
                           KES {product.price.toLocaleString()}
                         </span>
-                        <span className="text-xs font-bold text-christmas-green">
+                        <span className="text-xs font-bold text-primary">
                           KES {Math.round(product.price * (1 - challenge.discount_percent / 100)).toLocaleString()}
                         </span>
                       </div>
@@ -225,7 +225,7 @@ export default function EnrollmentDialog({
               Maybe Later
             </Button>
             <Button
-              className="flex-1 bg-gradient-christmas text-white hover:opacity-90"
+              className="flex-1 bg-gradient-challenge text-primary-foreground hover:opacity-90"
               onClick={handleEnroll}
               disabled={!email || !agreedToTerms || enrollMutation.isPending}
             >
