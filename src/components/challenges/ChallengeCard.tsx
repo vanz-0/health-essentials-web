@@ -24,16 +24,16 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 const difficultyColors: Record<string, string> = {
-  beginner: 'bg-christmas-green/20 text-christmas-green border-christmas-green/30',
-  intermediate: 'bg-christmas-gold/20 text-christmas-gold border-christmas-gold/30',
-  advanced: 'bg-christmas-red/20 text-christmas-red border-christmas-red/30',
+  beginner: 'bg-primary/15 text-primary border-primary/30',
+  intermediate: 'bg-accent/15 text-accent border-accent/30',
+  advanced: 'bg-orange/15 text-orange border-orange/30',
 };
 
 const categoryColors: Record<string, string> = {
-  skincare: 'bg-pink-500/20 text-pink-500',
-  haircare: 'bg-purple-500/20 text-purple-500',
-  bodycare: 'bg-blue-500/20 text-blue-500',
-  makeup: 'bg-rose-500/20 text-rose-500',
+  skincare: 'bg-primary/10 text-primary border-primary/20',
+  haircare: 'bg-accent/10 text-accent border-accent/20',
+  bodycare: 'bg-indigo/10 text-indigo border-indigo/20',
+  makeup: 'bg-orange/10 text-orange border-orange/20',
 };
 
 interface ChallengeCardProps {
@@ -47,11 +47,11 @@ export default function ChallengeCard({ challenge, onSelect, enrollmentCount = 0
   
   return (
     <Card 
-      className="group cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-2 border-border/50 hover:border-christmas-gold/50 bg-card/80 backdrop-blur-sm overflow-hidden"
+      className="group cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-transparent hover:border-primary/30 bg-card/80 backdrop-blur-sm overflow-hidden"
       onClick={() => onSelect(challenge)}
     >
       {/* Discount Banner */}
-      <div className="bg-gradient-christmas text-white text-center py-2 px-4">
+      <div className="bg-gradient-challenge text-primary-foreground text-center py-2 px-4">
         <div className="flex items-center justify-center gap-2">
           <Gift className="h-4 w-4" />
           <span className="text-sm font-semibold">{challenge.discount_percent}% OFF Challenge Products</span>
@@ -60,7 +60,7 @@ export default function ChallengeCard({ challenge, onSelect, enrollmentCount = 0
       
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-4">
-          <div className="p-3 rounded-xl bg-gradient-christmas text-white shadow-lg">
+          <div className="p-3 rounded-xl bg-gradient-challenge text-primary-foreground shadow-lg">
             <IconComponent className="h-8 w-8" />
           </div>
           <div className="flex flex-col gap-2 items-end">
@@ -73,7 +73,7 @@ export default function ChallengeCard({ challenge, onSelect, enrollmentCount = 0
           </div>
         </div>
         
-        <CardTitle className="text-xl mt-4 group-hover:text-christmas-red transition-colors">
+        <CardTitle className="text-xl mt-4 group-hover:text-primary transition-colors">
           {challenge.title}
         </CardTitle>
         <CardDescription className="text-muted-foreground line-clamp-2">
@@ -100,7 +100,7 @@ export default function ChallengeCard({ challenge, onSelect, enrollmentCount = 0
           </Badge>
         </div>
         
-        <Button className="w-full bg-gradient-christmas hover:opacity-90 text-white">
+        <Button className="w-full bg-gradient-challenge hover:opacity-90 text-primary-foreground">
           Start This Challenge
         </Button>
       </CardContent>
