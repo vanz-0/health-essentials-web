@@ -68,8 +68,7 @@ export default function ChallengeDetail() {
         name: product.name,
         price: Math.round(product.price * (1 - (challenge?.discount_percent || 0) / 100)),
         image: product.image,
-        quantity: 1,
-      });
+      }, 1);
     });
     toast({
       title: "Products Added to Cart!",
