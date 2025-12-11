@@ -4,6 +4,7 @@ import SEO from '@/components/common/SEO';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ChallengeCard from '@/components/challenges/ChallengeCard';
+import CalendarHeroDemo from '@/components/challenges/CalendarHeroDemo';
 import EnrollmentDialog from '@/components/challenges/EnrollmentDialog';
 import { useChallenges, Challenge } from '@/hooks/useChallenges';
 import { useUserChallenges } from '@/hooks/useUserChallenge';
@@ -17,7 +18,10 @@ import {
   Gift, 
   Sparkles,
   ArrowRight,
-  Filter
+  Filter,
+  CheckCircle2,
+  Target,
+  TrendingUp
 } from 'lucide-react';
 
 export default function Challenges() {
@@ -53,32 +57,68 @@ export default function Challenges() {
       <Header />
       
       <main className="min-h-screen bg-background">
-        {/* Hero Section */}
-        <section className="relative py-16 md:py-24 bg-gradient-challenge overflow-hidden">
-          <div className="absolute inset-0 bg-black/10" />
-          <div className="container relative z-10 text-center text-primary-foreground">
-            <Badge className="bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30 mb-4">
-              <Gift className="h-3 w-3 mr-1" />
-              Exclusive Discounts on Products
-            </Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-              30-Day Beauty Challenges
-            </h1>
-            <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto mb-8">
-              Transform your routine with guided daily steps, expert tips, and exclusive product discounts. Track your progress and see real results.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <div className="flex items-center gap-2 bg-primary-foreground/20 rounded-full px-4 py-2">
-                <Trophy className="h-5 w-5" />
-                <span>6 Challenges Available</span>
+        {/* Hero Section - Dark theme like Holiday Deals */}
+        <section className="relative py-12 md:py-20 bg-[hsl(222.2,84%,4.9%)] overflow-hidden">
+          {/* Snowflake decorations like homepage */}
+          <div className="absolute inset-0 pointer-events-none">
+            <Sparkles className="absolute top-10 left-[10%] h-5 w-5 text-primary/40 animate-pulse" />
+            <Sparkles className="absolute top-20 right-[15%] h-4 w-4 text-christmas-gold/40 animate-pulse" style={{ animationDelay: '0.5s' }} />
+            <Sparkles className="absolute bottom-20 left-[20%] h-4 w-4 text-primary/30 animate-pulse" style={{ animationDelay: '1s' }} />
+            <Sparkles className="absolute bottom-10 right-[25%] h-5 w-5 text-christmas-gold/30 animate-pulse" style={{ animationDelay: '1.5s' }} />
+          </div>
+          
+          <div className="container relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              {/* Left: Text Content */}
+              <div className="text-center lg:text-left">
+                <Badge className="bg-primary/20 text-primary border-primary/30 mb-4">
+                  <Gift className="h-3 w-3 mr-1" />
+                  Save Up To 20% On Products
+                </Badge>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-white">
+                  30-Day Beauty Challenges
+                </h1>
+                <p className="text-lg text-white/70 mb-6 max-w-xl">
+                  Transform your routine with guided daily steps, expert tips, and exclusive product discounts. Track your progress and see real results.
+                </p>
+                
+                {/* How it works snippet */}
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center gap-3 text-white/80">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                      <CheckCircle2 className="h-4 w-4 text-primary" />
+                    </div>
+                    <span className="text-sm">Choose a challenge that matches your goals</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-white/80">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                      <Target className="h-4 w-4 text-primary" />
+                    </div>
+                    <span className="text-sm">Complete daily routines & track your progress</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-white/80">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                      <TrendingUp className="h-4 w-4 text-primary" />
+                    </div>
+                    <span className="text-sm">See results & earn exclusive discounts</span>
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
+                  <div className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 text-sm text-white/80">
+                    <Trophy className="h-4 w-4 text-christmas-gold" />
+                    <span>6 Challenges</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 text-sm text-white/80">
+                    <Calendar className="h-4 w-4 text-primary" />
+                    <span>30 Days Each</span>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-2 bg-primary-foreground/20 rounded-full px-4 py-2">
-                <Calendar className="h-5 w-5" />
-                <span>30 Days Each</span>
-              </div>
-              <div className="flex items-center gap-2 bg-primary-foreground/20 rounded-full px-4 py-2">
-                <Gift className="h-5 w-5" />
-                <span>Up to 20% Off Products</span>
+              
+              {/* Right: Calendar Demo */}
+              <div className="lg:pl-8">
+                <CalendarHeroDemo />
               </div>
             </div>
           </div>
@@ -86,7 +126,7 @@ export default function Challenges() {
         
         {/* Active Challenges Banner */}
         {activeChallenges.length > 0 && (
-          <section className="py-6 bg-primary/10 border-y border-primary/20">
+          <section className="py-4 bg-primary/10 border-y border-primary/20">
             <div className="container">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
@@ -111,7 +151,7 @@ export default function Challenges() {
         )}
         
         {/* Category Filter */}
-        <section className="py-8 border-b border-border/50">
+        <section className="py-6 border-b border-border/30">
           <div className="container">
             <div className="flex items-center gap-2 overflow-x-auto pb-2">
               <Filter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
@@ -175,25 +215,41 @@ export default function Challenges() {
           </div>
         </section>
         
-        {/* How It Works */}
-        <section className="py-16 bg-secondary/20">
+        {/* How It Works - with holiday deals gradient for discount section */}
+        <section className="py-16 bg-[hsl(222.2,84%,4.9%)]">
           <div className="container">
-            <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <h2 className="text-3xl font-bold text-center mb-4 text-white">How It Works</h2>
+            <p className="text-center text-white/60 mb-12 max-w-2xl mx-auto">
+              Our 30-day challenges are designed to help you build lasting habits while enjoying exclusive discounts on our premium products.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {[
-                { step: 1, title: "Choose Your Challenge", desc: "Pick a 30-day challenge that matches your goals" },
-                { step: 2, title: "Get Your Products", desc: "Enjoy exclusive discounts on recommended products" },
-                { step: 3, title: "Follow Daily Steps", desc: "Receive tips and track your progress each day" },
-                { step: 4, title: "See Results", desc: "Complete the challenge and celebrate your transformation" },
-              ].map(item => (
-                <div key={item.step} className="text-center">
-                  <div className="w-12 h-12 rounded-full bg-gradient-challenge text-primary-foreground font-bold text-xl flex items-center justify-center mx-auto mb-4">
-                    {item.step}
+                { step: 1, title: "Choose Your Challenge", desc: "Pick a 30-day challenge that matches your beauty goals", icon: Target },
+                { step: 2, title: "Get Your Products", desc: "Enjoy exclusive discounts on recommended products", icon: Gift },
+                { step: 3, title: "Follow Daily Steps", desc: "Receive tips and track your progress each day", icon: Calendar },
+                { step: 4, title: "See Results", desc: "Complete the challenge and celebrate your transformation", icon: Trophy },
+              ].map(item => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.step} className="text-center p-6 rounded-xl bg-white/5 border border-white/10">
+                    <div className="w-12 h-12 rounded-full bg-primary/20 text-primary font-bold text-xl flex items-center justify-center mx-auto mb-4">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <div className="text-xs text-white/40 mb-2">Step {item.step}</div>
+                    <h3 className="font-semibold mb-2 text-white">{item.title}</h3>
+                    <p className="text-sm text-white/60">{item.desc}</p>
                   </div>
-                  <h3 className="font-semibold mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground">{item.desc}</p>
-                </div>
-              ))}
+                );
+              })}
+            </div>
+            
+            {/* Discount highlight with holiday gradient */}
+            <div className="mt-12 p-6 rounded-2xl bg-gradient-holiday text-white text-center">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Gift className="h-6 w-6" />
+                <span className="text-2xl font-bold">Up to 20% OFF</span>
+              </div>
+              <p className="text-white/90">on all challenge products when you enroll</p>
             </div>
           </div>
         </section>
