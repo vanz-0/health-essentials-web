@@ -51,6 +51,9 @@ const handler = async (req: Request): Promise<Response> => {
     
     // Plain text version for better deliverability
     const plainText = `
+1Health Essentials
+---
+
 Hi ${userName},
 
 Thank you for joining the ${challenge.title}!
@@ -93,6 +96,22 @@ To unsubscribe from challenge emails, reply with "unsubscribe".
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #ffffff; color: #333333;">
   <div style="max-width: 580px; margin: 0 auto; padding: 20px;">
+    
+    <!-- Logo and Brand Name - kept small and simple -->
+    <table role="presentation" style="width: 100%; margin-bottom: 24px;">
+      <tr>
+        <td style="text-align: left;">
+          <img 
+            src="https://1healthessentials.netlify.app/logo.png" 
+            alt="1Health Essentials" 
+            width="40" 
+            height="40" 
+            style="display: inline-block; vertical-align: middle; margin-right: 10px;"
+          />
+          <span style="font-size: 18px; font-weight: 600; color: #333; vertical-align: middle;">1Health Essentials</span>
+        </td>
+      </tr>
+    </table>
     
     <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
       Hi ${userName},
