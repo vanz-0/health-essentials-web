@@ -124,27 +124,62 @@ export default function Challenges() {
           </div>
         </section>
         
-        {/* Active Challenges Banner */}
+        {/* Active Challenges Section */}
         {activeChallenges.length > 0 && (
-          <section className="py-4 bg-primary/10 border-y border-primary/20">
+          <section className="py-8 bg-primary/5 border-y border-primary/20">
             <div className="container">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-full bg-primary/20">
-                    <Sparkles className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-semibold">You have {activeChallenges.length} active challenge{activeChallenges.length > 1 ? 's' : ''}!</p>
-                    <p className="text-sm text-muted-foreground">Continue your journey to see results.</p>
-                  </div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 rounded-full bg-primary/20">
+                  <Sparkles className="h-5 w-5 text-primary" />
                 </div>
-                <Button 
-                  onClick={() => navigate(`/challenges/${activeChallenges[0].id}`)}
-                  className="bg-primary hover:bg-primary/90"
-                >
-                  Continue Challenge
-                  <ArrowRight className="h-4 w-4 ml-2" />
-                </Button>
+                <div>
+                  <h2 className="text-xl font-bold">Your Active Challenges</h2>
+                  <p className="text-sm text-muted-foreground">Continue your journey to see results</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {activeChallenges.map((uc) => {
+                  const challenge = challenges?.find(c => c.id === uc.challenge_id);
+                  const progress = Math.round((uc.current_day / 30) * 100);
+                  
+                  return (
+                    <Card 
+                      key={uc.id} 
+                      className="cursor-pointer hover:shadow-md transition-shadow border-primary/20"
+                      onClick={() => navigate(`/challenges/${uc.id}`)}
+                    >
+                      <CardContent className="p-4">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-sm line-clamp-1">
+                              {challenge?.title || 'Challenge'}
+                            </h3>
+                            <p className="text-xs text-muted-foreground">
+                              Day {uc.current_day} of 30
+                            </p>
+                          </div>
+                          <Badge variant="secondary" className="bg-primary/10 text-primary text-xs">
+                            {progress}%
+                          </Badge>
+                        </div>
+                        
+                        {/* Progress bar */}
+                        <div className="w-full h-2 bg-muted rounded-full overflow-hidden mb-3">
+                          <div 
+                            className="h-full bg-primary rounded-full transition-all"
+                            style={{ width: `${progress}%` }}
+                          />
+                        </div>
+                        
+                        <Button size="sm" className="w-full" variant="outline">
+                          Continue
+                          <ArrowRight className="h-3 w-3 ml-2" />
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </div>
           </section>
