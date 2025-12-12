@@ -49,21 +49,20 @@ const handler = async (req: Request): Promise<Response> => {
     const challenge = userChallenge.challenges;
     const userName = fullName || "there";
     
-    // Plain text version for better deliverability
+    // Plain text version
     const plainText = `
-1Health Essentials
----
+🎉 1Health Essentials - Your Challenge Starts Now!
 
 Hi ${userName},
 
-Thank you for joining the ${challenge.title}!
+Congratulations on starting your ${challenge.title}!
 
-Your challenge code: ${discountCode}
-This gives you ${challenge.discount_percent}% off on challenge products.
+YOUR EXCLUSIVE DISCOUNT CODE: ${discountCode}
+Use this code to get ${challenge.discount_percent}% OFF on all challenge products!
 
 Getting Started:
 1. Visit your challenge dashboard to see Day 1 instructions
-2. Pick up your recommended products
+2. Pick up your recommended products using your discount code
 3. Mark each day complete as you follow the routine
 4. Stay consistent - we'll send reminders if you miss days
 
@@ -72,7 +71,7 @@ Challenge Details:
 - Difficulty: ${challenge.difficulty}
 - Category: ${challenge.category}
 
-Start your challenge: https://1healthessentials.netlify.app/challenges/${userChallengeId}
+View Your Challenge Dashboard: https://1healthessentials.com/challenges/${userChallengeId}
 
 Best regards,
 The 1Health Essentials Team
@@ -85,89 +84,115 @@ Brentwood Arcade, Thindiqua, Kiambu, Kenya
 To unsubscribe from challenge emails, reply with "unsubscribe".
     `.trim();
 
-    // Clean, simple HTML for Primary inbox
+    // Colorful HTML email design
     const emailHtml = `
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your ${challenge.title} begins today</title>
+  <title>Your ${challenge.title} Starts Now! 🎉</title>
 </head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #ffffff; color: #333333;">
-  <div style="max-width: 580px; margin: 0 auto; padding: 20px;">
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa;">
+  <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
     
-    <!-- Logo and Brand Name - kept small and simple -->
-    <table role="presentation" style="width: 100%; margin-bottom: 24px;">
-      <tr>
-        <td style="text-align: left;">
-          <img 
-            src="https://1healthessentials.netlify.app/logo.png" 
-            alt="1Health Essentials" 
-            width="40" 
-            height="40" 
-            style="display: inline-block; vertical-align: middle; margin-right: 10px;"
-          />
-          <span style="font-size: 18px; font-weight: 600; color: #333; vertical-align: middle;">1Health Essentials</span>
-        </td>
-      </tr>
-    </table>
-    
-    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
-      Hi ${userName},
-    </p>
-    
-    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
-      Thank you for joining the <strong>${challenge.title}</strong>. Here's everything you need to get started.
-    </p>
-    
-    <!-- Challenge Code - Simple box -->
-    <div style="background-color: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 6px; padding: 16px; margin: 24px 0; text-align: center;">
-      <p style="margin: 0 0 8px 0; font-size: 14px; color: #666;">Your challenge code</p>
-      <p style="margin: 0; font-size: 20px; font-weight: 600; letter-spacing: 1px; color: #333;">${discountCode}</p>
-      <p style="margin: 8px 0 0 0; font-size: 14px; color: #666;">
-        ${challenge.discount_percent}% off on challenge products
+    <!-- Header Banner with Gradient -->
+    <div style="background: linear-gradient(135deg, #16a34a 0%, #22c55e 25%, #f59e0b 50%, #eab308 75%, #dc2626 100%); padding: 30px 20px; text-align: center;">
+      <!-- Logo -->
+      <img 
+        src="https://1healthessentials.com/1health-logo.png" 
+        alt="1Health Essentials" 
+        width="80" 
+        height="80" 
+        style="display: block; margin: 0 auto 15px auto; border-radius: 50%;"
+      />
+      <h1 style="color: #ffffff; font-size: 28px; font-weight: bold; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">
+        🎉 Your Challenge Starts Now!
+      </h1>
+      <p style="color: rgba(255,255,255,0.9); font-size: 16px; margin: 10px 0 0 0;">
+        ${challenge.title}
       </p>
     </div>
     
-    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 16px;">
-      <strong>Getting started:</strong>
-    </p>
-    
-    <ol style="font-size: 16px; line-height: 1.8; padding-left: 20px; margin-bottom: 24px; color: #333;">
-      <li>Visit your challenge dashboard to see Day 1 instructions</li>
-      <li>Pick up your recommended products using your code</li>
-      <li>Mark each day complete as you follow the routine</li>
-      <li>Stay consistent — we'll send reminders if you miss days</li>
-    </ol>
-    
-    <!-- Simple text link instead of flashy button -->
-    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 24px;">
-      <a href="https://1healthessentials.netlify.app/challenges/${userChallengeId}" 
-         style="color: #0066cc; text-decoration: underline;">
-        View your challenge dashboard
-      </a>
-    </p>
-    
-    <!-- Challenge Details -->
-    <div style="border-top: 1px solid #e0e0e0; padding-top: 16px; margin-top: 24px;">
-      <p style="font-size: 14px; color: #666; margin: 0 0 8px 0;">
-        <strong>Challenge details:</strong><br>
-        Duration: ${challenge.duration_days} days | Difficulty: ${challenge.difficulty} | Category: ${challenge.category}
+    <!-- Main Content -->
+    <div style="padding: 30px 25px;">
+      <p style="font-size: 18px; line-height: 1.6; color: #333; margin: 0 0 20px 0;">
+        Hi <strong>${userName}</strong>,
+      </p>
+      
+      <p style="font-size: 16px; line-height: 1.6; color: #555; margin: 0 0 25px 0;">
+        Congratulations on taking the first step towards your transformation! Your <strong>${challenge.title}</strong> is ready to begin.
+      </p>
+      
+      <!-- Discount Code Box -->
+      <div style="background: linear-gradient(135deg, #16a34a 0%, #22c55e 50%, #15803d 100%); border-radius: 12px; padding: 25px; margin: 25px 0; text-align: center;">
+        <p style="color: rgba(255,255,255,0.9); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px 0;">
+          🎁 Your Exclusive Discount Code
+        </p>
+        <div style="background: rgba(255,255,255,0.2); border-radius: 8px; padding: 15px; margin: 10px 0;">
+          <p style="color: #ffffff; font-size: 28px; font-weight: bold; letter-spacing: 3px; margin: 0;">
+            ${discountCode}
+          </p>
+        </div>
+        <p style="color: #ffffff; font-size: 18px; font-weight: 600; margin: 15px 0 0 0;">
+          ${challenge.discount_percent}% OFF on Challenge Products!
+        </p>
+      </div>
+      
+      <!-- Getting Started Section -->
+      <div style="background-color: #f8f9fa; border-radius: 12px; padding: 20px; margin: 25px 0;">
+        <h3 style="color: #333; font-size: 18px; margin: 0 0 15px 0;">
+          ✨ Getting Started
+        </h3>
+        <ol style="font-size: 15px; line-height: 2; color: #555; padding-left: 20px; margin: 0;">
+          <li>Visit your challenge dashboard to see Day 1 instructions</li>
+          <li>Pick up your recommended products using your discount code</li>
+          <li>Mark each day complete as you follow the routine</li>
+          <li>Stay consistent — we'll send reminders if you miss days</li>
+        </ol>
+      </div>
+      
+      <!-- Challenge Details -->
+      <div style="display: flex; justify-content: space-between; background-color: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 15px; margin: 25px 0;">
+        <div style="text-align: center; flex: 1;">
+          <p style="font-size: 12px; color: #888; margin: 0 0 5px 0;">Duration</p>
+          <p style="font-size: 16px; font-weight: 600; color: #333; margin: 0;">${challenge.duration_days} Days</p>
+        </div>
+        <div style="text-align: center; flex: 1; border-left: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb;">
+          <p style="font-size: 12px; color: #888; margin: 0 0 5px 0;">Difficulty</p>
+          <p style="font-size: 16px; font-weight: 600; color: #333; margin: 0; text-transform: capitalize;">${challenge.difficulty}</p>
+        </div>
+        <div style="text-align: center; flex: 1;">
+          <p style="font-size: 12px; color: #888; margin: 0 0 5px 0;">Category</p>
+          <p style="font-size: 16px; font-weight: 600; color: #333; margin: 0; text-transform: capitalize;">${challenge.category}</p>
+        </div>
+      </div>
+      
+      <!-- CTA Button -->
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="https://1healthessentials.com/challenges/${userChallengeId}" 
+           style="display: inline-block; background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%); color: #ffffff; text-decoration: none; font-size: 18px; font-weight: 600; padding: 16px 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);">
+          Start Your Challenge →
+        </a>
+      </div>
+      
+      <p style="font-size: 14px; color: #888; text-align: center; margin: 20px 0 0 0;">
+        Click the button above to access your personalized challenge dashboard
       </p>
     </div>
     
-    <!-- Simple footer -->
-    <div style="margin-top: 32px; padding-top: 16px; border-top: 1px solid #e0e0e0;">
-      <p style="font-size: 14px; color: #666; margin: 0;">
+    <!-- Footer -->
+    <div style="background-color: #f8f9fa; padding: 25px; text-align: center; border-top: 1px solid #e5e7eb;">
+      <p style="font-size: 14px; color: #666; margin: 0 0 10px 0;">
         Best regards,<br>
-        The 1Health Essentials Team
+        <strong>The 1Health Essentials Team</strong>
       </p>
-      <p style="font-size: 12px; color: #999; margin: 16px 0 0 0;">
+      <p style="font-size: 12px; color: #888; margin: 15px 0 0 0;">
         Brentwood Arcade, Thindiqua, Kiambu, Kenya<br>
-        +254735558830 | hello@1healthessentials.com
+        <a href="tel:+254735558830" style="color: #16a34a; text-decoration: none;">+254735558830</a> | 
+        <a href="mailto:hello@1healthessentials.com" style="color: #16a34a; text-decoration: none;">hello@1healthessentials.com</a>
       </p>
-      <p style="font-size: 11px; color: #999; margin: 12px 0 0 0;">
+      <p style="font-size: 11px; color: #aaa; margin: 15px 0 0 0;">
         To unsubscribe from challenge emails, reply with "unsubscribe".
       </p>
     </div>
@@ -180,7 +205,7 @@ To unsubscribe from challenge emails, reply with "unsubscribe".
     const emailResponse = await resend.emails.send({
       from: "1Health Essentials <hello@1healthessentials.com>",
       to: [email],
-      subject: `Your ${challenge.title} begins today`,
+      subject: `🎉 Your ${challenge.title} Starts Now!`,
       html: emailHtml,
       text: plainText,
       headers: {

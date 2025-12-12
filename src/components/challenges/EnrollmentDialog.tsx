@@ -15,6 +15,8 @@ import { Challenge } from '@/hooks/useChallenges';
 import { useEnrollChallenge } from '@/hooks/useUserChallenge';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCatalogueProducts } from '@/hooks/useCatalogueProducts';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
 import { 
   Calendar, 
   Gift, 
@@ -22,7 +24,8 @@ import {
   Mail, 
   Loader2,
   Sparkles,
-  ShoppingBag
+  ShoppingBag,
+  Lock
 } from 'lucide-react';
 
 interface EnrollmentDialogProps {
@@ -38,13 +41,15 @@ export default function EnrollmentDialog({
   onClose,
   onSuccess 
 }: EnrollmentDialogProps) {
-  const { user } = useAuth();
+  const { user, signUp, signIn } = useAuth();
   const { data: products } = useCatalogueProducts();
   const enrollMutation = useEnrollChallenge();
   
   const [email, setEmail] = useState(user?.email || '');
   const [fullName, setFullName] = useState('');
+  const [password, setPassword] = useState('');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [isCreatingAccount, setIsCreatingAccount] = useState(false);
   
   if (!challenge) return null;
   
@@ -66,7 +71,65 @@ export default function EnrollmentDialog({
   const handleEnroll = async () => {
     if (!email || !agreedToTerms) return;
     
+    setIsCreatingAccount(true);
+    
     try {
+      let userId = user?.id;
+      
+      // If user is not logged in, create account and sign them in
+      if (!user) {
+        if (!password) {
+          toast({
+            title: "Password Required",
+            description: "Please create a password for your account.",
+            variant: "destructive",
+          });
+          setIsCreatingAccount(false);
+          return;
+        }
+        
+        // Try to sign up first
+        const { error: signUpError } = await signUp(email, password);
+        
+        if (signUpError) {
+          // If user already exists, try to sign in
+          if (signUpError.message?.includes('already registered') || 
+              signUpError.message?.includes('already exists')) {
+            const { error: signInError } = await signIn(email, password);
+            
+            if (signInError) {
+              toast({
+                title: "Sign In Failed",
+                description: "This email is already registered. Please check your password.",
+                variant: "destructive",
+              });
+              setIsCreatingAccount(false);
+              return;
+            }
+          } else {
+            toast({
+              title: "Account Creation Failed",
+              description: signUpError.message || "Please try again.",
+              variant: "destructive",
+            });
+            setIsCreatingAccount(false);
+            return;
+          }
+        }
+        
+        // Get the newly created/signed in user
+        const { data: { user: newUser } } = await supabase.auth.getUser();
+        userId = newUser?.id;
+        
+        if (userId) {
+          toast({
+            title: "Account Created! 🎉",
+            description: "You're now signed in and ready to start your challenge.",
+          });
+        }
+      }
+      
+      // Enroll in challenge
       const result = await enrollMutation.mutateAsync({
         challengeId: challenge.id,
         email,
@@ -75,9 +138,19 @@ export default function EnrollmentDialog({
         productSnapshot,
       });
       
+      // Update the user_challenge with user_id if we have one
+      if (userId && result.id) {
+        await supabase
+          .from('user_challenges')
+          .update({ user_id: userId })
+          .eq('id', result.id);
+      }
+      
       onSuccess(result.id);
     } catch (error) {
       console.error('Enrollment failed:', error);
+    } finally {
+      setIsCreatingAccount(false);
     }
   };
   
@@ -196,12 +269,35 @@ export default function EnrollmentDialog({
                 placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={!!user}
                 required
               />
               <p className="text-xs text-muted-foreground">
                 We'll send your challenge guide, daily tips, and discount code here.
               </p>
             </div>
+            
+            {/* Password field for new users */}
+            {!user && (
+              <div className="space-y-2">
+                <Label htmlFor="password" className="flex items-center gap-2">
+                  <Lock className="h-4 w-4" />
+                  Create Password *
+                </Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Create a password (min 6 characters)"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  minLength={6}
+                  required
+                />
+                <p className="text-xs text-muted-foreground">
+                  This creates your account so you can track progress and stay signed in.
+                </p>
+              </div>
+            )}
             
             <div className="flex items-start gap-3">
               <Checkbox
@@ -227,21 +323,28 @@ export default function EnrollmentDialog({
             <Button
               className="flex-1 bg-gradient-challenge text-primary-foreground hover:opacity-90"
               onClick={handleEnroll}
-              disabled={!email || !agreedToTerms || enrollMutation.isPending}
+              disabled={!email || !agreedToTerms || (!user && !password) || enrollMutation.isPending || isCreatingAccount}
             >
-              {enrollMutation.isPending ? (
+              {(enrollMutation.isPending || isCreatingAccount) ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  Starting...
+                  {isCreatingAccount ? 'Creating Account...' : 'Starting...'}
                 </>
               ) : (
                 <>
                   <Calendar className="h-4 w-4 mr-2" />
-                  Start My {challenge.duration_days}-Day Challenge
+                  {user ? `Start My ${challenge.duration_days}-Day Challenge` : 'Create Account & Start'}
                 </>
               )}
             </Button>
           </div>
+          
+          {/* Already have account hint */}
+          {!user && (
+            <p className="text-xs text-center text-muted-foreground">
+              Already have an account? <a href="/auth" className="text-primary underline">Sign in first</a> to enroll.
+            </p>
+          )}
         </div>
       </DialogContent>
     </Dialog>
