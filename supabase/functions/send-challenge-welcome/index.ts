@@ -150,15 +150,24 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     const emailResponse = await resend.emails.send({
-      from: "1Health Essentials <onboarding@resend.dev>",
+      from: "1Health Essentials <hello@1healthessentials.com>",
       to: [email],
       subject: `🎉 Your ${challenge.title} Starts Now! Here's Your ${challenge.discount_percent}% Discount`,
       html: emailHtml,
     });
 
-    console.log("Email sent successfully:", emailResponse);
+    // Check for Resend API errors
+    if (emailResponse.error) {
+      console.error("Resend API error:", emailResponse.error);
+      return new Response(
+        JSON.stringify({ success: false, error: emailResponse.error }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
 
-    return new Response(JSON.stringify({ success: true, emailResponse }), {
+    console.log("Email sent successfully:", emailResponse.data);
+
+    return new Response(JSON.stringify({ success: true, emailId: emailResponse.data?.id }), {
       status: 200,
       headers: { "Content-Type": "application/json", ...corsHeaders },
     });
