@@ -3,7 +3,7 @@ import SEO from '@/components/common/SEO';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ChallengeCalendar from '@/components/challenges/ChallengeCalendar';
-import { useChallenge, useChallengeDays } from '@/hooks/useChallenges';
+import { useChallenge, useChallengeDays, useChallenges } from '@/hooks/useChallenges';
 import { useUserChallenge, useChallengeProgress, useUpdateProgress } from '@/hooks/useUserChallenge';
 import { useCatalogueProducts } from '@/hooks/useCatalogueProducts';
 import { useCart } from '@/contexts/CartContext';
@@ -18,7 +18,8 @@ import {
   Copy,
   CheckCircle2,
   Sparkles,
-  Package
+  Package,
+  ChevronRight
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
@@ -31,8 +32,12 @@ export default function ChallengeDetail() {
   const { data: days, isLoading: isLoadingDays } = useChallengeDays(userChallenge?.challenge_id);
   const { data: progress, isLoading: isLoadingProgress } = useChallengeProgress(challengeId);
   const { data: products } = useCatalogueProducts();
+  const { data: allChallenges } = useChallenges();
   const { addItem } = useCart();
   const updateProgress = useUpdateProgress();
+  
+  // Get other challenges (excluding current one)
+  const otherChallenges = allChallenges?.filter(c => c.id !== challenge?.id) || [];
   
   const isLoading = isLoadingUserChallenge || isLoadingChallenge || isLoadingDays || isLoadingProgress;
   
@@ -279,6 +284,45 @@ export default function ChallengeDetail() {
                   </div>
                 </CardContent>
               </Card>
+              
+              {/* Other Challenges */}
+              {otherChallenges.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Explore More Challenges</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    {otherChallenges.slice(0, 4).map((otherChallenge) => (
+                      <Link
+                        key={otherChallenge.id}
+                        to={`/challenges`}
+                        className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl">{otherChallenge.icon}</span>
+                          <div>
+                            <p className="text-sm font-medium">{otherChallenge.title}</p>
+                            <p className="text-xs text-muted-foreground capitalize">
+                              {otherChallenge.category} • {otherChallenge.difficulty}
+                            </p>
+                          </div>
+                        </div>
+                        <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                      </Link>
+                    ))}
+                    
+                    <Button 
+                      variant="outline" 
+                      className="w-full mt-2"
+                      asChild
+                    >
+                      <Link to="/challenges">
+                        View All Challenges
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           </div>
         </div>
