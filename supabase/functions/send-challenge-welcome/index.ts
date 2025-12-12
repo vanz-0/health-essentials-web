@@ -102,11 +102,16 @@ To unsubscribe from challenge emails, reply with "unsubscribe".
       <tr>
         <td style="text-align: left;">
           <img 
-            src="https://1healthessentials.com/1health-logo.png" 
+            src="https://1healthessentials.netlify.app/1health-logo.png" 
             alt="1Health Essentials" 
             width="40" 
             height="40" 
             style="display: inline-block; vertical-align: middle; margin-right: 10px; border-radius: 50%;"
+          />
+          <span style="font-size: 18px; font-weight: 600; color: #333; vertical-align: middle;">1Health Essentials</span>
+        </td>
+      </tr>
+    </table>
           />
           <span style="font-size: 18px; font-weight: 600; color: #333; vertical-align: middle;">1Health Essentials</span>
         </td>
