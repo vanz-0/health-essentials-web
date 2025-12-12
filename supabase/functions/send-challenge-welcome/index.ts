@@ -150,7 +150,7 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     const emailResponse = await resend.emails.send({
-      from: "1Health Essentials <hello@1healthessentials.com>",
+      from: "1Health Essentials <onboarding@resend.dev>",
       to: [email],
       subject: `🎉 Your ${challenge.title} Starts Now! Here's Your ${challenge.discount_percent}% Discount`,
       html: emailHtml,
