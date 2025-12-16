@@ -1,16 +1,27 @@
+import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import SEO from '@/components/common/SEO';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ChallengeCalendar from '@/components/challenges/ChallengeCalendar';
 import { useChallenge, useChallengeDays, useChallenges } from '@/hooks/useChallenges';
-import { useUserChallenge, useChallengeProgress, useUpdateProgress } from '@/hooks/useUserChallenge';
+import { useUserChallenge, useChallengeProgress, useUpdateProgress, useAbandonChallenge } from '@/hooks/useUserChallenge';
 import { useCatalogueProducts } from '@/hooks/useCatalogueProducts';
 import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { 
   ArrowLeft, 
   Gift, 
@@ -19,13 +30,15 @@ import {
   CheckCircle2,
   Sparkles,
   Package,
-  ChevronRight
+  ChevronRight,
+  XCircle
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 export default function ChallengeDetail() {
   const { challengeId } = useParams<{ challengeId: string }>();
   const navigate = useNavigate();
+  const [showAbandonDialog, setShowAbandonDialog] = useState(false);
   
   const { data: userChallenge, isLoading: isLoadingUserChallenge } = useUserChallenge(challengeId);
   const { data: challenge, isLoading: isLoadingChallenge } = useChallenge(userChallenge?.challenge_id);
@@ -35,6 +48,7 @@ export default function ChallengeDetail() {
   const { data: allChallenges } = useChallenges();
   const { addItem } = useCart();
   const updateProgress = useUpdateProgress();
+  const abandonChallenge = useAbandonChallenge();
   
   // Get other challenges (excluding current one)
   const otherChallenges = allChallenges?.filter(c => c.id !== challenge?.id) || [];
@@ -53,6 +67,16 @@ export default function ChallengeDetail() {
       dayNumber,
       completed,
       notes,
+    });
+  };
+  
+  const handleAbandonChallenge = () => {
+    if (!challengeId) return;
+    abandonChallenge.mutate(challengeId, {
+      onSuccess: () => {
+        setShowAbandonDialog(false);
+        navigate('/challenges');
+      },
     });
   };
   
@@ -126,17 +150,22 @@ export default function ChallengeDetail() {
       
       <Header />
       
-      <main className="min-h-screen py-8 bg-gradient-to-b from-background to-secondary/10">
-        <div className="container">
-          {/* Back Button */}
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate('/challenges')}
-            className="mb-6"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Challenges
-          </Button>
+      <main className="min-h-screen bg-gradient-to-b from-background to-secondary/10">
+        {/* Prominent Back Navigation Bar */}
+        <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-sm border-b border-border/30 py-3">
+          <div className="container">
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/challenges')}
+              className="gap-2 text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-5 w-5" />
+              <span className="font-medium">Back to Challenges</span>
+            </Button>
+          </div>
+        </div>
+        
+        <div className="container py-8">
           
           {/* Challenge Header */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
@@ -254,6 +283,25 @@ export default function ChallengeDetail() {
                 </Card>
               )}
               
+              {/* Abandon Challenge Button - only show for active challenges */}
+              {userChallenge.status === 'active' && (
+                <Card className="border-destructive/30">
+                  <CardContent className="pt-6">
+                    <Button 
+                      variant="outline"
+                      className="w-full text-destructive border-destructive/50 hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => setShowAbandonDialog(true)}
+                    >
+                      <XCircle className="h-4 w-4 mr-2" />
+                      End Challenge
+                    </Button>
+                    <p className="text-xs text-muted-foreground text-center mt-2">
+                      You can start a new challenge anytime
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+              
               {/* Challenge Info */}
               <Card>
                 <CardHeader>
@@ -329,6 +377,28 @@ export default function ChallengeDetail() {
       </main>
       
       <Footer />
+      
+      {/* Abandon Challenge Confirmation Dialog */}
+      <AlertDialog open={showAbandonDialog} onOpenChange={setShowAbandonDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>End this challenge?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Your progress will be saved, but the challenge will be marked as ended. 
+              You can start a new challenge anytime from the challenges page.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep Going</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleAbandonChallenge}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              End Challenge
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
