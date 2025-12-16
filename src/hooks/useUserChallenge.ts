@@ -190,6 +190,15 @@ export function useUpdateProgress() {
       completed: boolean;
       notes?: string;
     }) => {
+      // First, get the current challenge to check current_day
+      const { data: currentChallenge, error: fetchError } = await supabase
+        .from('user_challenges')
+        .select('current_day')
+        .eq('id', userChallengeId)
+        .single();
+      
+      if (fetchError) throw fetchError;
+      
       // Update progress
       const { error: progressError } = await supabase
         .from('challenge_progress')
@@ -203,13 +212,15 @@ export function useUpdateProgress() {
       
       if (progressError) throw progressError;
       
-      // Update user challenge last activity and current day
+      // Only update current_day if the new day is greater than existing
+      const shouldUpdateCurrentDay = dayNumber > (currentChallenge?.current_day || 0);
+      
       const { error: ucError } = await supabase
         .from('user_challenges')
         .update({
           last_activity_at: new Date().toISOString(),
-          current_day: dayNumber,
-          missed_days_streak: completed ? 0 : undefined,
+          ...(shouldUpdateCurrentDay && { current_day: dayNumber }),
+          ...(completed && { missed_days_streak: 0 }),
         })
         .eq('id', userChallengeId);
       
@@ -227,6 +238,40 @@ export function useUpdateProgress() {
           description: "Great job staying on track!",
         });
       }
+    },
+  });
+}
+
+export function useAbandonChallenge() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (userChallengeId: string) => {
+      const { error } = await supabase
+        .from('user_challenges')
+        .update({
+          status: 'abandoned',
+          completed_at: new Date().toISOString(),
+        })
+        .eq('id', userChallengeId);
+      
+      if (error) throw error;
+      return userChallengeId;
+    },
+    onSuccess: (userChallengeId) => {
+      queryClient.invalidateQueries({ queryKey: ['user-challenges'] });
+      queryClient.invalidateQueries({ queryKey: ['user-challenge', userChallengeId] });
+      toast({
+        title: "Challenge Ended",
+        description: "You can start a new challenge anytime.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Failed to end challenge",
+        description: "Please try again.",
+        variant: "destructive",
+      });
     },
   });
 }
