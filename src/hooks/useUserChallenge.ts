@@ -199,6 +199,23 @@ export function useUpdateProgress() {
       
       if (fetchError) throw fetchError;
       
+      // Client-side validation: check if all previous days are completed (for marking complete)
+      if (completed && dayNumber > 1) {
+        const { data: previousDays, error: prevError } = await supabase
+          .from('challenge_progress')
+          .select('day_number, completed')
+          .eq('user_challenge_id', userChallengeId)
+          .lt('day_number', dayNumber)
+          .eq('completed', false);
+        
+        if (prevError) throw prevError;
+        
+        if (previousDays && previousDays.length > 0) {
+          const incompleteDays = previousDays.map(d => d.day_number).sort((a, b) => a - b);
+          throw new Error(`Please complete day ${incompleteDays[0]} first before marking day ${dayNumber} as complete.`);
+        }
+      }
+      
       // Update progress
       const { error: progressError } = await supabase
         .from('challenge_progress')
