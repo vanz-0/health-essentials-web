@@ -1040,6 +1040,10 @@ export type Database = {
         }
         Returns: number
       }
+      validate_challenge_progress: {
+        Args: { p_day_number: number; p_user_challenge_id: string }
+        Returns: boolean
+      }
       verify_admin_access: { Args: never; Returns: boolean }
     }
     Enums: {
