@@ -3,12 +3,15 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BestSellers from "@/components/home/BestSellers";
 import SearchAndFilter, { FilterOptions } from "@/components/shop/SearchAndFilter";
+import ShopCategoryHero from "@/components/shop/ShopCategoryHero";
+import ShopCategoryTabs from "@/components/shop/ShopCategoryTabs";
 import { useState, useMemo, useEffect } from "react";
 import { fuzzyMatch, parsePriceQuery } from "@/lib/searchUtils";
 import { usePersistedFilters } from "@/hooks/usePersistedFilters";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import { Link, useSearchParams } from "react-router-dom";
+import { ArrowLeft, Construction } from "lucide-react";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Pagination,
   PaginationContent,
@@ -19,6 +22,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
+import { getCategoryById } from "@/config/shopCategories";
 
 const PRODUCTS_PER_PAGE = 50;
 
@@ -40,13 +44,27 @@ const getCategoryProductTypes = (categoryFilter: string): string[] => {
 export default function Shop() {
   const { data: allProducts, isLoading, error } = useCatalogueProducts();
   const { filters: persistedFilters, setFilters: setPersistedFilters, isLoaded } = usePersistedFilters();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  
+  // Selected shop section (cosmetics, wear, health)
+  const [selectedSection, setSelectedSection] = useState<string | null>(
+    searchParams.get('section')
+  );
   
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilters, setActiveFilters] = useState<Partial<FilterOptions>>(
     isLoaded ? persistedFilters : { sortBy: 'name' }
   );
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Sync section with URL
+  useEffect(() => {
+    const sectionParam = searchParams.get('section');
+    if (sectionParam !== selectedSection) {
+      setSelectedSection(sectionParam);
+    }
+  }, [searchParams]);
 
   // Initialize search query from URL parameter
   useEffect(() => {
@@ -72,6 +90,21 @@ export default function Shop() {
       setPersistedFilters(activeFilters);
     }
   }, [activeFilters, isLoaded, setPersistedFilters]);
+
+  const handleSelectSection = (sectionId: string) => {
+    setSelectedSection(sectionId);
+    setSearchParams({ section: sectionId });
+    setCurrentPage(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleBackToCategories = () => {
+    setSelectedSection(null);
+    setSearchParams({});
+    setSearchQuery('');
+    setActiveFilters({ sortBy: 'name' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   
   const priceRange = useMemo(() => {
     if (!allProducts || allProducts.length === 0) {
@@ -186,6 +219,15 @@ export default function Shop() {
     return filtered;
   }, [allProducts, searchQuery, activeFilters]);
 
+  // Get thumbnails for current category
+  const categoryThumbnails = useMemo(() => {
+    if (!allProducts) return [];
+    return allProducts
+      .filter(p => p.image)
+      .slice(0, 4)
+      .map(p => p.image);
+  }, [allProducts]);
+
   // Reset to page 1 when filters or search changes
   useEffect(() => {
     setCurrentPage(1);
@@ -222,11 +264,15 @@ export default function Shop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Check if current section is "coming soon"
+  const currentCategory = selectedSection ? getCategoryById(selectedSection) : null;
+  const isComingSoon = currentCategory?.comingSoon || false;
+
   if (isLoading) {
     return (
       <div className="font-sansBody min-h-screen">
         <Header />
-        <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="flex items-center justify-center min-h-[60vh] pt-[112px]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-muted-foreground">Loading products...</p>
@@ -241,7 +287,7 @@ export default function Shop() {
     return (
       <div className="font-sansBody min-h-screen">
         <Header />
-        <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="flex items-center justify-center min-h-[60vh] pt-[112px]">
           <div className="text-center">
             <p className="text-destructive mb-4">Failed to load products</p>
             <Button onClick={() => window.location.reload()}>Retry</Button>
@@ -262,77 +308,128 @@ export default function Shop() {
 
       <Header />
       <main className="min-h-screen pt-[112px]">
-        <section className="bg-gradient-to-b from-primary/10 to-background py-8 md:py-12">
-          <div className="container">
-            <Link to="/">
-              <Button variant="ghost" size="sm" className="mb-4">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Home
-              </Button>
-            </Link>
-            <h1 className="font-serifDisplay text-2xl md:text-3xl font-bold">Shop Our Collection</h1>
-            <p className="mt-2 text-sm md:text-base text-muted-foreground">Discover natural beauty and wellness products</p>
-          </div>
-        </section>
+        <AnimatePresence mode="wait">
+          {!selectedSection ? (
+            // Category Landing View
+            <motion.div
+              key="landing"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ShopCategoryHero onSelectCategory={handleSelectSection} />
+            </motion.div>
+          ) : (
+            // Products View with Category Tabs
+            <motion.div
+              key="products"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ShopCategoryTabs
+                activeCategory={selectedSection}
+                onCategoryChange={handleSelectSection}
+                onBack={handleBackToCategories}
+                thumbnails={categoryThumbnails}
+              />
 
-        <SearchAndFilter
-          onSearch={setSearchQuery}
-          onFilter={setActiveFilters}
-          searchQuery={searchQuery}
-          activeFilters={activeFilters}
-          productCount={filteredProducts.length}
-          products={allProducts || []}
-          minPrice={priceRange.min}
-          maxPrice={priceRange.max}
-        />
-        
-        <BestSellers 
-          products={paginatedProducts} 
-          title={searchQuery || (activeFilters.categories && activeFilters.categories.length > 0) ? "Search Results" : "All Products"}
-          displayMode="grid"
-        />
-
-        {totalPages > 1 && (
-          <div className="container py-8">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious 
-                    onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                    className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                  />
-                </PaginationItem>
-                
-                {getPageNumbers().map((page, index) => (
-                  <PaginationItem key={index}>
-                    {page === 'ellipsis' ? (
-                      <PaginationEllipsis />
-                    ) : (
-                      <PaginationLink
-                        onClick={() => handlePageChange(page)}
-                        isActive={currentPage === page}
-                        className="cursor-pointer"
+              {isComingSoon ? (
+                // Coming Soon View
+                <section className="py-20">
+                  <div className="container text-center">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="max-w-lg mx-auto"
+                    >
+                      <div 
+                        className="w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center"
+                        style={{ background: currentCategory?.gradient }}
                       >
-                        {page}
-                      </PaginationLink>
-                    )}
-                  </PaginationItem>
-                ))}
-                
-                <PaginationItem>
-                  <PaginationNext 
-                    onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        <Construction className="h-12 w-12 text-white" />
+                      </div>
+                      <h2 className="font-serifDisplay text-3xl font-bold mb-4">
+                        Coming Soon
+                      </h2>
+                      <p className="text-muted-foreground mb-8">
+                        We're working hard to bring you {currentCategory?.name}. 
+                        Stay tuned for exciting new products!
+                      </p>
+                      <Button onClick={handleBackToCategories}>
+                        Browse Other Categories
+                      </Button>
+                    </motion.div>
+                  </div>
+                </section>
+              ) : (
+                // Products Grid
+                <>
+                  <SearchAndFilter
+                    onSearch={setSearchQuery}
+                    onFilter={setActiveFilters}
+                    searchQuery={searchQuery}
+                    activeFilters={activeFilters}
+                    productCount={filteredProducts.length}
+                    products={allProducts || []}
+                    minPrice={priceRange.min}
+                    maxPrice={priceRange.max}
                   />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-            
-            <div className="text-center mt-4 text-sm text-muted-foreground">
-              Showing {startIndex + 1}-{Math.min(endIndex, filteredProducts.length)} of {filteredProducts.length} products
-            </div>
-          </div>
-        )}
+                  
+                  <BestSellers 
+                    products={paginatedProducts} 
+                    title={searchQuery || (activeFilters.categories && activeFilters.categories.length > 0) ? "Search Results" : "All Products"}
+                    displayMode="grid"
+                  />
+
+                  {totalPages > 1 && (
+                    <div className="container py-8">
+                      <Pagination>
+                        <PaginationContent>
+                          <PaginationItem>
+                            <PaginationPrevious 
+                              onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                              className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                            />
+                          </PaginationItem>
+                          
+                          {getPageNumbers().map((page, index) => (
+                            <PaginationItem key={index}>
+                              {page === 'ellipsis' ? (
+                                <PaginationEllipsis />
+                              ) : (
+                                <PaginationLink
+                                  onClick={() => handlePageChange(page)}
+                                  isActive={currentPage === page}
+                                  className="cursor-pointer"
+                                >
+                                  {page}
+                                </PaginationLink>
+                              )}
+                            </PaginationItem>
+                          ))}
+                          
+                          <PaginationItem>
+                            <PaginationNext 
+                              onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                              className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                            />
+                          </PaginationItem>
+                        </PaginationContent>
+                      </Pagination>
+                      
+                      <div className="text-center mt-4 text-sm text-muted-foreground">
+                        Showing {startIndex + 1}-{Math.min(endIndex, filteredProducts.length)} of {filteredProducts.length} products
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
       <Footer />
     </div>
