@@ -6,7 +6,7 @@ export default function ChallengeBanner() {
   return (
     <div className="container mt-12">
       <Link to="/challenges" className="block">
-        <div className="bg-gradient-holiday rounded-2xl p-8 text-primary-foreground hover:shadow-2xl transition-all duration-300 border border-primary/20 relative overflow-hidden group">
+        <div className="bg-gradient-challenge rounded-2xl p-8 text-primary-foreground hover:shadow-2xl transition-all duration-300 border border-primary/20 relative overflow-hidden group">
           {/* Animated background elements */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse" />

@@ -8,6 +8,7 @@ import CalendarHeroDemo from '@/components/challenges/CalendarHeroDemo';
 import EnrollmentDialog from '@/components/challenges/EnrollmentDialog';
 import { useChallenges, Challenge } from '@/hooks/useChallenges';
 import { useUserChallenges } from '@/hooks/useUserChallenge';
+import { useSeasonalTheme } from '@/contexts/SeasonalThemeContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -28,6 +29,7 @@ export default function Challenges() {
   const navigate = useNavigate();
   const { data: challenges, isLoading } = useChallenges();
   const { data: userChallenges } = useUserChallenges();
+  const { theme } = useSeasonalTheme();
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   
@@ -59,12 +61,12 @@ export default function Challenges() {
       <main className="min-h-screen bg-background">
         {/* Hero Section - Dark theme like Holiday Deals */}
         <section className="relative py-12 md:py-20 bg-[hsl(222.2,84%,4.9%)] overflow-hidden">
-          {/* Snowflake decorations like homepage */}
+          {/* Decorative sparkles */}
           <div className="absolute inset-0 pointer-events-none">
             <Sparkles className="absolute top-10 left-[10%] h-5 w-5 text-primary/40 animate-pulse" />
-            <Sparkles className="absolute top-20 right-[15%] h-4 w-4 text-christmas-gold/40 animate-pulse" style={{ animationDelay: '0.5s' }} />
+            <Sparkles className="absolute top-20 right-[15%] h-4 w-4 text-accent/40 animate-pulse" style={{ animationDelay: '0.5s' }} />
             <Sparkles className="absolute bottom-20 left-[20%] h-4 w-4 text-primary/30 animate-pulse" style={{ animationDelay: '1s' }} />
-            <Sparkles className="absolute bottom-10 right-[25%] h-5 w-5 text-christmas-gold/30 animate-pulse" style={{ animationDelay: '1.5s' }} />
+            <Sparkles className="absolute bottom-10 right-[25%] h-5 w-5 text-accent/30 animate-pulse" style={{ animationDelay: '1.5s' }} />
           </div>
           
           <div className="container relative z-10">
@@ -106,7 +108,7 @@ export default function Challenges() {
                 
                 <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
                   <div className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 text-sm text-white/80">
-                    <Trophy className="h-4 w-4 text-christmas-gold" />
+                    <Trophy className="h-4 w-4 text-accent" />
                     <span>6 Challenges</span>
                   </div>
                   <div className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 text-sm text-white/80">
@@ -278,8 +280,11 @@ export default function Challenges() {
               })}
             </div>
             
-            {/* Discount highlight with holiday gradient */}
-            <div className="mt-12 p-6 rounded-2xl bg-gradient-holiday text-white text-center">
+            {/* Discount highlight with seasonal gradient */}
+            <div 
+              className="mt-12 p-6 rounded-2xl text-white text-center"
+              style={{ background: `linear-gradient(to right, ${theme.accentGradient.from}, ${theme.accentGradient.to})` }}
+            >
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Gift className="h-6 w-6" />
                 <span className="text-2xl font-bold">Up to 20% OFF</span>

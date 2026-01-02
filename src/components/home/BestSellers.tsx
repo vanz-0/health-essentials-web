@@ -3,6 +3,7 @@ import { Star, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 import InventoryAlert from "./InventoryAlert";
 import WishlistButton from "@/components/wishlist/WishlistButton";
 import ProductQuickView from "@/components/shop/ProductQuickView";
@@ -32,6 +33,7 @@ export type Product = {
 function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   const { isEnabled: cartEnabled } = useFeatureFlag('bit_6_shopping_cart');
+  const { theme } = useSeasonalTheme();
   const [showQuickView, setShowQuickView] = useState(false);
   
   // Randomized inventory based on product id
@@ -51,8 +53,11 @@ function ProductCard({ product }: { product: Product }) {
       <div className="rounded-lg border p-2 md:p-3 hover:shadow-sm transition-shadow">
         <div className="relative overflow-hidden rounded-md group">
         {product.sale && (
-          <span className="absolute left-1.5 top-1.5 md:left-2 md:top-2 rounded bg-gradient-holiday px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-xs font-medium text-white shadow-lg">
-            🎄 Holiday Deal
+          <span 
+            className="absolute left-1.5 top-1.5 md:left-2 md:top-2 rounded px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-xs font-medium text-white shadow-lg"
+            style={{ background: `linear-gradient(to right, ${theme.accentGradient.from}, ${theme.accentGradient.to})` }}
+          >
+            {theme.saleBadgeEmoji} {theme.saleBadgeText}
           </span>
         )}
         <WishlistButton 
