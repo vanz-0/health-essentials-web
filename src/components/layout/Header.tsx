@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ShoppingCart, User, Search, MapPin, Phone, LogOut, Heart, Menu, Facebook, Instagram, Mail } from "lucide-react";
+import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -66,6 +67,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const { theme } = useSeasonalTheme();
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
@@ -73,17 +75,17 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   return <header className="fixed inset-x-0 top-0 z-50">
-      {/* Top bar - Christmas themed with news ticker */}
-      <div className="bg-gradient-christmas overflow-hidden relative">
+      {/* Top bar - Seasonal themed with news ticker */}
+      <div className="overflow-hidden relative" style={{ background: `linear-gradient(to right, ${theme.gradient.from}, ${theme.gradient.to})` }}>
         <div className="container flex items-center justify-between">
           <a href="https://1healthessentials.netlify.app/" target="_blank" rel="noopener noreferrer" className="flex-1 cursor-pointer hover:opacity-90 transition-opacity">
             <div className="ticker-wrapper py-0.5">
               <div className="ticker-content">
                 <span className="ticker-item font-semibold text-xs md:text-sm text-zinc-950">
-                  🎄 CHRISTMAS SALE! Up to 50% OFF • 🎁 Perfect Gifts for Your Loved Ones • ❄️ Free Delivery on Orders Over KES 3,000 • 🌟 Shop Now! •
+                  {theme.bannerEmoji} {theme.saleBadgeText}! Up to 20% OFF • ✨ Start the Year Right • 🚚 Free Delivery on Orders Over KES 3,000 • 🌟 Shop Now! •
                 </span>
                 <span className="ticker-item font-semibold text-xs md:text-sm text-zinc-950">
-                  🎄 CHRISTMAS SALE! Up to 50% OFF • 🎁 Perfect Gifts for Your Loved Ones • ❄️ Free Delivery on Orders Over KES 3,000 • 🌟 Shop Now! •
+                  {theme.bannerEmoji} {theme.saleBadgeText}! Up to 20% OFF • ✨ Start the Year Right • 🚚 Free Delivery on Orders Over KES 3,000 • 🌟 Shop Now! •
                 </span>
               </div>
             </div>

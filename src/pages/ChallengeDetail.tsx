@@ -8,6 +8,7 @@ import { useChallenge, useChallengeDays, useChallenges } from '@/hooks/useChalle
 import { useUserChallenge, useChallengeProgress, useUpdateProgress, useAbandonChallenge } from '@/hooks/useUserChallenge';
 import { useCatalogueProducts } from '@/hooks/useCatalogueProducts';
 import { useCart } from '@/contexts/CartContext';
+import { useSeasonalTheme } from '@/contexts/SeasonalThemeContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -49,6 +50,7 @@ export default function ChallengeDetail() {
   const { addItem } = useCart();
   const updateProgress = useUpdateProgress();
   const abandonChallenge = useAbandonChallenge();
+  const { theme } = useSeasonalTheme();
   
   // Get other challenges (excluding current one)
   const otherChallenges = allChallenges?.filter(c => c.id !== challenge?.id) || [];
@@ -171,7 +173,7 @@ export default function ChallengeDetail() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 rounded-lg bg-gradient-christmas text-white">
+                <div className="p-2 rounded-lg text-white" style={{ background: `linear-gradient(to right, ${theme.gradient.from}, ${theme.gradient.to})` }}>
                   <Sparkles className="h-6 w-6" />
                 </div>
                 <h1 className="text-2xl md:text-3xl font-bold">{challenge.title}</h1>
@@ -181,8 +183,8 @@ export default function ChallengeDetail() {
             
             <Badge 
               className={`
-                ${userChallenge.status === 'active' ? 'bg-christmas-green/20 text-christmas-green border-christmas-green' : ''}
-                ${userChallenge.status === 'completed' ? 'bg-christmas-gold/20 text-christmas-gold border-christmas-gold' : ''}
+                ${userChallenge.status === 'active' ? 'bg-accent/20 text-accent border-accent' : ''}
+                ${userChallenge.status === 'completed' ? 'bg-primary/20 text-primary border-primary' : ''}
                 ${userChallenge.status === 'paused' ? 'bg-muted text-muted-foreground' : ''}
                 ${userChallenge.status === 'abandoned' ? 'bg-destructive/20 text-destructive border-destructive' : ''}
               `}
@@ -207,7 +209,7 @@ export default function ChallengeDetail() {
             <div className="space-y-6">
               {/* Discount Code Card */}
               {userChallenge.discount_code && (
-                <Card className="bg-gradient-christmas text-white overflow-hidden">
+                <Card className="text-white overflow-hidden" style={{ background: `linear-gradient(to right, ${theme.gradient.from}, ${theme.gradient.to})` }}>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-lg flex items-center gap-2">
                       <Gift className="h-5 w-5" />
@@ -263,7 +265,7 @@ export default function ChallengeDetail() {
                               <span className="text-xs line-through text-muted-foreground">
                                 KES {product.price.toLocaleString()}
                               </span>
-                              <span className="text-sm font-bold text-christmas-green">
+                              <span className="text-sm font-bold text-accent">
                                 KES {discountedPrice.toLocaleString()}
                               </span>
                             </div>
@@ -273,7 +275,8 @@ export default function ChallengeDetail() {
                     })}
                     
                     <Button 
-                      className="w-full bg-gradient-christmas text-white hover:opacity-90 mt-4"
+                      className="w-full text-white hover:opacity-90 mt-4"
+                      style={{ background: `linear-gradient(to right, ${theme.gradient.from}, ${theme.gradient.to})` }}
                       onClick={handleAddAllToCart}
                     >
                       <ShoppingCart className="h-4 w-4 mr-2" />

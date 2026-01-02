@@ -7,7 +7,7 @@ import NewArrivals from "@/components/home/NewArrivals";
 import Trust from "@/components/home/Trust";
 import About from "@/components/home/About";
 import Testimonials from "@/components/home/Testimonials";
-import FlashBanner from "@/components/home/FlashBanner";
+
 import UrgentDeal from "@/components/home/UrgentDeal";
 import Categories from "@/components/home/Categories";
 import ChallengeBanner from "@/components/home/ChallengeBanner";
@@ -256,7 +256,7 @@ const Index = () => {
         {productJsonLd && <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>}
       </Helmet>
 
-      <FlashBanner message="New Year Sale! Up to 20% Off" />
+      
       <Header />
       <main>
         <Hero />

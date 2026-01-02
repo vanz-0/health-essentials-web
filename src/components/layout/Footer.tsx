@@ -1,22 +1,26 @@
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import ContactCaptureForm from "@/components/contact/ContactCaptureForm";
+import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
+
 export default function Footer() {
+  const { theme } = useSeasonalTheme();
+  
   return <footer className="border-t mt-24 relative">
-      {/* Festive accent */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-christmas-alt" />
+      {/* Seasonal accent */}
+      <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(to right, ${theme.accentGradient.from}, ${theme.accentGradient.to})` }} />
       
       <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 py-12">
         <div>
           <h4 className="font-serifDisplay text-xl font-semibold flex items-center gap-2">
             1Health Essentials
-            <span className="text-sm">🎄</span>
+            <span className="text-sm">{theme.bannerEmoji}</span>
           </h4>
           <p className="mt-3 text-sm text-muted-foreground">
             Premium cosmetics and personal care made with natural ingredients. Your trusted partner in natural beauty and wellness.
           </p>
-          <p className="mt-3 text-sm font-semibold text-christmas-green">
-            🎊 Wishing you a Merry Christmas and Happy New Year!
+          <p className="mt-3 text-sm font-semibold text-accent">
+            {theme.bannerEmoji} Happy New Year! Cheers to a beautiful 2026!
           </p>
           <div className="flex items-center gap-3 mt-4">
             <a href="https://x.com/Healthy_Ess" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" className="hover-scale">
@@ -70,9 +74,9 @@ export default function Footer() {
         <div>
           <h5 className="font-semibold flex items-center gap-2">
             Newsletter
-            <span className="text-sm">🎁</span>
+            <span className="text-sm">{theme.saleBadgeEmoji}</span>
           </h5>
-          <p className="mt-3 text-sm text-muted-foreground">Get Holiday Deals First! 🎄</p>
+          <p className="mt-3 text-sm text-muted-foreground">Get {theme.saleBadgeText}s First! {theme.bannerEmoji}</p>
           <div className="mt-3">
             <ContactCaptureForm source="footer_newsletter" variant="footer" incentiveText="Join 5,000+ health-conscious Kenyans" />
           </div>
