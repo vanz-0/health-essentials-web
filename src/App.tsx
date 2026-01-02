@@ -36,6 +36,7 @@ import { WishlistProvider } from "./contexts/WishlistContext";
 import { ComparisonProvider } from "./contexts/ComparisonContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
+import { SeasonalThemeProvider } from "./contexts/SeasonalThemeContext";
 import ErrorBoundary from "./components/error/ErrorBoundary";
 
 const queryClient = new QueryClient();
@@ -94,13 +95,15 @@ const App = () => {
           <TooltipProvider>
             <AuthProvider>
               <ThemeProvider>
-                <CartProvider>
-                  <WishlistProvider>
-                    <ComparisonProvider>
-                      <AppContent />
-                    </ComparisonProvider>
-                  </WishlistProvider>
-                </CartProvider>
+                <SeasonalThemeProvider>
+                  <CartProvider>
+                    <WishlistProvider>
+                      <ComparisonProvider>
+                        <AppContent />
+                      </ComparisonProvider>
+                    </WishlistProvider>
+                  </CartProvider>
+                </SeasonalThemeProvider>
               </ThemeProvider>
             </AuthProvider>
           </TooltipProvider>

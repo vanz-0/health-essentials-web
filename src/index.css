@@ -319,4 +319,13 @@ All colors MUST be HSL.
   .bg-gradient-challenge-subtle {
     background: var(--gradient-challenge-subtle);
   }
+  
+  /* Seasonal Theme Gradients (FOMO orange-pink as default) */
+  .bg-gradient-seasonal {
+    background: linear-gradient(to right, var(--seasonal-from, hsl(24 95% 53%)), var(--seasonal-to, hsl(330 81% 60%)));
+  }
+  
+  .bg-gradient-seasonal-accent {
+    background: linear-gradient(to right, var(--seasonal-accent-from, hsl(24 95% 53%)), var(--seasonal-accent-to, hsl(330 81% 60%)));
+  }
 }

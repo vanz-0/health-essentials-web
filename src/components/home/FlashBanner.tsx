@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useFeatureFlag } from '@/hooks/useFeatureFlag';
+import { useSeasonalTheme } from '@/contexts/SeasonalThemeContext';
 
 interface FlashBannerProps {
   endTime: Date;
@@ -9,6 +10,7 @@ interface FlashBannerProps {
 
 export default function FlashBanner({ endTime, message }: FlashBannerProps) {
   const { isEnabled } = useFeatureFlag('bit_2_fomo');
+  const { theme } = useSeasonalTheme();
   const [timeLeft, setTimeLeft] = useState(endTime.getTime() - Date.now());
   const [isVisible, setIsVisible] = useState(true);
 
@@ -40,10 +42,20 @@ export default function FlashBanner({ endTime, message }: FlashBannerProps) {
 
   if (!isEnabled || !isVisible || timeLeft <= 0) return null;
 
+  // Use seasonal theme gradient
+  const gradientStyle = {
+    background: `linear-gradient(to right, ${theme.gradient.from}, ${theme.gradient.to})`,
+  };
+
   return (
-    <div className="bg-gradient-to-r from-primary to-accent text-white py-2 px-4 relative" role="banner" aria-live="polite">
+    <div 
+      className="text-white py-2 px-4 relative" 
+      style={gradientStyle}
+      role="banner" 
+      aria-live="polite"
+    >
       <div className="container flex items-center justify-center gap-2 text-sm md:text-base font-medium">
-        <span>🔥 {message}</span>
+        <span>{theme.bannerEmoji} {message}</span>
         <span className="font-mono" aria-label={`Time remaining: ${formatTime(timeLeft)}`}>
           {formatTime(timeLeft)}
         </span>
