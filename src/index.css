@@ -43,19 +43,6 @@
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
-    /* Christmas & Holiday Colors */
-    --christmas-red: 0 84% 50%;
-    --christmas-green: 140 60% 35%;
-    --christmas-gold: 45 93% 47%;
-    --christmas-silver: 0 0% 80%;
-    --snow-white: 0 0% 98%;
-    
-    /* Christmas Gradients */
-    --gradient-christmas: linear-gradient(135deg, hsl(0 84% 50%), hsl(140 60% 35%));
-    --gradient-christmas-alt: linear-gradient(90deg, hsl(0 84% 50%), hsl(45 93% 47%), hsl(140 60% 35%));
-    --gradient-gold-shimmer: linear-gradient(90deg, hsl(45 93% 47%), hsl(0 0% 80%), hsl(45 93% 47%));
-    --gradient-holiday: linear-gradient(135deg, hsl(0 79% 60%), hsl(45 85% 55%));
-    
     /* Challenge Brand Gradient - Light Blue to Dark Green */
     --gradient-challenge: linear-gradient(135deg, hsl(188 94% 43% / 0.9), hsl(160 84% 31%));
     --gradient-challenge-subtle: linear-gradient(135deg, hsl(188 94% 43% / 0.2), hsl(160 84% 31% / 0.3));
@@ -324,84 +311,6 @@ All colors MUST be HSL.
     }
   }
   
-  /* Christmas Snowfall Animation */
-  @keyframes snowfall {
-    0% {
-      transform: translateY(-10vh) translateX(0);
-      opacity: 0;
-    }
-    10% {
-      opacity: 1;
-    }
-    90% {
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(100vh) translateX(10vw);
-      opacity: 0;
-    }
-  }
-  
-  /* Twinkling Stars Animation */
-  @keyframes twinkle {
-    0%, 100% {
-      opacity: 0.3;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.2);
-    }
-  }
-  
-  /* Gold Shimmer Effect */
-  @keyframes shimmer {
-    0% {
-      background-position: -1000px 0;
-    }
-    100% {
-      background-position: 1000px 0;
-    }
-  }
-  
-  .snowflake {
-    position: fixed;
-    top: -10vh;
-    color: white;
-    font-size: 1em;
-    pointer-events: none;
-    z-index: 9999;
-    animation: snowfall linear infinite;
-    opacity: 0.8;
-  }
-  
-  .christmas-shimmer {
-    background: linear-gradient(90deg, transparent, hsl(var(--christmas-gold) / 0.3), transparent);
-    background-size: 1000px 100%;
-    animation: shimmer 3s infinite;
-  }
-  
-  .twinkle-star {
-    animation: twinkle 2s ease-in-out infinite;
-  }
-  
-  /* Christmas-themed utility classes */
-  .bg-gradient-christmas {
-    background: var(--gradient-christmas);
-  }
-  
-  .bg-gradient-christmas-alt {
-    background: var(--gradient-christmas-alt);
-  }
-  
-  .bg-gradient-gold-shimmer {
-    background: var(--gradient-gold-shimmer);
-  }
-  
-  .bg-gradient-holiday {
-    background: var(--gradient-holiday);
-  }
-  
   /* Challenge Brand Gradient */
   .bg-gradient-challenge {
     background: var(--gradient-challenge);
@@ -409,17 +318,5 @@ All colors MUST be HSL.
   
   .bg-gradient-challenge-subtle {
     background: var(--gradient-challenge-subtle);
-  }
-  
-  .text-christmas-red {
-    color: hsl(var(--christmas-red));
-  }
-  
-  .text-christmas-green {
-    color: hsl(var(--christmas-green));
-  }
-  
-  .text-christmas-gold {
-    color: hsl(var(--christmas-gold));
   }
 }

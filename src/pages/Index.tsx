@@ -22,8 +22,6 @@ import ScrollSlideIn from "@/components/contact/ScrollSlideIn";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
 import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
 import { useBestSellerProducts } from "@/hooks/useBestSellerProducts";
-import HolidayPopup from "@/components/home/HolidayPopup";
-import FestiveDivider from "@/components/home/FestiveDivider";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const Index = () => {
@@ -258,12 +256,10 @@ const Index = () => {
         {productJsonLd && <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>}
       </Helmet>
 
-      <FlashBanner endTime={flashSaleEnd} message="🎄 Holiday Flash Sale ends in" />
+      <FlashBanner endTime={flashSaleEnd} message="Flash Sale ends in" />
       <Header />
       <main>
         <Hero />
-        
-        <FestiveDivider />
         
         {/* FOMO Urgent Deals Section - Only shown when Bit 2 is enabled */}
         {fomoEnabled && hotDeals.length >= 2 && (
@@ -324,34 +320,24 @@ const Index = () => {
         ) : (
           <BestSellers 
             products={filteringEnabled && filteredProducts.length > 0 ? filteredProducts : bestSellers} 
-            title={filteringEnabled && (searchQuery || (activeFilters.categories && activeFilters.categories.length > 0)) && filteredProducts.length > 0 ? "Search Results" : "Holiday Deals"}
+            title={filteringEnabled && (searchQuery || (activeFilters.categories && activeFilters.categories.length > 0)) && filteredProducts.length > 0 ? "Search Results" : "Best Sellers"}
             displayMode="carousel"
           />
         )}
         
-        <FestiveDivider />
-        
         <Categories />
-        
-        <FestiveDivider />
         
         {/* Hot Deals Carousel using copywriting tone */}
         {catalogueProducts.length > 0 && <HotDealsCarousel products={catalogueProducts} />}
-        
-        <FestiveDivider />
         
         <NewArrivals items={arrivals.map(item => ({
           ...item,
           price: typeof item.price === 'number' ? item.price : 0
         }))} />
         
-        <FestiveDivider />
-        
         <div id="challenge" className="scroll-mt-20">
           <ChallengeBanner />
         </div>
-        
-        <FestiveDivider />
         
         <Trust />
         <About />
@@ -365,9 +351,6 @@ const Index = () => {
       
       {/* WhatsApp Floating Button */}
       <WhatsAppButton />
-      
-      {/* Holiday Popup */}
-      <HolidayPopup />
     </div>
   );
 };
