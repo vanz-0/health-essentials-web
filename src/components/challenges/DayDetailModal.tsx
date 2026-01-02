@@ -13,6 +13,7 @@ import { ChallengeDay } from '@/hooks/useChallenges';
 import { ChallengeProgress } from '@/hooks/useUserChallenge';
 import { useCatalogueProducts } from '@/hooks/useCatalogueProducts';
 import { useCart } from '@/contexts/CartContext';
+import { useSeasonalTheme } from '@/contexts/SeasonalThemeContext';
 import { 
   CheckCircle2, 
   Circle, 
@@ -46,6 +47,7 @@ export default function DayDetailModal({
 }: DayDetailModalProps) {
   const { data: products } = useCatalogueProducts();
   const { addItem } = useCart();
+  const { theme } = useSeasonalTheme();
   const [notes, setNotes] = useState('');
   const [isCompleted, setIsCompleted] = useState(false);
   
@@ -76,7 +78,7 @@ export default function DayDetailModal({
   };
   
   const routineIcon = dayData?.routine_time === 'morning' 
-    ? <Sun className="h-4 w-4 text-christmas-gold" />
+    ? <Sun className="h-4 w-4 text-primary" />
     : dayData?.routine_time === 'evening'
     ? <Moon className="h-4 w-4 text-indigo-500" />
     : <Clock className="h-4 w-4 text-muted-foreground" />;
@@ -95,8 +97,8 @@ export default function DayDetailModal({
             <div className="flex items-center gap-3">
               <div className={`
                 w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl
-                ${status === 'completed' ? 'bg-christmas-green/20 text-christmas-green' : ''}
-                ${status === 'today' ? 'bg-christmas-gold/20 text-christmas-gold' : ''}
+                ${status === 'completed' ? 'bg-accent/20 text-accent' : ''}
+                ${status === 'today' ? 'bg-primary/20 text-primary' : ''}
                 ${status === 'missed' ? 'bg-destructive/20 text-destructive' : ''}
                 ${status === 'locked' ? 'bg-muted text-muted-foreground' : ''}
                 ${status === 'pending' ? 'bg-primary/20 text-primary' : ''}
@@ -112,13 +114,13 @@ export default function DayDetailModal({
             </div>
             
             {status === 'completed' && (
-              <Badge className="bg-christmas-green/20 text-christmas-green border-christmas-green">
+              <Badge className="bg-accent/20 text-accent border-accent">
                 <CheckCircle2 className="h-3 w-3 mr-1" />
                 Completed
               </Badge>
             )}
             {status === 'today' && (
-              <Badge className="bg-christmas-gold/20 text-christmas-gold border-christmas-gold animate-pulse">
+              <Badge className="bg-primary/20 text-primary border-primary animate-pulse">
                 <Sparkles className="h-3 w-3 mr-1" />
                 Today
               </Badge>
@@ -149,7 +151,7 @@ export default function DayDetailModal({
           {dayData?.tip && (
             <div className="space-y-2">
               <h4 className="font-semibold flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-christmas-gold" />
+                <Sparkles className="h-4 w-4 text-primary" />
                 Today's Tip
               </h4>
               <p className="text-sm text-muted-foreground leading-relaxed bg-muted/30 p-4 rounded-lg">
@@ -175,7 +177,7 @@ export default function DayDetailModal({
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{product.name}</p>
-                      <p className="text-sm text-christmas-green font-bold">
+                      <p className="text-sm text-accent font-bold">
                         KES {product.price.toLocaleString()}
                       </p>
                     </div>
@@ -209,10 +211,8 @@ export default function DayDetailModal({
           {/* Complete Button */}
           {status !== 'locked' && (
             <Button
-              className={`w-full ${isCompleted 
-                ? 'bg-christmas-green hover:bg-christmas-green/90' 
-                : 'bg-gradient-christmas hover:opacity-90'
-              }`}
+              className="w-full text-white hover:opacity-90"
+              style={{ background: isCompleted ? 'hsl(var(--accent))' : `linear-gradient(to right, ${theme.gradient.from}, ${theme.gradient.to})` }}
               onClick={handleComplete}
             >
               {isCompleted ? (
