@@ -256,7 +256,7 @@ const Index = () => {
         {productJsonLd && <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>}
       </Helmet>
 
-      <FlashBanner endTime={flashSaleEnd} message="Flash Sale ends in" />
+      <FlashBanner message="New Year Sale! Up to 20% Off" />
       <Header />
       <main>
         <Hero />
