@@ -41,9 +41,9 @@ export default function FlashBanner({ endTime, message }: FlashBannerProps) {
   if (!isEnabled || !isVisible || timeLeft <= 0) return null;
 
   return (
-    <div className="bg-gradient-christmas text-white py-2 px-4 relative" role="banner" aria-live="polite">
+    <div className="bg-gradient-to-r from-primary to-accent text-white py-2 px-4 relative" role="banner" aria-live="polite">
       <div className="container flex items-center justify-center gap-2 text-sm md:text-base font-medium">
-        <span>🎄 {message}</span>
+        <span>🔥 {message}</span>
         <span className="font-mono" aria-label={`Time remaining: ${formatTime(timeLeft)}`}>
           {formatTime(timeLeft)}
         </span>

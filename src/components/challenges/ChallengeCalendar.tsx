@@ -81,33 +81,33 @@ export default function ChallengeCalendar({
     <div className="space-y-6">
       {/* Stats Header */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-christmas-green/20 to-christmas-green/5 border-christmas-green/30">
+        <Card className="bg-gradient-to-br from-primary/20 to-primary/5 border-primary/30">
           <CardContent className="p-4 text-center">
-            <CheckCircle2 className="h-6 w-6 mx-auto mb-2 text-christmas-green" />
+            <CheckCircle2 className="h-6 w-6 mx-auto mb-2 text-primary" />
             <p className="text-2xl font-bold">{stats.completedDays}</p>
             <p className="text-xs text-muted-foreground">Days Complete</p>
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-br from-christmas-gold/20 to-christmas-gold/5 border-christmas-gold/30">
+        <Card className="bg-gradient-to-br from-accent/20 to-accent/5 border-accent/30">
           <CardContent className="p-4 text-center">
-            <Flame className="h-6 w-6 mx-auto mb-2 text-christmas-gold" />
+            <Flame className="h-6 w-6 mx-auto mb-2 text-accent" />
             <p className="text-2xl font-bold">{stats.streak}</p>
             <p className="text-xs text-muted-foreground">Day Streak</p>
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-br from-christmas-red/20 to-christmas-red/5 border-christmas-red/30">
+        <Card className="bg-gradient-to-br from-orange/20 to-orange/5 border-orange/30">
           <CardContent className="p-4 text-center">
-            <CalendarIcon className="h-6 w-6 mx-auto mb-2 text-christmas-red" />
+            <CalendarIcon className="h-6 w-6 mx-auto mb-2 text-orange" />
             <p className="text-2xl font-bold">Day {stats.currentDay}</p>
             <p className="text-xs text-muted-foreground">Current Day</p>
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-br from-primary/20 to-primary/5 border-primary/30">
+        <Card className="bg-gradient-to-br from-indigo/20 to-indigo/5 border-indigo/30">
           <CardContent className="p-4 text-center">
-            <Trophy className="h-6 w-6 mx-auto mb-2 text-primary" />
+            <Trophy className="h-6 w-6 mx-auto mb-2 text-indigo" />
             <p className="text-2xl font-bold">{stats.percentage}%</p>
             <p className="text-xs text-muted-foreground">Progress</p>
           </CardContent>
@@ -165,8 +165,8 @@ export default function ChallengeCalendar({
                   className={cn(
                     "relative aspect-square rounded-lg flex flex-col items-center justify-center transition-all",
                     "border-2 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary",
-                    status === 'completed' && "bg-christmas-green/20 border-christmas-green text-christmas-green",
-                    status === 'today' && "bg-christmas-gold/20 border-christmas-gold text-christmas-gold animate-pulse",
+                    status === 'completed' && "bg-primary/20 border-primary text-primary",
+                    status === 'today' && "bg-accent/20 border-accent text-accent animate-pulse",
                     status === 'missed' && "bg-destructive/20 border-destructive text-destructive",
                     status === 'locked' && "bg-muted/50 border-muted text-muted-foreground cursor-not-allowed",
                     status === 'pending' && "bg-card border-border hover:border-primary",
@@ -196,11 +196,11 @@ export default function ChallengeCalendar({
           {/* Legend */}
           <div className="flex flex-wrap gap-4 mt-6 pt-4 border-t">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-christmas-green/20 border-2 border-christmas-green" />
+              <div className="w-4 h-4 rounded bg-primary/20 border-2 border-primary" />
               <span className="text-xs text-muted-foreground">Completed</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-christmas-gold/20 border-2 border-christmas-gold animate-pulse" />
+              <div className="w-4 h-4 rounded bg-accent/20 border-2 border-accent animate-pulse" />
               <span className="text-xs text-muted-foreground">Today</span>
             </div>
             <div className="flex items-center gap-2">

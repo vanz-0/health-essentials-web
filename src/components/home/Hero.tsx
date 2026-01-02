@@ -2,46 +2,40 @@ import { Button } from "@/components/ui/button";
 import { Star, Shield, Smartphone, MapPin } from "lucide-react";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import heroImage from "@/assets/hero-1health.jpg";
+
 export default function Hero() {
-  const {
-    isEnabled
-  } = useFeatureFlag('bit_1_hero');
+  const { isEnabled } = useFeatureFlag('bit_1_hero');
+  
   if (isEnabled) {
-    return <section id="home" className="relative">
+    return (
+      <section id="home" className="relative">
         <div className="relative h-[80vh] w-full overflow-hidden">
           <img src={heroImage} alt="Feel Better, Live Better - 1Health Essentials hero" className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 via-cyan-500/20 to-cyan-400/20" />
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
           
           <div className="absolute inset-0 container flex items-center">
-          <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-1000 relative">
-            {/* Subtle Christmas decorations */}
-            <div className="absolute -top-8 -left-4 text-4xl animate-bounce opacity-80" style={{ animationDuration: '3s' }}>❄️</div>
-            <div className="absolute -top-6 right-12 text-3xl twinkle-star opacity-70">⭐</div>
-            
+            <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
               <h1 className="font-serifDisplay text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight mb-4">
-                This Holiday Season, Feel Better, Live Better
+                Feel Better, Live Better
               </h1>
-              <p className="text-lg md:text-xl text-foreground/80 mb-2 max-w-2xl">
+              <p className="text-lg md:text-xl text-foreground/80 mb-6 max-w-2xl">
                 Science-guided wellness, fast delivery in Nairobi & beyond.
               </p>
-              <p className="text-base md:text-lg text-christmas-green font-semibold mb-6">
-                🎄 Christmas Specials Now Available
-              </p>
               
-              {/* Trust Pills - Holiday Edition */}
+              {/* Trust Pills */}
               <div className="flex flex-wrap gap-2 md:gap-4 mb-6 md:mb-8">
-                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium border border-christmas-gold/30">
-                  <span className="text-xs md:text-sm">🎁</span>
-                  <span className="text-xs md:text-sm">Perfect Holiday Gifts</span>
+                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium border border-border/30">
+                  <Shield className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" />
+                  <span className="text-xs md:text-sm">Quality Assured</span>
                 </div>
-                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium border border-christmas-gold/30">
+                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium border border-border/30">
                   <Smartphone className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" />
-                  <span className="text-xs md:text-sm">📞 M-Pesa Ready</span>
+                  <span className="text-xs md:text-sm">M-Pesa Ready</span>
                 </div>
-                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium border border-christmas-gold/30">
-                  <span className="text-xs md:text-sm">❄️</span>
-                  <span className="text-xs md:text-sm">Fast Christmas Delivery</span>
+                <div className="flex items-center gap-1.5 md:gap-2 bg-background/80 backdrop-blur rounded-full px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium border border-border/30">
+                  <MapPin className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" />
+                  <span className="text-xs md:text-sm">Fast Local Delivery</span>
                 </div>
               </div>
 
@@ -62,9 +56,9 @@ export default function Hero() {
               {/* Social Proof Strip */}
               <div className="flex items-center gap-4 text-sm text-foreground/80">
                 <div className="flex items-center gap-1">
-                  {Array.from({
-                  length: 5
-                }).map((_, i) => <Star key={i} className="h-4 w-4 fill-primary text-primary" />)}
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                  ))}
                   <span className="ml-2 font-semibold">4.3</span>
                 </div>
                 <span>•</span>
@@ -72,18 +66,19 @@ export default function Hero() {
                 <span className="hidden md:inline">•</span>
                 <div className="hidden md:flex items-center gap-1">
                   <MapPin className="h-4 w-4" />
-                  <span>Nairobi & Kiambu area </span>
+                  <span>Nairobi & Kiambu area</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-      </section>;
+      </section>
+    );
   }
 
   // Fallback to original hero
-  return <section id="home" className="relative pt-[112px]">
+  return (
+    <section id="home" className="relative pt-[112px]">
       <div className="relative h-[64vh] md:h-[72vh] w-full overflow-hidden rounded-none">
         <img src={heroImage} alt="Natural beauty and wellness hero - 1Health Essentials" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/40 to-transparent" />
@@ -105,5 +100,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 }

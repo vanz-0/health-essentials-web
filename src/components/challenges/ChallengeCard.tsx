@@ -50,8 +50,8 @@ export default function ChallengeCard({ challenge, onSelect, enrollmentCount = 0
       className="group cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-transparent hover:border-primary/30 bg-card/80 backdrop-blur-sm overflow-hidden"
       onClick={() => onSelect(challenge)}
     >
-      {/* Discount Banner - Holiday gradient style */}
-      <div className="bg-gradient-holiday text-white text-center py-2 px-4">
+      {/* Discount Banner */}
+      <div className="bg-gradient-to-r from-orange to-pink-500 text-white text-center py-2 px-4">
         <div className="flex items-center justify-center gap-2">
           <Gift className="h-4 w-4" />
           <span className="text-sm font-semibold">{challenge.discount_percent}% OFF Challenge Products</span>
