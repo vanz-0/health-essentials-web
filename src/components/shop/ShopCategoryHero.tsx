@@ -43,14 +43,21 @@ const CategoryCard = ({
       whileHover={{ y: -8, scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={onSelect}
-      className="relative group cursor-pointer rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
-      style={{ background: category.gradient }}
+      className="relative group cursor-pointer rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500"
     >
-      {/* Glow effect on hover */}
-      <div 
-        className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-xl"
-        style={{ background: category.gradient }}
-      />
+      {/* Full Banner Image Background */}
+      <div className="absolute inset-0">
+        <img 
+          src={bannerImage} 
+          alt={category.name}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+        {/* Gradient overlay for text readability */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20"
+        />
+      </div>
       
       {/* Content */}
       <div className="relative z-10 p-6 md:p-8 min-h-[380px] md:min-h-[420px] flex flex-col">
@@ -58,56 +65,45 @@ const CategoryCard = ({
         <div className="flex items-start justify-between mb-6">
           <motion.div
             whileHover={{ rotate: 15, scale: 1.1 }}
-            className="p-3 bg-white/20 backdrop-blur-sm rounded-2xl"
+            className="p-3 backdrop-blur-md rounded-2xl"
+            style={{ backgroundColor: `${category.accentColor.replace(')', ' / 0.3)').replace('hsl', 'hsla')}` }}
           >
-            <Icon className="h-8 w-8 text-white" />
+            <Icon className="h-8 w-8 text-white drop-shadow-md" />
           </motion.div>
           
           {category.comingSoon && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-black/30 backdrop-blur-md rounded-full border border-white/20">
               <Clock className="h-3.5 w-3.5 text-white" />
               <span className="text-xs font-medium text-white">Coming Soon</span>
             </div>
           )}
         </div>
         
-        {/* Title */}
-        <h3 className="font-serifDisplay text-2xl md:text-3xl font-bold text-white mb-2">
-          {category.name}
-        </h3>
-        <p className="text-white/80 text-sm mb-1">{category.subtitle}</p>
-        <p className="text-white/60 text-sm mb-6 line-clamp-2">{category.description}</p>
+        {/* Spacer to push content to bottom */}
+        <div className="flex-1" />
         
-        {/* Banner Image */}
-        <div className="flex-1 flex items-end">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
-            whileHover={{ scale: 1.03 }}
-            className="w-full rounded-xl overflow-hidden shadow-lg"
+        {/* Title & Description */}
+        <div className="mt-auto">
+          <h3 className="font-serifDisplay text-2xl md:text-3xl font-bold text-white mb-2 drop-shadow-lg">
+            {category.name}
+          </h3>
+          <p className="text-white/90 text-sm font-medium mb-1 drop-shadow">{category.subtitle}</p>
+          <p className="text-white/70 text-sm mb-6 line-clamp-2">{category.description}</p>
+          
+          {/* CTA Button */}
+          <motion.div 
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-white font-semibold transition-all duration-300 group-hover:gap-4"
+            style={{ background: category.gradient }}
           >
-            <img 
-              src={bannerImage} 
-              alt={category.name}
-              className="w-full h-32 md:h-40 object-cover"
-              loading="lazy"
-            />
+            <span>{category.comingSoon ? 'View Preview' : 'Explore'}</span>
+            <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </motion.div>
         </div>
-        
-        {/* CTA */}
-        <motion.div 
-          className="mt-6 flex items-center gap-2 text-white font-semibold group-hover:gap-4 transition-all duration-300"
-        >
-          <span>{category.comingSoon ? 'View Preview' : 'Explore'}</span>
-          <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-        </motion.div>
       </div>
       
       {/* Coming Soon Overlay */}
       {category.comingSoon && (
-        <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px] z-5" />
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] z-5" />
       )}
     </motion.div>
   );

@@ -18,8 +18,8 @@ export const shopCategories: ShopCategory[] = [
     subtitle: 'Beauty & Personal Care',
     description: 'Natural beauty products, skincare, hair care, and personal care essentials',
     icon: Sparkles,
-    gradient: 'linear-gradient(135deg, hsl(160 84% 31%), hsl(188 94% 43%))',
-    accentColor: 'hsl(160 84% 31%)',
+    gradient: 'linear-gradient(135deg, hsl(35 78% 60%), hsl(28 85% 55%))',
+    accentColor: 'hsl(35 78% 60%)',
     comingSoon: false,
   },
   {
@@ -28,8 +28,8 @@ export const shopCategories: ShopCategory[] = [
     subtitle: 'Fashion & Accessories',
     description: 'Stylish clothes, shoes, and accessories for every occasion',
     icon: Shirt,
-    gradient: 'linear-gradient(135deg, hsl(239 84% 67%), hsl(280 87% 65%))',
-    accentColor: 'hsl(239 84% 67%)',
+    gradient: 'linear-gradient(135deg, hsl(280 45% 45%), hsl(300 40% 50%))',
+    accentColor: 'hsl(280 45% 45%)',
     comingSoon: true,
   },
   {
@@ -38,8 +38,8 @@ export const shopCategories: ShopCategory[] = [
     subtitle: 'Wellness & Recovery',
     description: 'Health products including Nuga Best therapeutic beds and wellness essentials',
     icon: Heart,
-    gradient: 'linear-gradient(135deg, hsl(142 76% 36%), hsl(160 84% 31%))',
-    accentColor: 'hsl(142 76% 36%)',
+    gradient: 'linear-gradient(135deg, hsl(174 72% 40%), hsl(180 60% 45%))',
+    accentColor: 'hsl(174 72% 40%)',
     comingSoon: false,
   },
 ];
