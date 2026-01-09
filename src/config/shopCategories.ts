@@ -40,7 +40,7 @@ export const shopCategories: ShopCategory[] = [
     icon: Heart,
     gradient: 'linear-gradient(135deg, hsl(174 72% 40%), hsl(180 60% 45%))',
     accentColor: 'hsl(174 72% 40%)',
-    comingSoon: false,
+    comingSoon: true,
   },
 ];
 
