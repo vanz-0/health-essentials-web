@@ -37,7 +37,7 @@ export default function ShopCategoryTabs({
   const categoryImage = currentCategory ? getCategoryImage(currentCategory.id) : '';
   
   return (
-    <section className="sticky top-[112px] z-40">
+    <section className="sticky top-[104px] z-40 -mt-1">
       {/* Themed Header Banner */}
       {currentCategory && (
         <motion.div
