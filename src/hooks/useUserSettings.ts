@@ -52,10 +52,15 @@ export const useUserSettings = () => {
       
       const { data, error } = await supabase
         .from("user_settings")
-        .upsert([{
-          user_id: user.id,
-          ...safeUpdates,
-        }])
+        .upsert(
+          {
+            user_id: user.id,
+            ...safeUpdates,
+          },
+          { 
+            onConflict: 'user_id'  // Use user_id for conflict detection
+          }
+        )
         .select()
         .single();
 
@@ -70,9 +75,14 @@ export const useUserSettings = () => {
       });
     },
     onError: (error: Error) => {
+      // Show user-friendly error message
+      const friendlyMessage = error.message.includes('duplicate key') 
+        ? "Unable to save settings. Please try again."
+        : error.message;
+        
       toast({
         title: "Error updating settings",
-        description: error.message,
+        description: friendlyMessage,
         variant: "destructive",
       });
     },
