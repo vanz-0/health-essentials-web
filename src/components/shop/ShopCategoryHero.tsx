@@ -1,21 +1,35 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Clock } from "lucide-react";
 import { shopCategories, ShopCategory } from "@/config/shopCategories";
-import { useCatalogueProducts } from "@/hooks/useCatalogueProducts";
-import { useMemo } from "react";
+import cosmeticsImage from "@/assets/shop-cosmetics.png";
+import wearImage from "@/assets/shop-wear.png";
+import healthImage from "@/assets/shop-health.png";
 
 interface ShopCategoryHeroProps {
   onSelectCategory: (categoryId: string) => void;
 }
 
+const getCategoryImage = (categoryId: string): string => {
+  switch (categoryId) {
+    case 'cosmetics':
+      return cosmeticsImage;
+    case 'wear':
+      return wearImage;
+    case 'health':
+      return healthImage;
+    default:
+      return cosmeticsImage;
+  }
+};
+
 const CategoryCard = ({ 
   category, 
-  thumbnails,
+  bannerImage,
   onSelect,
   index
 }: { 
   category: ShopCategory; 
-  thumbnails: string[];
+  bannerImage: string;
   onSelect: () => void;
   index: number;
 }) => {
@@ -64,38 +78,22 @@ const CategoryCard = ({
         <p className="text-white/80 text-sm mb-1">{category.subtitle}</p>
         <p className="text-white/60 text-sm mb-6 line-clamp-2">{category.description}</p>
         
-        {/* Thumbnail Grid */}
+        {/* Banner Image */}
         <div className="flex-1 flex items-end">
-          {thumbnails.length > 0 ? (
-            <div className="grid grid-cols-4 gap-2 w-full">
-              {thumbnails.slice(0, 4).map((thumb, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 + i * 0.1 }}
-                  whileHover={{ scale: 1.1, zIndex: 10 }}
-                  className="aspect-square rounded-xl overflow-hidden bg-white/10 backdrop-blur-sm shadow-md"
-                >
-                  <img 
-                    src={thumb} 
-                    alt="" 
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-4 gap-2 w-full">
-              {[...Array(4)].map((_, i) => (
-                <div 
-                  key={i}
-                  className="aspect-square rounded-xl bg-white/10 backdrop-blur-sm animate-pulse"
-                />
-              ))}
-            </div>
-          )}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            whileHover={{ scale: 1.03 }}
+            className="w-full rounded-xl overflow-hidden shadow-lg"
+          >
+            <img 
+              src={bannerImage} 
+              alt={category.name}
+              className="w-full h-32 md:h-40 object-cover"
+              loading="lazy"
+            />
+          </motion.div>
         </div>
         
         {/* CTA */}
@@ -116,34 +114,6 @@ const CategoryCard = ({
 };
 
 export default function ShopCategoryHero({ onSelectCategory }: ShopCategoryHeroProps) {
-  const { data: products } = useCatalogueProducts();
-  
-  // Get thumbnails for cosmetics category
-  const cosmeticsThumbnails = useMemo(() => {
-    if (!products) return [];
-    return products
-      .filter(p => p.image)
-      .slice(0, 8)
-      .map(p => p.image);
-  }, [products]);
-  
-  // Placeholder thumbnails for other categories
-  const wearThumbnails: string[] = []; // Will be provided later
-  const healthThumbnails: string[] = []; // Will include Nuga Best beds
-  
-  const getThumbnails = (categoryId: string): string[] => {
-    switch (categoryId) {
-      case 'cosmetics':
-        return cosmeticsThumbnails;
-      case 'wear':
-        return wearThumbnails;
-      case 'health':
-        return healthThumbnails;
-      default:
-        return [];
-    }
-  };
-  
   return (
     <section className="py-12 md:py-20">
       <div className="container">
@@ -167,7 +137,7 @@ export default function ShopCategoryHero({ onSelectCategory }: ShopCategoryHeroP
             <CategoryCard
               key={category.id}
               category={category}
-              thumbnails={getThumbnails(category.id)}
+              bannerImage={getCategoryImage(category.id)}
               onSelect={() => onSelectCategory(category.id)}
               index={index}
             />
