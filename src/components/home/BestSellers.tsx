@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { Star, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
@@ -131,6 +131,39 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
+// Separate component for carousel to properly manage autoplay ref
+function BestSellersCarousel({ products }: { products: Product[] }) {
+  const autoplayPlugin = useRef(
+    Autoplay({
+      delay: 4000,
+      stopOnInteraction: true,
+      stopOnMouseEnter: true,
+    })
+  );
+
+  return (
+    <Carousel
+      opts={{
+        align: "start",
+        loop: true,
+        dragFree: true,
+      }}
+      plugins={[autoplayPlugin.current]}
+      className="w-full animate-fade-in"
+    >
+      <CarouselContent className="-ml-2 md:-ml-4">
+        {products.map((p) => (
+          <CarouselItem key={p.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+            <ProductCard product={p} />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious className="hidden md:flex -left-4" />
+      <CarouselNext className="hidden md:flex -right-4" />
+    </Carousel>
+  );
+}
+
 export default function BestSellers({ products, title = "Best Sellers", displayMode = "carousel" }: { products: Product[]; title?: string; displayMode?: "carousel" | "grid" }) {
   // Sort products to show holiday deals first
   const sortedProducts = useMemo(() => {
@@ -168,31 +201,7 @@ export default function BestSellers({ products, title = "Best Sellers", displayM
           ))}
         </div>
       ) : (
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-            dragFree: true,
-          }}
-          plugins={[
-            Autoplay({
-              delay: 4000,
-              stopOnInteraction: true,
-              stopOnMouseEnter: true,
-            }),
-          ]}
-          className="w-full animate-fade-in"
-        >
-          <CarouselContent className="-ml-2 md:-ml-4">
-            {sortedProducts.map((p) => (
-              <CarouselItem key={p.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                <ProductCard product={p} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="hidden md:flex -left-4" />
-          <CarouselNext className="hidden md:flex -right-4" />
-        </Carousel>
+        <BestSellersCarousel products={sortedProducts} />
       )}
     </section>
   );
